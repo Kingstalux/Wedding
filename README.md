@@ -15,7 +15,7 @@ everything from a studio at `/admin`.
 ```bash
 npm install
 cp .env.example .env.local   # then fill in your Supabase dev project keys
-npm run dev                  # http://localhost:5173
+npm run dev                  # http://localhost:5180
 ```
 
 ## Scripts
