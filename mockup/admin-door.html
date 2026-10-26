@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Door Check-in — Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .scanner { position: relative; aspect-ratio: 1 / 1; max-width: 420px; width: 100%; background: var(--primary); display: grid; place-items: center; }
+  .scanner .frame { width: 62%; aspect-ratio: 1; position: relative; }
+  .scanner .frame i { position: absolute; width: 34px; height: 34px; border: 3px solid var(--gold); }
+  .scanner .frame i:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+  .scanner .frame i:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+  .scanner .frame i:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+  .scanner .frame i:nth-child(4) { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+  .scanner p { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; color: var(--on-dark-soft); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; margin: 0; }
+  .result { border-left: 0; }
+  .result.ok { background: var(--emerald); color: var(--white); border-color: var(--emerald); }
+  .result.ok .hint { color: rgba(255,255,255,.85); }
+  .log li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+</style>
+</head>
+<body class="admin">
+<div class="admin-shell">
+  <aside data-admin-nav="door"></aside>
+  <main class="content">
+    <div class="page-head">
+      <div>
+        <h1 class="display">Door check-in</h1>
+        <p>Open this page on a phone at the entrance and scan each guest’s pass.</p>
+      </div>
+      <label class="box-select" style="width: auto; display: inline-flex; gap: 8px; align-items: center;">
+        <span class="sr-only">Event</span>
+        <select style="border: 0; background: none; outline: none; min-height: 28px;">
+          <option>Reception · Sat 26 Dec</option>
+          <option>Church service · Sat 26 Dec</option>
+          <option>Traditional wedding · Wed 23 Dec</option>
+          <option>Civil wedding · Wed 23 Dec</option>
+        </select>
+      </label>
+    </div>
+
+    <section class="stats">
+      <div class="stat accent"><strong>3</strong><span>Attending</span></div>
+      <div class="stat"><strong>1</strong><span>Checked in</span></div>
+      <div class="stat"><strong>2</strong><span>Still to arrive</span></div>
+    </section>
+
+    <div class="grid-2" style="align-items: start;">
+      <div class="stack gap-16">
+        <div class="scanner" role="img" aria-label="Camera view for scanning QR passes">
+          <div class="frame"><i></i><i></i><i></i><i></i></div>
+          <p>Point the camera at the QR code</p>
+        </div>
+        <div class="field" style="max-width: 420px;">
+          <label for="manual">No pass? Search by name or phone</label>
+          <input class="box-input" id="manual" type="search" placeholder="e.g. Sample Guest">
+        </div>
+      </div>
+
+      <div class="stack gap-16">
+        <section class="card result ok" aria-live="polite">
+          <p class="eyebrow" style="color: rgba(255,255,255,.85);">Last scan · 16:42</p>
+          <p style="margin: 0; font-family: var(--font-display); font-size: 30px;">Sample Guest One</p>
+          <p class="hint">Confirmed guest · 1 seat · BG-7K2Q</p>
+          <p style="margin: 14px 0 0; font-weight: 500;">✓ Checked in</p>
+        </section>
+        <section class="card">
+          <h2>Other outcomes</h2>
+          <div class="stack gap-8" style="margin-top: 10px;">
+            <div class="row gap-8"><span class="badge gold">Already checked in</span><span class="hint" style="margin:0">Scanned twice — shows the first time</span></div>
+            <div class="row gap-8"><span class="badge no">Declined</span><span class="hint" style="margin:0">Guest had replied “no”</span></div>
+            <div class="row gap-8"><span class="badge navy">Not found</span><span class="hint" style="margin:0">Code is not on the list</span></div>
+          </div>
+        </section>
+        <section class="card">
+          <h2>Recent</h2>
+          <ul class="log" style="list-style: none; padding: 0; margin: 0;">
+            <li><span>Sample Guest One</span><span class="hint" style="margin:0">16:42</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<nav class="mock-bar" aria-label="Mockup pages"><a href="index.html">← All mockup pages</a></nav>
+<script src="assets/admin.js"></script>
+</body>
+</html>

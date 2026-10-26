@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programme &amp; Maps — Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .day-label { font-size: 12px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: var(--emerald); margin: 8px 0 -8px; }
+  .event-head { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .event-head .num { font-family: var(--font-display); font-size: 28px; color: var(--gold); width: 44px; }
+  .event-head h2 { margin: 0; }
+  .event-head .spacer { flex: 1; }
+  .maps-row { display: flex; gap: 8px; align-items: stretch; }
+  .maps-row .box-input { flex: 1; min-width: 0; }
+</style>
+</head>
+<body class="admin">
+<div class="admin-shell">
+  <aside data-admin-nav="programme"></aside>
+  <main class="content">
+    <div class="page-head">
+      <div>
+        <h1 class="display">Programme &amp; maps</h1>
+        <p>Each moment shows on the schedule with a “Directions” button that opens Google Maps.</p>
+      </div>
+      <button class="btn" type="button" onclick="toast('Adds a new moment')">+ Add moment</button>
+    </div>
+
+    <div class="card" style="background: var(--ivory);">
+      <p style="margin: 0; font-size: 14px;"><strong style="font-weight: 500;">How to get a Google Maps link:</strong> open Google Maps, find the venue, tap <em>Share</em> → <em>Copy link</em>, and paste it below. Use “Test” to check it opens the right place.</p>
+    </div>
+
+    <p class="day-label">Wednesday 23 December 2026</p>
+    <div id="events"></div>
+  </main>
+</div>
+
+<nav class="mock-bar" aria-label="Mockup pages"><a href="index.html">← All mockup pages</a></nav>
+<script src="assets/admin.js"></script>
+<script>
+const evs = [
+  { en: "Civil wedding", fr: "Mariage civil", date: "2026-12-23", start: "11:00", end: "", venue: "Mairie de Yaoundé 6ème", maps: "https://maps.app.goo.gl/xxxxxxxx" },
+  { en: "Traditional wedding", fr: "Mariage traditionnel", date: "2026-12-23", start: "16:00", end: "20:00", venue: "Behind Dovv, Mendong", maps: "https://maps.app.goo.gl/xxxxxxxx" },
+  { en: "Church service", fr: "Culte à l’église", date: "2026-12-26", start: "12:00", end: "14:00", venue: "Full Gospel Mission, Carrefour Bouba", maps: "https://maps.app.goo.gl/xxxxxxxx" },
+  { en: "Reception", fr: "Réception", date: "2026-12-26", start: "16:00", end: "20:00", venue: "Bansoa Hall, Montée Chapelle Simbock", maps: "https://maps.app.goo.gl/xxxxxxxx" },
+];
+const esc = s => s.replace(/"/g, "&quot;");
+events.outerHTML = evs.map((e, i) => `
+  ${i === 2 ? '<p class="day-label">Saturday 26 December 2026</p>' : ""}
+  <section class="card">
+    <div class="event-head">
+      <span class="num">0${i + 1}</span>
+      <h2>${e.en}</h2>
+      <span class="spacer"></span>
+      <label class="switch"><input type="checkbox" checked> <span>Shown</span></label>
+      <button class="act" type="button" aria-label="Delete ${e.en}">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M2 4h12M6 4V2h4v2M4 4l1 10h6l1-10"/></svg></button>
+    </div>
+    <div class="grid-3">
+      <div class="field"><label for="en${i}">Title (English)</label><input class="box-input" id="en${i}" value="${esc(e.en)}"></div>
+      <div class="field"><label for="fr${i}">Title (Français)</label><input class="box-input" id="fr${i}" value="${esc(e.fr)}"></div>
+      <div class="field"><label for="d${i}">Date</label><input class="box-input" id="d${i}" type="date" value="${e.date}"></div>
+      <div class="field"><label for="s${i}">Starts</label><input class="box-input" id="s${i}" type="time" value="${e.start}"></div>
+      <div class="field"><label for="e${i}">Ends (optional)</label><input class="box-input" id="e${i}" type="time" value="${e.end}"></div>
+      <div class="field"><label for="v${i}">Venue &amp; area</label><input class="box-input" id="v${i}" value="${esc(e.venue)}"></div>
+    </div>
+    <div class="field" style="margin-top: 18px;">
+      <label for="m${i}">Google Maps link</label>
+      <div class="maps-row">
+        <input class="box-input" id="m${i}" type="url" value="${e.maps}" placeholder="https://maps.app.goo.gl/…">
+        <a class="btn ghost small" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.venue + ", Yaoundé")}" target="_blank" rel="noopener">Test</a>
+      </div>
+    </div>
+  </section>`).join("") + `
+  <div class="save-bar"><span class="hint" style="margin:0">Changes go live as soon as you save.</span>
+  <button class="btn" type="button" onclick="toast('Programme saved')">Save programme</button></div>`;
+</script>
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bride &amp; Groom — 23 &amp; 26 December 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  /* ---------- Header ---------- */
+  .site-header {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 26px clamp(20px, 4vw, 48px); color: var(--ivory);
+  }
+  .site-header.solid { position: fixed; background: var(--primary); padding-top: 14px; padding-bottom: 14px; box-shadow: 0 1px 0 var(--line-dark); }
+  .monogram { font-family: var(--font-display); font-size: 24px; letter-spacing: .12em; text-decoration: none; display: inline-flex; align-items: center; gap: 12px; }
+  .monogram i { display: inline-block; width: 1px; height: 26px; background: var(--on-dark-soft); }
+  .nav { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 34px); }
+  .nav a { font-size: 11.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; text-decoration: none; color: var(--on-dark); padding: 8px 0; }
+  .nav a:hover { color: var(--white); text-decoration: underline; text-underline-offset: 6px; }
+  .tools { display: flex; align-items: center; gap: 10px; }
+  .lang { display: inline-flex; border: 1px solid var(--line-dark); }
+  .lang button { background: none; border: 0; color: var(--on-dark-soft); min-width: 40px; min-height: 36px; font-size: 11px; font-weight: 500; letter-spacing: .16em; cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--ivory); color: var(--ink); }
+  .icon-btn { width: 40px; height: 40px; border: 1px solid var(--line-dark); background: none; color: var(--ivory); display: inline-grid; place-items: center; cursor: pointer; }
+  .icon-btn:hover { border-color: var(--gold); color: var(--white); }
+  .menu-btn { display: none; }
+  @media (max-width: 1100px) {
+    .nav { display: none; position: fixed; inset: 0; background: var(--primary); flex-direction: column; justify-content: center; gap: 22px; z-index: 30; }
+    .nav.open { display: flex; }
+    .nav a { font-size: 14px; }
+    .menu-btn { display: inline-grid; }
+    .nav .close-nav { position: absolute; top: 22px; right: 22px; }
+  }
+  @media (min-width: 1101px) { .nav .close-nav { display: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; min-height: max(640px, 92vh); display: flex; align-items: center; color: var(--ivory); overflow: hidden; }
+  .hero .ph { position: absolute; inset: 0; background: var(--slate); align-items: flex-end; justify-content: flex-end; }
+  .hero .ph::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(12,59,46,.86) 0%, rgba(12,59,46,.55) 45%, rgba(12,59,46,.15) 100%); }
+  .hero .ph::after { display: none; }
+  .hero-inner { position: relative; z-index: 2; width: 100%; padding: 140px clamp(20px, 6vw, 96px) 120px; }
+  .hero h1 { font-size: clamp(56px, 9vw, 118px); line-height: .98; text-transform: uppercase; letter-spacing: .01em; }
+  .hero h1 em { display: block; font-style: italic; text-transform: none; font-size: .5em; line-height: 1.3; margin: 4px 0 6px; }
+  .hero .meta { font-size: 13px; font-weight: 400; letter-spacing: .24em; text-transform: uppercase; line-height: 2.2; color: var(--on-dark); }
+  .hero .scroll { position: absolute; left: clamp(20px, 6vw, 96px); bottom: 36px; z-index: 2; color: var(--ivory); display: inline-grid; place-items: center; width: 44px; height: 44px; }
+  .hero .scroll:hover { color: var(--gold); }
+
+  /* ---------- Countdown ---------- */
+  .countdown { background: var(--white); padding: 56px 0; border-bottom: 1px solid var(--line); }
+  .count-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 640px; margin: 0 auto; }
+  .count-grid div { text-align: center; padding: 4px 10px; }
+  .count-grid div + div { border-left: 1px solid var(--line); }
+  .count-grid strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(34px, 5vw, 50px); line-height: 1.1; }
+  .count-grid span { font-size: 11px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: var(--slate); }
+
+  /* ---------- Welcome / word ---------- */
+  .welcome { padding: clamp(72px, 10vw, 128px) 0; }
+  .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(40px, 7vw, 96px); align-items: center; }
+  .split .ph { aspect-ratio: 4 / 5; }
+  .word p { max-width: 460px; }
+
+  /* ---------- Celebration (schedule) ---------- */
+  .celebration { background: var(--primary); color: var(--ivory); padding: clamp(72px, 9vw, 112px) 0; }
+  .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 48px 0; margin-top: 56px; }
+  .day h3 { font-family: var(--font-sans); font-size: 12px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: var(--ivory); text-align: center; margin: 0 0 26px; }
+  .timeline { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stop { text-align: center; padding: 0 14px; }
+  .stop .num { font-family: var(--font-display); font-size: 18px; color: var(--on-dark-soft); }
+  .stop .track { position: relative; height: 11px; margin: 10px 0 22px; }
+  .stop .track::before { content: ""; position: absolute; left: 0; right: 0; top: 5px; height: 1px; background: var(--line-dark); }
+  .stop .track::after { content: ""; position: absolute; left: 50%; top: 0; width: 11px; height: 11px; margin-left: -5.5px; border-radius: 50%; background: var(--gold); }
+  .stop h4 { margin: 0 0 12px; font-family: var(--font-sans); font-size: 14px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; line-height: 1.5; }
+  .stop p { margin: 0; font-size: 14.5px; line-height: 1.75; color: var(--on-dark); }
+  .stop .link-arrow { margin-top: 16px; font-size: 11px; }
+  .celebration .foot { text-align: center; margin-top: 64px; }
+
+  /* ---------- Dress code ---------- */
+  .dresscode { background: var(--white); padding: clamp(72px, 9vw, 112px) 0; }
+  .swatches { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(20px, 4vw, 48px); margin-top: 48px; list-style: none; padding: 0; }
+  .swatches li { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 112px; }
+  .swatches .dot { width: 84px; height: 84px; border-radius: 50%; box-shadow: 0 0 0 6px var(--white), 0 0 0 7px var(--line); }
+  .swatches span { font-size: 11px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; text-align: center; color: var(--slate); }
+
+  /* ---------- Gallery ---------- */
+  .gallery { padding: clamp(72px, 9vw, 112px) 0; }
+  .gallery-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 36px; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .gallery-grid button { padding: 0; border: 0; cursor: zoom-in; aspect-ratio: 4 / 5; }
+  .gallery-grid button .ph { width: 100%; height: 100%; }
+  .gallery-grid button:hover .ph { filter: brightness(1.15); }
+  .lightbox { position: fixed; inset: 0; z-index: 60; background: rgba(12,59,46,.94); display: none; align-items: center; justify-content: center; padding: 24px; }
+  .lightbox.open { display: flex; }
+  .lightbox .ph { width: min(560px, 86vw); aspect-ratio: 4 / 5; }
+  .lightbox .lb-btn { position: absolute; color: var(--ivory); border-color: var(--line-dark); }
+  .lightbox .lb-close { top: 20px; right: 20px; }
+  .lightbox .lb-prev { left: 20px; top: 50%; }
+  .lightbox .lb-next { right: 20px; top: 50%; }
+  .lightbox .lb-count { position: absolute; bottom: 24px; left: 0; right: 0; text-align: center; color: var(--on-dark-soft); font-size: 12px; letter-spacing: .2em; }
+
+  /* ---------- RSVP ---------- */
+  .rsvp { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); background: var(--white); }
+  .rsvp > .ph { min-height: 560px; }
+  .rsvp-body { padding: clamp(48px, 7vw, 96px) clamp(24px, 6vw, 88px); }
+  .rsvp form { display: flex; flex-direction: column; gap: 26px; max-width: 460px; }
+  .choices { display: flex; flex-wrap: wrap; gap: 8px 32px; border: 0; padding: 0; margin: 0; }
+  .seat-note { font-size: 14px; color: var(--slate); }
+  .pass-card { display: grid; grid-template-columns: 120px 1fr; gap: 22px; align-items: center; border: 1px solid var(--line); padding: 20px; max-width: 460px; margin: 24px 0; background: var(--ivory); }
+  .pass-card .qr-wrap { background: var(--white); padding: 8px; }
+
+  /* ---------- Guest book ---------- */
+  .guestbook { padding: clamp(72px, 9vw, 112px) 0; }
+  .gb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(32px, 6vw, 80px); align-items: start; margin-top: 40px; }
+  .gb-form { display: flex; flex-direction: column; gap: 20px; background: var(--white); padding: 32px; border: 1px solid var(--line); }
+  .wishes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .wishes li { padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .wishes li:first-child { border-top: 1px solid var(--line); }
+  .wishes .who { font-size: 11px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--emerald); }
+  .wishes p { margin: 8px 0 0; font-family: var(--font-display); font-size: 17px; line-height: 1.6; }
+  .wishes .own { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .wishes .own button { background: none; border: 0; color: var(--slate); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; text-decoration: underline; min-height: 32px; }
+
+  /* ---------- Cash gifts ---------- */
+  .gifts { background: var(--white); padding: clamp(72px, 9vw, 112px) 0; }
+  .gift-ways { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 48px; }
+  .way { border: 1px solid var(--line); border-top: 3px solid var(--primary); background: var(--ivory); padding: 28px 26px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .way p { margin: 0; }
+  .way-label { font-size: 12px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--emerald); }
+  .way-number { font-family: var(--font-display); font-size: 28px; line-height: 1.2; }
+  .way-name { font-size: 14px; color: var(--slate); flex: 1; }
+  .gift-tell { max-width: 720px; margin: 40px auto 0; border: 1px solid var(--line); padding: clamp(24px, 4vw, 40px); }
+  .gift-form { display: flex; flex-direction: column; gap: 24px; }
+  .gift-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+
+  /* ---------- Footer ---------- */
+  .site-footer { background: var(--primary); color: var(--ivory); text-align: center; padding: 80px 24px 56px; }
+  .site-footer .monogram { font-size: 40px; justify-content: center; }
+  .site-footer .monogram i { height: 40px; }
+  .site-footer p { color: var(--on-dark-soft); font-size: 12px; letter-spacing: .24em; text-transform: uppercase; }
+
+  /* Music indicator */
+  .eq { display: inline-flex; gap: 2px; align-items: flex-end; height: 14px; }
+  .eq i { width: 2px; background: currentColor; animation: eq 1s ease-in-out infinite; }
+  .eq i:nth-child(2) { animation-delay: .2s; } .eq i:nth-child(3) { animation-delay: .4s; }
+  @keyframes eq { 0%,100% { height: 4px; } 50% { height: 14px; } }
+  @media (prefers-reduced-motion: reduce) { .eq i { animation: none; height: 10px; } }
+</style>
+</head>
+<body>
+
+<!-- ======================= HERO ======================= -->
+<header class="site-header" id="siteHeader">
+  <a class="monogram" href="#top" aria-label="Back to top">B<i></i>G</a>
+  <nav class="nav" id="nav" aria-label="Main">
+    <button class="icon-btn close-nav" type="button" aria-label="Close menu" data-close-nav>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14"/></svg>
+    </button>
+    <a href="#top" data-i18n="nav.home">Home</a>
+    <a href="#welcome" data-i18n="nav.word">A word</a>
+    <a href="#schedule" data-i18n="nav.schedule">Schedule</a>
+    <a href="#dresscode" data-i18n="nav.dress">Dress code</a>
+    <a href="#gallery" data-i18n="nav.gallery">Gallery</a>
+    <a href="#rsvp">RSVP</a>
+    <a href="#guestbook" data-i18n="nav.book">Guest book</a>
+    <a href="#gifts" data-i18n="nav.gifts">Gifts</a>
+  </nav>
+  <div class="tools">
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+    </div>
+    <button class="icon-btn" type="button" id="musicBtn" aria-label="Pause music" title="The Best Part of You — Savvy">
+      <span class="eq" id="eqIcon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <svg id="noteIcon" class="hidden" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M6 12V3l8-1.5V10"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="10" r="2"/></svg>
+    </button>
+    <button class="icon-btn menu-btn" type="button" aria-label="Open menu" data-open-nav>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 5h14M2 9h14M2 13h14"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="ph"><span>Landing photo · changed by the couple in the studio</span></div>
+  <div class="hero-inner on-dark">
+    <p class="eyebrow light" data-i18n="hero.eyebrow">Together with their families</p>
+    <h1 class="display">Bride <em>and</em> Groom</h1>
+    <hr class="rule">
+    <p class="meta" data-i18n-html="hero.meta">December 23 &amp; 26, 2026<br>Yaoundé, Cameroon</p>
+  </div>
+  <a class="scroll" href="#countdown" aria-label="Scroll down">
+    <svg width="18" height="26" viewBox="0 0 18 26" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M9 1v23M2 17l7 7 7-7"/></svg>
+  </a>
+</section>
+
+<!-- ======================= COUNTDOWN ======================= -->
+<section class="countdown" id="countdown" aria-label="Countdown to the wedding">
+  <p class="eyebrow center" data-i18n="count.eyebrow">The big day</p>
+  <div class="count-grid">
+    <div><strong id="cdDays">00</strong><span data-i18n="count.days">Days</span></div>
+    <div><strong id="cdHours">00</strong><span data-i18n="count.hours">Hours</span></div>
+    <div><strong id="cdMins">00</strong><span data-i18n="count.mins">Minutes</span></div>
+    <div><strong id="cdSecs">00</strong><span data-i18n="count.secs">Seconds</span></div>
+  </div>
+</section>
+
+<!-- ======================= A WORD ======================= -->
+<section class="welcome" id="welcome">
+  <div class="container split">
+    <div class="ph forest"><span>Couple photo</span></div>
+    <div class="word">
+      <p class="eyebrow" data-i18n="word.eyebrow">A word from the couple</p>
+      <h2 class="display h2" data-i18n="word.dear">Dear Guest Name,</h2>
+      <hr class="rule">
+      <p class="serif-body" data-i18n="word.body">Thank you for being part of our story. Every step has been carried by God’s grace, and we want you beside us as we say yes before the law, our families, and the Lord. Your presence is already our most beautiful gift.</p>
+      <p class="script">Bride + Groom</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= SCHEDULE ======================= -->
+<section class="celebration on-dark" id="schedule">
+  <div class="container">
+    <p class="eyebrow center" data-i18n="sched.eyebrow">Two days · four moments</p>
+    <h2 class="display h2 center" data-i18n="sched.title">The Celebration</h2>
+
+    <div class="days">
+      <div class="day">
+        <h3 data-i18n="sched.day1">Wednesday, 23 December</h3>
+        <div class="timeline">
+          <article class="stop">
+            <div class="num">01</div><div class="track"></div>
+            <h4 data-i18n="ev.civil">Civil wedding</h4>
+            <p>11:00 AM</p>
+            <p>Mairie de Yaoundé 6ème</p>
+            <a class="link-arrow" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Mairie+de+Yaound%C3%A9+6%C3%A8me" data-i18n="ev.directions">Directions →</a>
+          </article>
+          <article class="stop">
+            <div class="num">02</div><div class="track"></div>
+            <h4 data-i18n="ev.trad">Traditional wedding</h4>
+            <p>4:00 – 8:00 PM</p>
+            <p>Behind Dovv, Mendong</p>
+            <a class="link-arrow" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Dovv+Mendong+Yaound%C3%A9" data-i18n="ev.directions">Directions →</a>
+          </article>
+        </div>
+      </div>
+      <div class="day">
+        <h3 data-i18n="sched.day2">Saturday, 26 December</h3>
+        <div class="timeline">
+          <article class="stop">
+            <div class="num">03</div><div class="track"></div>
+            <h4 data-i18n="ev.church">Church service</h4>
+            <p>12:00 – 2:00 PM</p>
+            <p>Full Gospel Mission, Carrefour Bouba</p>
+            <a class="link-arrow" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Full+Gospel+Mission+Carrefour+Bouba+Yaound%C3%A9" data-i18n="ev.directions">Directions →</a>
+          </article>
+          <article class="stop">
+            <div class="num">04</div><div class="track"></div>
+            <h4 data-i18n="ev.reception">Reception</h4>
+            <p>4:00 – 8:00 PM</p>
+            <p>Bansoa Hall, Montée Chapelle Simbock</p>
+            <a class="link-arrow" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Montée+Chapelle+Simbock+Yaound%C3%A9" data-i18n="ev.directions">Directions →</a>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot"><a class="link-arrow" href="#dresscode" data-i18n="sched.dress">View the dress code →</a></div>
+  </div>
+</section>
+
+<!-- ======================= DRESS CODE ======================= -->
+<section class="dresscode" id="dresscode">
+  <div class="container center">
+    <p class="eyebrow" data-i18n="dress.eyebrow">Dress code</p>
+    <h2 class="display h2" data-i18n="dress.title">Dressed in Our Colours</h2>
+    <hr class="rule center">
+    <p class="serif-body" style="max-width: 620px; margin: 0 auto;" data-i18n="dress.body">Elegant formal attire. We would love to see you in our wedding colours — midnight navy, emerald and gold — with ivory as a soft accent.</p>
+    <ul class="swatches">
+      <li><div class="dot" style="background: var(--primary)"></div><span data-i18n="sw.navy">Midnight navy</span></li>
+      <li><div class="dot" style="background: var(--slate)"></div><span data-i18n="sw.slate">Slate blue</span></li>
+      <li><div class="dot" style="background: var(--forest)"></div><span data-i18n="sw.forest">Forest green</span></li>
+      <li><div class="dot" style="background: var(--emerald)"></div><span data-i18n="sw.emerald">Emerald</span></li>
+      <li><div class="dot" style="background: var(--gold)"></div><span data-i18n="sw.gold">Gold</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================= GALLERY ======================= -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="gallery-head">
+      <div>
+        <p class="eyebrow" data-i18n="gal.eyebrow">Our gallery</p>
+        <h2 class="display h2" data-i18n="gal.title">Moments We’ll Cherish</h2>
+      </div>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <button type="button" aria-label="Enlarge photo 1"><div class="ph navy"><span>Photo 1</span></div></button>
+      <button type="button" aria-label="Enlarge photo 2"><div class="ph emerald"><span>Photo 2</span></div></button>
+      <button type="button" aria-label="Enlarge photo 3"><div class="ph slate"><span>Photo 3</span></div></button>
+      <button type="button" aria-label="Enlarge photo 4"><div class="ph forest"><span>Photo 4</span></div></button>
+      <button type="button" aria-label="Enlarge photo 5"><div class="ph navy"><span>Photo 5</span></div></button>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="icon-btn lb-btn lb-close" type="button" aria-label="Close" data-lb="close"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14"/></svg></button>
+  <button class="icon-btn lb-btn lb-prev" type="button" aria-label="Previous photo" data-lb="prev"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M10 2L4 8l6 6"/></svg></button>
+  <div class="ph" id="lbPhoto"><span>Photo 1</span></div>
+  <button class="icon-btn lb-btn lb-next" type="button" aria-label="Next photo" data-lb="next"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M6 2l6 6-6 6"/></svg></button>
+  <div class="lb-count" id="lbCount">1 / 5</div>
+</div>
+
+<!-- ======================= RSVP ======================= -->
+<section class="rsvp" id="rsvp">
+  <div class="ph slate"><span>Couple photo</span></div>
+  <div class="rsvp-body">
+    <p class="eyebrow">RSVP</p>
+    <h2 class="display h2" data-i18n="rsvp.title">Kindly Respond</h2>
+    <hr class="rule">
+
+    <form id="rsvpForm" novalidate>
+      <p class="seat-note" data-i18n="rsvp.lede">Dear Guest Name, one seat is reserved in your name. Please respond by [RSVP deadline].</p>
+      <fieldset class="choices">
+        <legend class="sr-only">Will you attend?</legend>
+        <label class="choice"><input type="radio" name="attend" value="yes"> <span data-i18n="rsvp.yes">Joyfully accepts</span></label>
+        <label class="choice"><input type="radio" name="attend" value="no"> <span data-i18n="rsvp.no">Regretfully declines</span></label>
+      </fieldset>
+      <div class="field">
+        <label for="diet" data-i18n="rsvp.diet">Dietary notes (optional)</label>
+        <input class="input" id="diet" placeholder="Vegetarian, allergies…">
+      </div>
+      <div class="field">
+        <label for="note" data-i18n="rsvp.note">A note for the couple (optional)</label>
+        <textarea class="textarea" id="note" rows="3"></textarea>
+      </div>
+      <p class="seat-note hidden" id="rsvpError" role="alert" style="color: var(--ink); font-weight: 500;">Please choose “Joyfully accepts” or “Regretfully declines”.</p>
+      <div><button class="btn" type="submit" data-i18n="rsvp.submit">Submit response</button></div>
+    </form>
+
+    <div id="rsvpYes" class="hidden" aria-live="polite">
+      <p class="serif-body" style="font-size: 22px; margin: 0;">Thank you, Guest Name. We have your yes!</p>
+      <div class="pass-card">
+        <div class="qr-wrap" data-qr></div>
+        <div>
+          <p class="eyebrow" style="margin-bottom: 6px;">Your entrance pass</p>
+          <p style="margin: 0 0 4px; font-family: var(--font-display); font-size: 20px;">Guest Name</p>
+          <p style="margin: 0; font-size: 13px; color: var(--slate); letter-spacing: .1em;">PASS · BG-7K2Q</p>
+        </div>
+      </div>
+      <div class="row gap-16">
+        <a class="btn" href="pass.html">Open my pass</a>
+        <button class="btn ghost" type="button" data-change-rsvp>Change my answer</button>
+      </div>
+    </div>
+
+    <div id="rsvpNo" class="hidden" aria-live="polite">
+      <p class="serif-body" style="font-size: 22px; margin: 0 0 24px;">Thank you for letting us know, Guest Name. You will be missed.</p>
+      <button class="btn ghost" type="button" data-change-rsvp>Change my answer</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= GUEST BOOK ======================= -->
+<section class="guestbook" id="guestbook">
+  <div class="container">
+    <p class="eyebrow" data-i18n="gb.eyebrow">Guest book</p>
+    <h2 class="display h2" data-i18n="gb.title">Leave Us a Wish</h2>
+    <div class="gb-grid">
+      <form class="gb-form" id="gbForm">
+        <div class="field">
+          <label for="wish" data-i18n="gb.label">Your message to the couple</label>
+          <textarea class="textarea" id="wish" rows="4" maxlength="500" placeholder="Write a few words…"></textarea>
+        </div>
+        <p style="margin: 0; font-size: 13px; color: var(--slate);">Posting as <strong style="font-weight: 500;">Guest Name</strong></p>
+        <div><button class="btn emerald" type="submit" data-i18n="gb.post">Post wish</button></div>
+      </form>
+      <ul class="wishes" id="wishList">
+        <li><div class="who">Sample guest</div><p>Wishes left by guests appear here, newest first.</p></li>
+        <li><div class="who">Sample guest</div><p>The couple can hide or delete any message from their studio.</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CASH GIFTS ======================= -->
+<section class="gifts" id="gifts">
+  <div class="container">
+    <div class="center">
+      <p class="eyebrow" data-i18n="gift.eyebrow">Gifts</p>
+      <h2 class="display h2" data-i18n="gift.title">A Gift From the Heart</h2>
+      <hr class="rule center">
+      <p class="serif-body" style="max-width: 600px; margin: 0 auto;" data-i18n="gift.lede">Your presence is already our most beautiful gift. If you would like to bless us further, a cash gift can be sent in any of these ways.</p>
+    </div>
+
+    <div class="gift-ways">
+      <article class="way">
+        <p class="way-label" data-i18n="gift.momo">MTN Mobile Money</p>
+        <p class="way-number" id="momoNumber">[MoMo number]</p>
+        <p class="way-name"><span data-i18n="gift.name">Account name:</span> [Account name]</p>
+        <button class="btn ghost small" type="button" data-copy="#momoNumber" data-i18n="gift.copy">Copy number</button>
+      </article>
+      <article class="way">
+        <p class="way-label" data-i18n="gift.om">Orange Money</p>
+        <p class="way-number" id="omNumber">[Orange Money number]</p>
+        <p class="way-name"><span data-i18n="gift.name">Account name:</span> [Account name]</p>
+        <button class="btn ghost small" type="button" data-copy="#omNumber" data-i18n="gift.copy">Copy number</button>
+      </article>
+      <article class="way">
+        <p class="way-label" data-i18n="gift.cash">Cash on the day</p>
+        <p class="way-number" style="font-size: 22px;" data-i18n="gift.box">Gift box at the reception</p>
+        <p class="way-name" data-i18n="gift.boxNote">Saturday 26 December · Bansoa Hall. An envelope with your name helps us thank you.</p>
+      </article>
+    </div>
+
+    <div class="gift-tell">
+      <form id="giftForm" class="gift-form">
+        <div>
+          <h3 class="display h3" data-i18n="gift.tellTitle">Let us know (optional)</h3>
+          <p class="seat-note" style="margin: 6px 0 0;" data-i18n="gift.tellLede">So we can thank you personally. This does not send money — it only tells the couple.</p>
+        </div>
+        <div class="gift-fields">
+          <div class="field">
+            <label for="giftMethod" data-i18n="gift.via">Sent via</label>
+            <select class="input" id="giftMethod">
+              <option>MTN Mobile Money</option>
+              <option>Orange Money</option>
+              <option>Cash at the reception</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="giftAmount" data-i18n="gift.amount">Amount in FCFA (optional)</label>
+            <input class="input" id="giftAmount" inputmode="numeric" placeholder="e.g. 25 000">
+          </div>
+        </div>
+        <div class="field">
+          <label for="giftMsg" data-i18n="gift.msg">A message for us (optional)</label>
+          <textarea class="textarea" id="giftMsg" rows="2" maxlength="300"></textarea>
+        </div>
+        <div><button class="btn" type="submit" data-i18n="gift.send">Let the couple know</button></div>
+      </form>
+      <div id="giftThanks" class="hidden center" aria-live="polite">
+        <p class="script" style="font-size: 44px; margin: 0;">Thank you</p>
+        <p class="serif-body" style="margin: 8px 0 20px;">Guest Name, your kindness means the world to us.</p>
+        <button class="btn ghost small" type="button" id="giftAgain">Tell us about another gift</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <a class="monogram" href="#top">B<i></i>G</a>
+  <hr class="rule center">
+  <p>Bride &amp; Groom · 23 &amp; 26 December 2026 · Yaoundé</p>
+</footer>
+
+<nav class="mock-bar" aria-label="Mockup pages"><a href="index.html">← All mockup pages</a></nav>
+
+<script src="assets/qr.js"></script>
+<script>
+/* ---------- i18n (sample of the EN/FR switch) ---------- */
+const FR = {
+  "nav.home": "Accueil", "nav.word": "Un mot", "nav.schedule": "Programme", "nav.dress": "Tenue",
+  "nav.gallery": "Galerie", "nav.book": "Livre d’or",
+  "hero.eyebrow": "Avec leurs familles", "hero.meta": "23 &amp; 26 décembre 2026<br>Yaoundé, Cameroun",
+  "count.eyebrow": "Le grand jour", "count.days": "Jours", "count.hours": "Heures", "count.mins": "Minutes", "count.secs": "Secondes",
+  "word.eyebrow": "Un mot des mariés", "word.dear": "Cher(e) Guest Name,",
+  "word.body": "Merci de faire partie de notre histoire. Chaque pas a été porté par la grâce de Dieu, et nous voulons vous avoir à nos côtés pour dire oui devant la loi, nos familles et le Seigneur. Votre présence est déjà notre plus beau cadeau.",
+  "sched.eyebrow": "Deux jours · quatre moments", "sched.title": "La Célébration",
+  "sched.day1": "Mercredi 23 décembre", "sched.day2": "Samedi 26 décembre",
+  "ev.civil": "Mariage civil", "ev.trad": "Mariage traditionnel", "ev.church": "Culte à l’église", "ev.reception": "Réception",
+  "ev.directions": "Itinéraire →", "sched.dress": "Voir la tenue →",
+  "dress.eyebrow": "Code vestimentaire", "dress.title": "Aux Couleurs du Mariage",
+  "dress.body": "Tenue de soirée élégante. Nous serions ravis de vous voir dans nos couleurs — bleu nuit, émeraude et or — avec une touche d’ivoire.",
+  "sw.navy": "Bleu nuit", "sw.slate": "Bleu ardoise", "sw.forest": "Vert forêt", "sw.emerald": "Émeraude", "sw.gold": "Or",
+  "gal.eyebrow": "Notre galerie", "gal.title": "Nos Plus Beaux Moments",
+  "rsvp.title": "Merci de Répondre",
+  "rsvp.lede": "Cher(e) Guest Name, une place est réservée à votre nom. Merci de répondre avant le [date limite].",
+  "rsvp.yes": "Avec joie, oui", "rsvp.no": "Avec regret, non",
+  "rsvp.diet": "Régime alimentaire (facultatif)", "rsvp.note": "Un mot pour les mariés (facultatif)", "rsvp.submit": "Envoyer ma réponse",
+  "gb.eyebrow": "Livre d’or", "gb.title": "Laissez-nous un Mot", "gb.label": "Votre message aux mariés", "gb.post": "Publier",
+  "nav.gifts": "Cadeaux", "gift.eyebrow": "Cadeaux", "gift.title": "Un Cadeau du Cœur",
+  "gift.lede": "Votre présence est déjà notre plus beau cadeau. Si vous souhaitez nous bénir davantage, vous pouvez nous offrir un don de l’une de ces façons.",
+  "gift.momo": "MTN Mobile Money", "gift.om": "Orange Money", "gift.cash": "En espèces le jour J",
+  "gift.name": "Nom du compte :", "gift.copy": "Copier le numéro",
+  "gift.box": "Urne à la réception", "gift.boxNote": "Samedi 26 décembre · Salle Bansoa. Une enveloppe à votre nom nous aidera à vous remercier.",
+  "gift.tellTitle": "Prévenez-nous (facultatif)", "gift.tellLede": "Pour vous remercier personnellement. Ceci n’envoie pas d’argent — cela informe seulement les mariés.",
+  "gift.via": "Envoyé par", "gift.amount": "Montant en FCFA (facultatif)", "gift.msg": "Un mot pour nous (facultatif)", "gift.send": "Prévenir les mariés"
+};
+const EN = {};
+document.querySelectorAll("[data-i18n]").forEach(el => EN[el.dataset.i18n] = el.textContent);
+document.querySelectorAll("[data-i18n-html]").forEach(el => EN[el.dataset.i18nHtml] = el.innerHTML);
+function setLang(lang) {
+  const dict = lang === "fr" ? FR : EN;
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => { const v = dict[el.dataset.i18n]; if (v) el.textContent = v; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { const v = dict[el.dataset.i18nHtml]; if (v) el.innerHTML = v; });
+  document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+}
+document.querySelectorAll("[data-lang]").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+/* ---------- Header: solid after scrolling, mobile menu ---------- */
+const header = document.getElementById("siteHeader");
+const hero = document.querySelector(".hero");
+addEventListener("scroll", () => header.classList.toggle("solid", scrollY > hero.offsetHeight - 80), { passive: true });
+const nav = document.getElementById("nav");
+document.querySelector("[data-open-nav]").addEventListener("click", () => nav.classList.add("open"));
+document.querySelector("[data-close-nav]").addEventListener("click", () => nav.classList.remove("open"));
+nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open")));
+
+/* ---------- Music toggle (real site plays the uploaded song) ---------- */
+let playing = true;
+document.getElementById("musicBtn").addEventListener("click", e => {
+  playing = !playing;
+  document.getElementById("eqIcon").classList.toggle("hidden", !playing);
+  document.getElementById("noteIcon").classList.toggle("hidden", playing);
+  e.currentTarget.setAttribute("aria-label", playing ? "Pause music" : "Play music");
+});
+
+/* ---------- Countdown to the civil wedding (Yaoundé, UTC+1) ---------- */
+const target = new Date("2026-12-23T11:00:00+01:00").getTime();
+const pad = n => String(n).padStart(2, "0");
+function tick() {
+  let d = Math.max(0, target - Date.now()) / 1000;
+  const days = Math.floor(d / 86400); d -= days * 86400;
+  const h = Math.floor(d / 3600); d -= h * 3600;
+  const m = Math.floor(d / 60); const s = Math.floor(d - m * 60);
+  cdDays.textContent = days; cdHours.textContent = pad(h); cdMins.textContent = pad(m); cdSecs.textContent = pad(s);
+}
+tick(); setInterval(tick, 1000);
+
+/* ---------- Gallery lightbox ---------- */
+const tiles = [...document.querySelectorAll("#galleryGrid button")];
+const lb = document.getElementById("lightbox"), lbPhoto = document.getElementById("lbPhoto");
+let current = 0;
+function show(i) {
+  current = (i + tiles.length) % tiles.length;
+  const src = tiles[current].querySelector(".ph");
+  lbPhoto.className = src.className; lbPhoto.innerHTML = src.innerHTML;
+  lbCount.textContent = `${current + 1} / ${tiles.length}`;
+}
+tiles.forEach((t, i) => t.addEventListener("click", () => { show(i); lb.classList.add("open"); lb.querySelector(".lb-close").focus(); }));
+lb.addEventListener("click", e => {
+  const a = e.target.closest("[data-lb]")?.dataset.lb;
+  if (a === "close" || e.target === lb) lb.classList.remove("open");
+  if (a === "prev") show(current - 1);
+  if (a === "next") show(current + 1);
+});
+addEventListener("keydown", e => {
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape") lb.classList.remove("open");
+  if (e.key === "ArrowLeft") show(current - 1);
+  if (e.key === "ArrowRight") show(current + 1);
+});
+
+/* ---------- RSVP ---------- */
+const form = document.getElementById("rsvpForm");
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const v = form.querySelector("input[name=attend]:checked")?.value;
+  rsvpError.classList.toggle("hidden", !!v);
+  if (!v) return;
+  form.classList.add("hidden");
+  (v === "yes" ? rsvpYes : rsvpNo).classList.remove("hidden");
+});
+document.querySelectorAll("[data-change-rsvp]").forEach(b => b.addEventListener("click", () => {
+  rsvpYes.classList.add("hidden"); rsvpNo.classList.add("hidden"); form.classList.remove("hidden");
+}));
+document.querySelectorAll("[data-qr]").forEach(el => el.innerHTML = mockQR());
+
+/* ---------- Guest book ---------- */
+gbForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const text = wish.value.trim();
+  if (!text) return;
+  const li = document.createElement("li");
+  li.innerHTML = `<div class="own"><span class="who">Guest Name · just now</span><button type="button">Delete</button></div><p></p>`;
+  li.querySelector("p").textContent = text;
+  li.querySelector("button").addEventListener("click", () => li.remove());
+  wishList.prepend(li);
+  wish.value = "";
+});
+
+/* ---------- Cash gifts ---------- */
+document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", async () => {
+  const text = document.querySelector(b.dataset.copy).textContent.trim();
+  const label = b.textContent;
+  try { await navigator.clipboard.writeText(text); b.textContent = document.documentElement.lang === "fr" ? "Copié ✓" : "Copied ✓"; }
+  catch { b.textContent = text; }
+  setTimeout(() => b.textContent = label, 1800);
+}));
+giftForm.addEventListener("submit", e => {
+  e.preventDefault();
+  giftForm.classList.add("hidden"); giftThanks.classList.remove("hidden");
+});
+giftAgain.addEventListener("click", () => {
+  giftForm.reset(); giftThanks.classList.add("hidden"); giftForm.classList.remove("hidden");
+});
+</script>
+</body>
+</html>

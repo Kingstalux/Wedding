@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio Sign-in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  body { min-height: 100vh; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .side { background: var(--primary); color: var(--ivory); display: flex; flex-direction: column; justify-content: space-between; padding: clamp(32px, 6vw, 72px); min-height: 280px; }
+  .side .monogram { font-family: var(--font-display); font-size: 30px; letter-spacing: .12em; }
+  .side h1 { font-size: clamp(40px, 5vw, 64px); text-transform: uppercase; }
+  .side h1 em { display: block; text-transform: none; font-size: .5em; }
+  .form-side { display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+  form { width: min(400px, 100%); display: flex; flex-direction: column; gap: 22px; }
+  .pw { position: relative; }
+  .pw button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: 0; color: var(--slate); font-size: 12px; letter-spacing: .1em; cursor: pointer; min-height: 36px; }
+</style>
+</head>
+<body>
+<div class="side">
+  <div class="monogram">B | G</div>
+  <div>
+    <p class="eyebrow light">Couple’s studio</p>
+    <h1 class="display">Bride <em>and</em> Groom</h1>
+  </div>
+  <p class="eyebrow light" style="margin: 0;">23 &amp; 26 December 2026</p>
+</div>
+<main class="form-side">
+  <form onsubmit="event.preventDefault(); location.href='admin-guests.html';">
+    <div>
+      <h2 class="display" style="font-size: 34px;">Welcome back</h2>
+      <p class="muted" style="margin: 8px 0 0;">Sign in to manage guests, the website and the guest book.</p>
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input class="box-input" id="email" type="email" autocomplete="username" value="couple@example.com">
+    </div>
+    <div class="field">
+      <label for="pw">Password</label>
+      <div class="pw">
+        <input class="box-input" id="pw" type="password" autocomplete="current-password" value="password123">
+        <button type="button" onclick="pw.type = pw.type === 'password' ? 'text' : 'password'; this.textContent = pw.type === 'password' ? 'SHOW' : 'HIDE';">SHOW</button>
+      </div>
+    </div>
+    <button class="btn" type="submit">Sign in</button>
+    <a href="#" class="muted" style="font-size: 13px;">Forgot your password?</a>
+  </form>
+</main>
+<nav class="mock-bar" aria-label="Mockup pages"><a href="index.html">← All mockup pages</a></nav>
+</body>
+</html>

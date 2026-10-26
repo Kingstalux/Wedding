@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Site &amp; Texts — Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .hero-preview { position: relative; aspect-ratio: 16 / 7; min-height: 200px; }
+  .hero-preview .ph { position: absolute; inset: 0; }
+  .hero-preview .over { position: absolute; left: 28px; bottom: 26px; color: var(--ivory); z-index: 2; }
+  .hero-preview .over strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(26px, 3vw, 40px); text-transform: uppercase; line-height: 1; }
+  .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .swatch-row { display: flex; flex-wrap: wrap; gap: 14px; }
+  .swatch-row span { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
+  .swatch-row i { width: 22px; height: 22px; border-radius: 50%; display: inline-block; }
+  .player { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; border: 1px solid var(--line); padding: 14px 16px; background: var(--ivory); }
+  .collapsed { opacity: .45; pointer-events: none; }
+</style>
+</head>
+<body class="admin">
+<div class="admin-shell">
+  <aside data-admin-nav="site"></aside>
+  <main class="content">
+    <div class="page-head">
+      <div>
+        <h1 class="display">Site &amp; texts</h1>
+        <p>Change the landing photo, names, the word from the couple, the dress code and the music.</p>
+      </div>
+      <a class="btn ghost" href="home.html" target="_blank" rel="noopener">Preview site</a>
+    </div>
+
+    <!-- Landing image -->
+    <section class="card">
+      <div class="section-head">
+        <div><h2>Landing background</h2><p class="lede">The large photo behind your names on the first screen. Landscape works best (at least 2000 px wide).</p></div>
+        <div class="row gap-8">
+          <label class="btn small" for="heroFile">Replace photo</label>
+          <input class="sr-only" id="heroFile" type="file" accept="image/*">
+        </div>
+      </div>
+      <div class="hero-preview">
+        <div class="ph slate" id="heroPh"><span></span></div>
+        <div class="over"><span class="eyebrow light" style="margin: 0 0 8px; display: block;">Together with their families</span><strong>Bride and Groom</strong></div>
+      </div>
+      <p class="hint" id="heroName">current: hero-photo.jpg</p>
+    </section>
+
+    <!-- Couple -->
+    <section class="card">
+      <h2>The couple</h2>
+      <p class="lede">Shown in the header, hero, signature and WhatsApp message.</p>
+      <div class="grid-3">
+        <div class="field"><label for="bride">Bride’s name</label><input class="box-input" id="bride" value="Bride"></div>
+        <div class="field"><label for="groom">Groom’s name</label><input class="box-input" id="groom" value="Groom"></div>
+        <div class="field"><label for="city">City</label><input class="box-input" id="city" value="Yaoundé, Cameroon"></div>
+        <div class="field"><label for="countdown">Countdown to</label><input class="box-input" id="countdown" type="datetime-local" value="2026-12-23T11:00"></div>
+        <div class="field"><label for="deadline">RSVP deadline</label><input class="box-input" id="deadline" type="date" value="2026-12-10"></div>
+      </div>
+    </section>
+
+    <!-- A word -->
+    <section class="card">
+      <div class="section-head">
+        <div><h2>A word from the couple</h2><p class="lede">Use {guest name} — each guest sees their own name.</p></div>
+        <label class="switch"><input type="checkbox" id="showWord" checked> <span id="showWordLabel">Shown on the site</span></label>
+      </div>
+      <div class="grid-2" id="wordFields">
+        <div class="field">
+          <label for="wordEn">English</label>
+          <textarea class="box-textarea" id="wordEn" style="min-height: 170px;">Dear {guest name}, thank you for being part of our story. Every step has been carried by God’s grace, and we want you beside us as we say yes before the law, our families, and the Lord. Your presence is already our most beautiful gift.</textarea>
+        </div>
+        <div class="field">
+          <label for="wordFr">Français</label>
+          <textarea class="box-textarea" id="wordFr" style="min-height: 170px;">Cher(e) {nom de l’invité}, merci de faire partie de notre histoire. Chaque pas a été porté par la grâce de Dieu, et nous voulons vous avoir à nos côtés pour dire oui devant la loi, nos familles et le Seigneur. Votre présence est déjà notre plus beau cadeau.</textarea>
+        </div>
+      </div>
+      <div class="row gap-16" style="margin-top: 18px;">
+        <div class="ph forest" style="width: 96px; height: 120px;"><span style="margin: 10px; font-size: 9px;">Photo</span></div>
+        <div>
+          <p style="margin: 0 0 8px; font-size: 14px;">Photo beside the word</p>
+          <label class="btn ghost small" for="wordPhoto">Replace photo</label>
+          <input class="sr-only" id="wordPhoto" type="file" accept="image/*">
+        </div>
+      </div>
+    </section>
+
+    <!-- Dress code -->
+    <section class="card">
+      <div class="section-head">
+        <div><h2>Dress code</h2><p class="lede">The wedding colours are shown as swatches under this text.</p></div>
+        <label class="switch"><input type="checkbox" checked> <span>Shown on the site</span></label>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label for="dressEn">English</label><textarea class="box-textarea" id="dressEn">Elegant formal attire. We would love to see you in our wedding colours — midnight navy, emerald and gold — with ivory as a soft accent.</textarea></div>
+        <div class="field"><label for="dressFr">Français</label><textarea class="box-textarea" id="dressFr">Tenue de soirée élégante. Nous serions ravis de vous voir dans nos couleurs — bleu nuit, émeraude et or — avec une touche d’ivoire.</textarea></div>
+      </div>
+      <div class="swatch-row" style="margin-top: 18px;">
+        <span><i style="background: var(--navy)"></i>Midnight navy</span>
+        <span><i style="background: var(--slate)"></i>Slate blue</span>
+        <span><i style="background: var(--forest)"></i>Forest green</span>
+        <span><i style="background: var(--emerald)"></i>Emerald</span>
+        <span><i style="background: var(--gold)"></i>Gold</span>
+      </div>
+    </section>
+
+    <!-- Cash gifts -->
+    <section class="card">
+      <div class="section-head">
+        <div><h2>Cash gifts</h2><p class="lede">The last section of the guest page. Leave a number empty to hide that option.</p></div>
+        <label class="switch"><input type="checkbox" checked> <span>Shown on the site</span></label>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label for="momoNum">MTN MoMo number</label><input class="box-input" id="momoNum" inputmode="tel" placeholder="+237 6XX XX XX XX"></div>
+        <div class="field"><label for="momoName">MTN MoMo account name</label><input class="box-input" id="momoName" placeholder="Name shown when sending"></div>
+        <div class="field"><label for="omNum">Orange Money number</label><input class="box-input" id="omNum" inputmode="tel" placeholder="+237 6XX XX XX XX"></div>
+        <div class="field"><label for="omName">Orange Money account name</label><input class="box-input" id="omName" placeholder="Name shown when sending"></div>
+      </div>
+      <label class="switch" style="margin-top: 12px;"><input type="checkbox" checked> <span>Show “Gift box at the reception”</span></label>
+
+      <h3 style="font-family: var(--font-display); font-weight: 400; font-size: 20px; margin: 28px 0 4px;">Gifts guests told you about</h3>
+      <p class="hint" style="margin: 0 0 14px;">Guests only announce gifts here — check your MoMo / Orange Money account, then tick “Received”. Sample rows.</p>
+      <div class="table-wrap">
+        <table style="min-width: 640px;">
+          <thead><tr><th>Guest</th><th>Sent via</th><th>Amount</th><th>Message</th><th>Received</th></tr></thead>
+          <tbody>
+            <tr><td>Sample Guest One<span class="sub">14 Oct, 19:10</span></td><td>MTN MoMo</td><td>25 000 FCFA</td><td><span class="sub">Sample message</span></td><td><label class="switch"><input type="checkbox" checked><span class="sr-only">Received</span></label></td></tr>
+            <tr><td>Sample Guest Eight<span class="sub">15 Oct, 08:02</span></td><td>Orange Money</td><td><span class="sub">Not given</span></td><td><span class="sub">—</span></td><td><label class="switch"><input type="checkbox"><span class="sr-only">Received</span></label></td></tr>
+            <tr><td>Sample Guest Two<span class="sub">16 Oct, 21:45</span></td><td>Cash at the reception</td><td>50 000 FCFA</td><td><span class="sub">Sample message</span></td><td><label class="switch"><input type="checkbox"><span class="sr-only">Received</span></label></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Music -->
+    <section class="card">
+      <h2>Music</h2>
+      <p class="lede">Plays softly once a guest opens the invitation. Guests can pause it any time.</p>
+      <div class="player">
+        <button class="act" type="button" aria-label="Play preview">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true"><path d="M3 1.5v11l9-5.5z"/></svg>
+        </button>
+        <div style="flex: 1 1 200px;">
+          <p style="margin: 0; font-weight: 500;">The Best Part of You</p>
+          <p class="hint" style="margin: 0;">Savvy · best-part-of-you.mp3 · 3:52</p>
+        </div>
+        <label class="btn ghost small" for="music">Replace audio</label>
+        <input class="sr-only" id="music" type="file" accept="audio/*">
+      </div>
+    </section>
+
+    <!-- WhatsApp (FR) -->
+    <section class="card">
+      <h2>WhatsApp invitation text</h2>
+      <p class="lede">Placeholders: {name} {link}. Guests get the version in their language.</p>
+      <div class="grid-2">
+        <div class="field"><label for="waEn">English</label><textarea class="box-textarea" id="waEn">Dear {name}, Bride &amp; Groom joyfully invite you to their wedding on 23 &amp; 26 December 2026 in Yaoundé. Open your personal invitation here: {link}</textarea></div>
+        <div class="field"><label for="waFr">Français</label><textarea class="box-textarea" id="waFr">Cher(e) {name}, Bride &amp; Groom ont la joie de vous inviter à leur mariage les 23 et 26 décembre 2026 à Yaoundé. Ouvrez votre invitation personnelle ici : {link}</textarea></div>
+      </div>
+    </section>
+
+    <div class="save-bar">
+      <span class="hint" style="margin: 0;">Changes go live as soon as you save.</span>
+      <button class="btn" type="button" onclick="toast('Saved — the site is updated')">Save changes</button>
+    </div>
+  </main>
+</div>
+
+<nav class="mock-bar" aria-label="Mockup pages"><a href="index.html">← All mockup pages</a></nav>
+<script src="assets/admin.js"></script>
+<script>
+showWord.addEventListener("change", () => {
+  wordFields.classList.toggle("collapsed", !showWord.checked);
+  showWordLabel.textContent = showWord.checked ? "Shown on the site" : "Hidden from the site";
+});
+heroFile.addEventListener("change", () => {
+  const f = heroFile.files[0]; if (!f) return;
+  const url = URL.createObjectURL(f);
+  heroPh.style.background = `center / cover no-repeat url(${url})`;
+  heroName.textContent = "new: " + f.name + " — save to publish";
+});
+</script>
+</body>
+</html>

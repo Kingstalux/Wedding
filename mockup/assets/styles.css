@@ -1,0 +1,166 @@
+/* Wedding mockup — design tokens + shared styles.
+   Palette: only the couple's 5 colours, plus ivory/white neutrals. */
+:root {
+  --navy: #0A0E52;
+  --slate: #3A4575;
+  --forest: #0C3B2E;
+  --emerald: #17705A;
+  --gold: #B8912F;
+  --ivory: #F7F4EC;
+  --white: #FFFFFF;
+
+  /* Theme roles — swap these to re-theme the whole site */
+  --primary: var(--emerald);      /* bands, buttons, header, footer, sidebar */
+  --primary-deep: var(--forest);  /* hover / pressed */
+  --ink: var(--forest);           /* body text */
+
+  --on-dark: var(--ivory);
+  --on-dark-soft: rgba(247, 244, 236, 0.92);
+  --line: rgba(12, 59, 46, 0.16);
+  --line-dark: rgba(247, 244, 236, 0.28);
+
+  --font-display: "Bodoni Moda", "Didot", Georgia, serif;
+  --font-sans: "Jost", "Helvetica Neue", sans-serif;
+  --font-script: "Pinyon Script", cursive;
+
+  --max: 1180px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button, input, textarea, select { font: inherit; color: inherit; }
+
+.container { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+/* ---------- Typography ---------- */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin: 0 0 16px;
+}
+.on-dark .eyebrow, .eyebrow.light { color: var(--on-dark-soft); }
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.08;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.h2 { font-size: clamp(34px, 4.6vw, 52px); }
+.h3 { font-size: 26px; }
+.script { font-family: var(--font-script); font-size: 34px; line-height: 1.2; color: var(--ink); }
+.serif-body { font-family: var(--font-display); font-size: 17px; line-height: 1.75; }
+.rule { width: 48px; height: 1px; background: var(--gold); border: 0; margin: 28px 0; }
+.rule.center { margin-left: auto; margin-right: auto; }
+.muted { color: var(--slate); }
+.center { text-align: center; }
+
+/* ---------- Buttons & links ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 30px;
+  background: var(--primary); color: var(--white);
+  border: 1px solid var(--primary); border-radius: 0;
+  font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;
+  cursor: pointer; transition: background .2s, color .2s;
+}
+.btn:hover { background: var(--primary-deep); border-color: var(--primary-deep); }
+.btn.gold { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.btn.gold:hover { background: var(--ivory); border-color: var(--ivory); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.ghost:hover { background: var(--primary); color: var(--white); }
+.btn.ghost-light { background: transparent; color: var(--ivory); border-color: var(--line-dark); }
+.btn.ghost-light:hover { background: var(--ivory); color: var(--ink); }
+.btn.small { min-height: 38px; padding: 0 16px; font-size: 11px; letter-spacing: 0.16em; }
+.btn.emerald { background: var(--emerald); border-color: var(--emerald); }
+.btn.emerald:hover { background: var(--forest); border-color: var(--forest); }
+
+.link-arrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; color: inherit; padding: 6px 0;
+  border-bottom: 1px solid currentColor;
+}
+.link-arrow:hover { color: var(--emerald); }
+.on-dark .link-arrow { color: var(--ivory); }
+.on-dark .link-arrow:hover { color: var(--white); border-bottom-width: 2px; }
+
+/* ---------- Photo placeholders ---------- */
+.ph {
+  position: relative; display: flex; align-items: flex-end; justify-content: flex-start;
+  background: var(--slate); color: var(--on-dark-soft); overflow: hidden;
+}
+.ph::after {
+  content: ""; position: absolute; inset: 14px; border: 1px solid rgba(247, 244, 236, 0.18); pointer-events: none;
+}
+.ph span {
+  position: relative; z-index: 1; margin: 26px;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+}
+.ph.navy { background: var(--navy); }
+.ph.forest { background: var(--forest); }
+.ph.emerald { background: var(--emerald); }
+.ph.slate { background: var(--slate); }
+
+/* ---------- Forms ---------- */
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label, .label {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate);
+}
+.input, .textarea, .select {
+  width: 100%; border: 0; border-bottom: 1px solid var(--line); background: transparent;
+  padding: 10px 0; font-size: 16px; color: var(--ink); outline: none; border-radius: 0;
+}
+.textarea { resize: vertical; min-height: 84px; }
+.input:focus, .textarea:focus { border-bottom-color: var(--ink); }
+.choice { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; min-height: 44px;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }
+.choice input { width: 18px; height: 18px; accent-color: var(--ink); margin: 0; }
+
+/* Boxed inputs (admin) */
+.box-input, .box-textarea, .box-select {
+  width: 100%; border: 1px solid var(--line); background: var(--white);
+  padding: 11px 14px; font-size: 15px; color: var(--ink); outline: none; border-radius: 2px;
+}
+.box-textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+.box-input:focus, .box-textarea:focus, .box-select:focus { border-color: var(--ink); }
+
+/* ---------- Focus ---------- */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* ---------- Utility ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.hidden { display: none !important; }
+.stack { display: flex; flex-direction: column; }
+.row { display: flex; flex-wrap: wrap; align-items: center; }
+.gap-8 { gap: 8px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; } .gap-24 { gap: 24px; }
+
+/* ---------- Mock QR ---------- */
+.qr { width: 100%; height: auto; display: block; }
+
+/* ---------- Mockup hub banner ---------- */
+.mock-bar {
+  position: fixed; left: 16px; bottom: 16px; z-index: 50;
+  display: flex; gap: 8px; align-items: center;
+  background: var(--white); color: var(--ink); border: 1px solid var(--line);
+  padding: 8px 12px; font-size: 12px; letter-spacing: .08em; box-shadow: 0 6px 24px rgba(12,59,46,.14);
+}
+.mock-bar a { text-decoration: none; font-weight: 500; }
+.mock-bar a:hover { color: var(--emerald); }

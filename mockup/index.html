@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wedding Site Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { padding: clamp(32px, 6vw, 72px) 20px; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  .palette { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 48px; }
+  .palette span { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; padding: 6px 12px 6px 6px; background: var(--white); border: 1px solid var(--line); }
+  .palette i { width: 26px; height: 26px; border-radius: 50%; }
+  h2 { font-family: var(--font-display); font-weight: 400; font-size: 28px; margin: 40px 0 14px; }
+  .pages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .pages a { display: block; height: 100%; padding: 20px 22px; background: var(--white); border: 1px solid var(--line); text-decoration: none; }
+  .pages a:hover { border-color: var(--primary); }
+  .pages strong { display: block; font-family: var(--font-display); font-weight: 400; font-size: 20px; }
+  .pages span { font-size: 14px; color: var(--slate); }
+  .pages small { display: block; font-size: 11px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--emerald); margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow">Design mockup · for approval</p>
+  <h1 class="display h2">Bride &amp; Groom — Wedding Site</h1>
+  <p class="serif-body muted" style="max-width: 640px;">Static, clickable mockup. Grey/colour blocks stand in for photos; names are placeholders. Nothing here saves — it shows the look and the flows before we build with React + Supabase.</p>
+  <div class="palette" aria-label="Wedding colours">
+    <span><i style="background: var(--navy)"></i>#0A0E52</span>
+    <span><i style="background: var(--slate)"></i>#3A4575</span>
+    <span><i style="background: var(--forest)"></i>#0C3B2E</span>
+    <span><i style="background: var(--emerald)"></i>#17705A</span>
+    <span><i style="background: var(--gold)"></i>#B8912F</span>
+    <span><i style="background: var(--ivory); box-shadow: inset 0 0 0 1px var(--line)"></i>Ivory #F7F4EC</span>
+  </div>
+
+  <h2>What guests see</h2>
+  <ul class="pages">
+    <li><a href="envelope.html"><small>1 · Private link opens</small><strong>Invitation opening</strong><span>“Dear Guest Name”, tap to open — starts the music.</span></a></li>
+    <li><a href="home.html"><small>2 · Main page</small><strong>Guest site</strong><span>Hero, countdown, a word, schedule + maps, dress code, gallery, RSVP, guest book, cash gifts. EN/FR switch.</span></a></li>
+    <li><a href="pass.html"><small>3 · After RSVP “yes”</small><strong>Entrance pass</strong><span>QR code to download and show at the door.</span></a></li>
+    <li><a href="personal.html"><small>4 · No / invalid link</small><strong>This invitation is personal</strong><span>Shown when someone opens the site without a valid link.</span></a></li>
+  </ul>
+
+  <h2>Couple’s studio (admin)</h2>
+  <ul class="pages">
+    <li><a href="admin-login.html"><small>5</small><strong>Sign in</strong><span>Email + password, one account for the couple.</span></a></li>
+    <li><a href="admin-guests.html"><small>6</small><strong>Overview &amp; guests</strong><span>Upload Name + Phone list, WhatsApp sending, opened / RSVP tracking.</span></a></li>
+    <li><a href="admin-site.html"><small>7</small><strong>Site &amp; texts</strong><span>Landing photo, names, a word (show/hide), dress code, cash gift numbers, music, WhatsApp text.</span></a></li>
+    <li><a href="admin-programme.html"><small>8</small><strong>Programme &amp; maps</strong><span>Edit each moment and its Google Maps link.</span></a></li>
+    <li><a href="admin-gallery.html"><small>9</small><strong>Gallery</strong><span>Add, delete and reorder photos.</span></a></li>
+    <li><a href="admin-wishes.html"><small>10</small><strong>Guest book</strong><span>Hide or delete messages.</span></a></li>
+    <li><a href="admin-door.html"><small>11</small><strong>Door check-in</strong><span>Scan passes at the entrance.</span></a></li>
+  </ul>
+</main>
+</body>
+</html>

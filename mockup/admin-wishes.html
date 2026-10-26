@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guest Book — Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .wish { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: flex-start; }
+  .wish .body { flex: 1 1 360px; }
+  .wish p { margin: 8px 0 0; font-family: var(--font-display); font-size: 17px; line-height: 1.6; }
+  .wish.is-hidden p { opacity: .5; }
+  .who { font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--emerald); }
+</style>
+</head>
+<body class="admin">
+<div class="admin-shell">
+  <aside data-admin-nav="wishes"></aside>
+  <main class="content">
+    <div class="page-head">
+      <div>
+        <h1 class="display">Guest book</h1>
+        <p>Hide a message to take it off the site without deleting it.</p>
+      </div>
+      <label class="switch"><input type="checkbox" checked> <span>Guest book shown on the site</span></label>
+    </div>
+    <div class="chips" role="group" aria-label="Filter" id="chips"></div>
+    <div class="stack gap-12" id="list"></div>
+  </main>
+</div>
+
+<nav class="mock-bar" aria-label="Mockup pages"><a href="index.html">← All mockup pages</a></nav>
+<script src="assets/admin.js"></script>
+<script>
+let wishes = [
+  { who: "Sample Guest One", when: "14 Oct, 19:02", text: "Sample message — guests’ wishes appear here, newest first.", hidden: false },
+  { who: "Sample Guest Eight", when: "14 Oct, 08:45", text: "Sample message — each one shows the guest’s name from their private link.", hidden: false },
+  { who: "Sample Guest Two", when: "13 Oct, 21:30", text: "Sample message that the couple chose to hide.", hidden: true },
+];
+let filter = "all";
+function render() {
+  const sets = [["all", "All"], ["visible", "Visible"], ["hidden", "Hidden"]];
+  const count = k => wishes.filter(w => k === "all" || (k === "hidden") === w.hidden).length;
+  chips.innerHTML = sets.map(([k, l]) => `<button class="chip" type="button" data-k="${k}" aria-pressed="${k === filter}">${l} <b>${count(k)}</b></button>`).join("");
+  chips.querySelectorAll("button").forEach(b => b.onclick = () => { filter = b.dataset.k; render(); });
+  const shown = wishes.filter(w => filter === "all" || (filter === "hidden") === w.hidden);
+  list.innerHTML = shown.length ? shown.map(w => {
+    const i = wishes.indexOf(w);
+    return `<article class="card wish ${w.hidden ? "is-hidden" : ""}">
+      <div class="body"><span class="who">${w.who}</span> <span class="hint">· ${w.when}</span>
+        ${w.hidden ? ' <span class="badge pending">Hidden</span>' : ""}<p></p></div>
+      <div class="row gap-8">
+        <button class="btn ghost small" type="button" data-hide="${i}">${w.hidden ? "Show again" : "Hide"}</button>
+        <button class="btn small" type="button" data-del="${i}">Delete</button>
+      </div></article>`;
+  }).join("") : '<p class="hint">No messages here.</p>';
+  list.querySelectorAll(".wish").forEach((el, n) => el.querySelector("p").textContent = shown[n].text);
+  list.querySelectorAll("[data-hide]").forEach(b => b.onclick = () => { const w = wishes[b.dataset.hide]; w.hidden = !w.hidden; render(); toast(w.hidden ? "Hidden from the site" : "Visible again"); });
+  list.querySelectorAll("[data-del]").forEach(b => b.onclick = () => { if (confirm("Delete this message? This cannot be undone.")) { wishes.splice(b.dataset.del, 1); render(); } });
+}
+render();
+</script>
+</body>
+</html>

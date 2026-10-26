@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overview &amp; Guests — Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
+</head>
+<body class="admin">
+<div class="admin-shell">
+  <aside data-admin-nav="guests"></aside>
+  <main class="content">
+    <div class="page-head">
+      <div>
+        <h1 class="display">Overview &amp; guests</h1>
+        <p>Upload the list, send private links on WhatsApp and follow replies.</p>
+      </div>
+      <button class="btn" type="button" id="addGuestBtn">+ Add guest</button>
+    </div>
+
+    <!-- Stats -->
+    <section class="stats" aria-label="Figures" id="stats"></section>
+
+    <!-- Upload + template -->
+    <div class="grid-2">
+      <section class="card">
+        <h2>Guest list</h2>
+        <p class="lede">Upload an Excel or CSV file with two columns: <strong style="font-weight:500">Name</strong> and <strong style="font-weight:500">Phone</strong>. Guests who already replied keep their answer.</p>
+        <div class="dropzone">
+          <div>
+            <p style="margin: 0; font-weight: 500;">guest-list.xlsx</p>
+            <p class="hint">Current list: 8 guests · last updated 14 Oct 2026</p>
+          </div>
+          <div class="row gap-8">
+            <a class="btn ghost small" href="#">Download template</a>
+            <label class="btn small" for="file">Upload file</label>
+            <input class="sr-only" type="file" id="file" accept=".xlsx,.xls,.csv">
+          </div>
+        </div>
+        <p class="hint">Phone numbers without a country code are treated as Cameroon (+237).</p>
+      </section>
+
+      <section class="card">
+        <h2>WhatsApp message</h2>
+        <p class="lede">Each guest gets this text with their own private link. WhatsApp opens with it ready — you just press Send.</p>
+        <div class="field">
+          <label for="tpl">Message (English)</label>
+          <textarea class="box-textarea" id="tpl">Dear {name}, Bride &amp; Groom joyfully invite you to their wedding on 23 &amp; 26 December 2026 in Yaoundé. Open your personal invitation here: {link}</textarea>
+          <p class="hint">Placeholders: {name} {link}. A French version is set in Site &amp; texts.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Guest table -->
+    <section class="stack gap-16" aria-label="Guests">
+      <div class="row gap-16" style="justify-content: space-between;">
+        <div class="chips" role="group" aria-label="Filter guests" id="chips"></div>
+        <div style="width: min(320px, 100%);">
+          <label class="sr-only" for="search">Search guests</label>
+          <input class="box-input" id="search" type="search" placeholder="Search by name or phone">
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Guest</th><th>Invitation sent</th><th>Opened</th><th>RSVP</th><th>Checked in</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="hint">Sample rows for the mockup. Removed guests stay restorable for 60 days.</p>
+    </section>
+  </main>
+</div>
+
+<nav class="mock-bar" aria-label="Mockup pages"><a href="index.html">← All mockup pages</a></nav>
+<script src="assets/admin.js"></script>
+<script>
+const guests = [
+  { name: "Sample Guest One", phone: "+237 6 77 12 34 56", sent: "12 Oct", opened: "12 Oct · 3×", rsvp: "yes", checked: "" },
+  { name: "Sample Guest Two", phone: "+237 6 90 22 11 08", sent: "12 Oct", opened: "13 Oct · 1×", rsvp: "yes", checked: "" },
+  { name: "Sample Guest Three", phone: "+237 6 55 40 70 21", sent: "12 Oct", opened: "", rsvp: "pending", checked: "" },
+  { name: "Sample Guest Four", phone: "+237 6 99 01 45 32", sent: "13 Oct", opened: "13 Oct · 2×", rsvp: "no", checked: "" },
+  { name: "Sample Guest Five", phone: "+237 6 70 88 19 64", sent: "", opened: "", rsvp: "pending", checked: "" },
+  { name: "Sample Guest Six", phone: "+237 6 51 63 92 17", sent: "13 Oct", opened: "14 Oct · 1×", rsvp: "pending", checked: "" },
+  { name: "Sample Guest Seven", phone: "+237 6 94 27 50 83", sent: "", opened: "", rsvp: "pending", checked: "" },
+  { name: "Sample Guest Eight", phone: "+237 6 78 36 04 99", sent: "14 Oct", opened: "14 Oct · 4×", rsvp: "yes", checked: "" },
+];
+const filters = [
+  ["all", "All", () => true],
+  ["unsent", "Not sent", g => !g.sent],
+  ["unopened", "Not opened", g => g.sent && !g.opened],
+  ["yes", "Attending", g => g.rsvp === "yes"],
+  ["no", "Declined", g => g.rsvp === "no"],
+  ["pending", "Awaiting reply", g => g.rsvp === "pending"],
+];
+let active = "all";
+
+function renderStats() {
+  const n = guests.length, c = f => guests.filter(f).length;
+  const yes = c(g => g.rsvp === "yes"), no = c(g => g.rsvp === "no"), pend = n - yes - no;
+  stats.innerHTML = `
+    <div class="stat accent"><strong>${n}</strong><span>Invited</span></div>
+    <div class="stat"><strong>${c(g => g.sent)}</strong><span>Invitations sent</span></div>
+    <div class="stat"><strong>${c(g => g.opened)}</strong><span>Opened</span></div>
+    <div class="stat"><strong>${yes}</strong><span>Attending</span></div>
+    <div class="stat"><strong>${no}</strong><span>Declined</span></div>
+    <div class="stat"><strong>${pend}</strong><span>Awaiting reply</span>
+      <div class="bar" aria-hidden="true"><i style="width:${yes / n * 100}%;background:var(--emerald)"></i><i style="width:${no / n * 100}%;background:var(--slate)"></i></div></div>`;
+}
+function renderChips() {
+  chips.innerHTML = filters.map(([k, label, f]) =>
+    `<button class="chip" type="button" data-f="${k}" aria-pressed="${k === active}">${label} <b>${guests.filter(f).length}</b></button>`).join("");
+  chips.querySelectorAll("button").forEach(b => b.onclick = () => { active = b.dataset.f; renderChips(); renderRows(); });
+}
+const waIcon = '<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.2a6.7 6.7 0 00-5.8 10.1L1.3 14.8l3.6-.9A6.7 6.7 0 108 1.2zm0 12.2a5.5 5.5 0 01-2.8-.8l-.2-.1-2.1.6.6-2.1-.1-.2A5.5 5.5 0 118 13.4zm3-4.1c-.2-.1-1-.5-1.1-.5s-.3-.1-.4.1l-.5.6c-.1.1-.2.1-.4 0a4.5 4.5 0 01-2.2-1.9c-.2-.3.2-.3.5-1 .1-.1 0-.2 0-.3l-.5-1.2c-.1-.3-.3-.3-.4-.3h-.3a.7.7 0 00-.5.2 2 2 0 00-.6 1.5 3.5 3.5 0 00.7 1.8 7.9 7.9 0 003 2.7c1.1.5 1.6.5 2.1.4a1.8 1.8 0 001.2-.8 1.4 1.4 0 00.1-.8c-.1-.1-.2-.1-.4-.2z"/></svg>';
+function renderRows() {
+  const q = search.value.trim().toLowerCase();
+  const f = filters.find(x => x[0] === active)[2];
+  const list = guests.filter(f).filter(g => !q || g.name.toLowerCase().includes(q) || g.phone.replace(/\s/g, "").includes(q.replace(/\s/g, "")));
+  const badge = { yes: '<span class="badge yes">Attending</span>', no: '<span class="badge no">Declined</span>', pending: '<span class="badge pending">Awaiting</span>' };
+  rows.innerHTML = list.length ? list.map((g, i) => {
+    const msg = encodeURIComponent(tpl.value.replace("{name}", g.name.split(" ")[0]).replace("{link}", "https://example.com/i/a8f3k2q9"));
+    return `<tr>
+      <td><strong style="font-weight:500">${g.name}</strong><span class="sub">${g.phone}</span></td>
+      <td>${g.sent ? g.sent : '<span class="badge pending">Not sent</span>'}</td>
+      <td>${g.opened ? g.opened : '<span class="sub">Not opened yet</span>'}</td>
+      <td>${badge[g.rsvp]}</td>
+      <td>${g.checked || '<span class="sub">—</span>'}</td>
+      <td><div class="actions">
+        <a class="act wa" target="_blank" rel="noopener" href="https://wa.me/${g.phone.replace(/\D/g, "")}?text=${msg}" data-i="${guests.indexOf(g)}">${waIcon} WhatsApp</a>
+        <button class="act" type="button" aria-label="Copy private link for ${g.name}" data-copy>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="5" y="5" width="9" height="9"/><path d="M11 5V2H2v9h3"/></svg></button>
+        <button class="act" type="button" aria-label="Edit ${g.name}">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M11 2l3 3-8 8H3v-3z"/></svg></button>
+        <button class="act" type="button" aria-label="Remove ${g.name}" data-remove="${guests.indexOf(g)}">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M2 4h12M6 4V2h4v2M4 4l1 10h6l1-10"/></svg></button>
+      </div></td></tr>`;
+  }).join("") : `<tr><td colspan="6" class="sub" style="padding:28px 16px">No guests match.</td></tr>`;
+
+  rows.querySelectorAll("a.wa").forEach(a => a.addEventListener("click", () => {
+    const g = guests[a.dataset.i]; if (!g.sent) { g.sent = "Today"; setTimeout(refresh, 50); }
+  }));
+  rows.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => toast("Private link copied"));
+  rows.querySelectorAll("[data-remove]").forEach(b => b.onclick = () => {
+    const g = guests[b.dataset.remove];
+    if (confirm(`Remove ${g.name}? You can restore them for 60 days.`)) { guests.splice(b.dataset.remove, 1); refresh(); toast(`${g.name} was removed`); }
+  });
+}
+function refresh() { renderStats(); renderChips(); renderRows(); }
+search.addEventListener("input", renderRows);
+tpl.addEventListener("input", renderRows);
+file.addEventListener("change", () => toast("Preview: 3 new · 1 changed · 0 missing — Apply to save"));
+addGuestBtn.onclick = () => toast("Opens the ‘New guest’ form (name + phone)");
+refresh();
+</script>
+</body>
+</html>

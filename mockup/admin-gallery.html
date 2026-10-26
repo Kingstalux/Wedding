@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gallery — Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; }
+  .photo { background: var(--white); border: 1px solid var(--line); display: flex; flex-direction: column; }
+  .photo .ph { aspect-ratio: 4 / 5; background-size: cover; background-position: center; }
+  .photo .tools { display: flex; justify-content: space-between; align-items: center; padding: 8px; gap: 6px; }
+  .photo .tools span { font-size: 12px; color: var(--slate); padding-left: 4px; }
+  .add-tile { aspect-ratio: 4 / 5; border: 1px dashed var(--slate); background: var(--ivory); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; color: var(--ink); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+  .add-tile:hover { background: var(--white); }
+</style>
+</head>
+<body class="admin">
+<div class="admin-shell">
+  <aside data-admin-nav="gallery"></aside>
+  <main class="content">
+    <div class="page-head">
+      <div>
+        <h1 class="display">Gallery</h1>
+        <p>Add, remove and reorder the photos guests see in “Moments We’ll Cherish”.</p>
+      </div>
+      <label class="switch"><input type="checkbox" checked> <span>Gallery shown on the site</span></label>
+    </div>
+
+    <div class="photos" id="photos"></div>
+    <p class="hint">Photos are resized automatically. JPG or PNG, up to 10 MB each.</p>
+  </main>
+</div>
+
+<input class="sr-only" id="add" type="file" accept="image/*" multiple>
+<nav class="mock-bar" aria-label="Mockup pages"><a href="index.html">← All mockup pages</a></nav>
+<script src="assets/admin.js"></script>
+<script>
+const tones = ["navy", "emerald", "slate", "forest"];
+let photos = [1, 2, 3, 4, 5].map(n => ({ label: `Photo ${n}`, tone: tones[(n - 1) % 4], url: "" }));
+const svg = d => `<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true">${d}</svg>`;
+function render() {
+  window.photosEl = document.getElementById("photos");
+  photosEl.innerHTML = photos.map((p, i) => `
+    <figure class="photo" style="margin:0">
+      <div class="ph ${p.tone}" style="${p.url ? `background-image:url(${p.url})` : ""}"><span>${p.url ? "" : p.label}</span></div>
+      <div class="tools">
+        <span>${i + 1} / ${photos.length}</span>
+        <div class="actions">
+          <button class="act" type="button" aria-label="Move ${p.label} earlier" data-move="${i}" data-d="-1" ${i === 0 ? "disabled" : ""}>${svg('<path d="M10 3L5 8l5 5"/>')}</button>
+          <button class="act" type="button" aria-label="Move ${p.label} later" data-move="${i}" data-d="1" ${i === photos.length - 1 ? "disabled" : ""}>${svg('<path d="M6 3l5 5-5 5"/>')}</button>
+          <button class="act" type="button" aria-label="Delete ${p.label}" data-del="${i}">${svg('<path d="M2 4h12M6 4V2h4v2M4 4l1 10h6l1-10"/>')}</button>
+        </div>
+      </div>
+    </figure>`).join("") +
+    `<label class="add-tile" for="add">${svg('<path d="M8 2v12M2 8h12"/>')}Add photos</label>`;
+  photosEl.querySelectorAll("[data-del]").forEach(b => b.onclick = () => {
+    const p = photos[b.dataset.del];
+    if (confirm(`Delete ${p.label} from the gallery?`)) { photos.splice(b.dataset.del, 1); render(); toast("Photo deleted"); }
+  });
+  photosEl.querySelectorAll("[data-move]").forEach(b => b.onclick = () => {
+    const i = +b.dataset.move, j = i + +b.dataset.d;
+    [photos[i], photos[j]] = [photos[j], photos[i]]; render();
+  });
+}
+add.addEventListener("change", () => {
+  [...add.files].forEach(f => photos.push({ label: f.name, tone: "slate", url: URL.createObjectURL(f) }));
+  add.value = ""; render(); toast("Uploaded — visible on the site");
+});
+render();
+</script>
+</body>
+</html>

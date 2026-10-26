@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrance Pass — Bride &amp; Groom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;family=Jost:wght@300;400;500&amp;family=Pinyon+Script&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { min-height: 100vh; padding: 48px 20px 96px; }
+  .wrap { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; align-items: start; }
+  .ticket { background: var(--primary); color: var(--ivory); position: relative; }
+  .ticket .top { padding: 40px 36px 28px; text-align: center; border-bottom: 1px dashed var(--line-dark); }
+  .ticket .top .monogram { font-family: var(--font-display); font-size: 30px; letter-spacing: .12em; }
+  .ticket h1 { font-size: 30px; margin-top: 10px; }
+  .ticket .qr-box { background: var(--white); padding: 18px; margin: 28px auto; width: min(260px, 80%); }
+  .ticket .bottom { padding: 0 36px 36px; text-align: center; }
+  .ticket .name { font-family: var(--font-display); font-size: 26px; margin: 0; }
+  .ticket .code { font-size: 12px; letter-spacing: .26em; color: var(--on-dark); margin: 8px 0 0; }
+  .ticket .notch { position: absolute; width: 26px; height: 26px; border-radius: 50%; background: var(--ivory); top: 166px; }
+  .ticket .notch.l { left: -13px; } .ticket .notch.r { right: -13px; }
+  .events { list-style: none; padding: 0; margin: 24px 0 0; text-align: left; border-top: 1px solid var(--line-dark); }
+  .events li { padding: 12px 0; border-bottom: 1px solid var(--line-dark); display: flex; justify-content: space-between; gap: 16px; font-size: 13.5px; }
+  .events li span:last-child { color: var(--on-dark-soft); text-align: right; }
+  .side h2 { margin-bottom: 8px; }
+  .door { margin-top: 40px; border: 1px solid var(--line); background: var(--white); padding: 28px; }
+  .status { display: inline-flex; align-items: center; gap: 10px; background: var(--emerald); color: var(--white); padding: 8px 14px; font-size: 12px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <article class="ticket" aria-label="Entrance pass">
+    <span class="notch l" aria-hidden="true"></span><span class="notch r" aria-hidden="true"></span>
+    <div class="top">
+      <div class="monogram">B | G</div>
+      <h1 class="display">Entrance Pass</h1>
+      <p class="eyebrow light" style="margin: 10px 0 0;">23 &amp; 26 December 2026 · Yaoundé</p>
+    </div>
+    <div class="qr-box" data-qr></div>
+    <div class="bottom">
+      <p class="name">Guest Name</p>
+      <p class="code">PASS · BG-7K2Q · 1 SEAT</p>
+      <ul class="events">
+        <li><span>Civil wedding</span><span>Wed 23 · 11:00</span></li>
+        <li><span>Traditional wedding</span><span>Wed 23 · 16:00</span></li>
+        <li><span>Church service</span><span>Sat 26 · 12:00</span></li>
+        <li><span>Reception</span><span>Sat 26 · 16:00</span></li>
+      </ul>
+    </div>
+  </article>
+
+  <div class="side">
+    <p class="eyebrow">Your entrance pass</p>
+    <h2 class="display h2">Keep This QR Code</h2>
+    <hr class="rule">
+    <p class="serif-body">Save it to your phone and show it at the entrance. It confirms your name and your reply.</p>
+    <div class="row gap-12" style="margin-top: 24px;">
+      <button class="btn" type="button">Download QR image</button>
+      <a class="btn ghost" href="home.html#rsvp">Back to the invitation</a>
+    </div>
+
+    <div class="door">
+      <p class="eyebrow">What the door team sees when scanning</p>
+      <span class="status">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 7.5l3 3 7-7"/></svg>
+        Confirmed guest
+      </span>
+      <p style="margin: 16px 0 4px; font-family: var(--font-display); font-size: 24px;">Guest Name</p>
+      <p style="margin: 0; color: var(--slate); font-size: 14px;">1 seat · BG-7K2Q · Checked in 16:42, Sat 26 Dec</p>
+    </div>
+  </div>
+</div>
+
+<nav class="mock-bar" aria-label="Mockup pages"><a href="index.html">← All mockup pages</a></nav>
+<script src="assets/qr.js"></script>
+<script>document.querySelectorAll("[data-qr]").forEach(el => el.innerHTML = mockQR());</script>
+</body>
+</html>
