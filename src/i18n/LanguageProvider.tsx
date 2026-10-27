@@ -11,6 +11,8 @@ const STORAGE_KEY = 'wedding-lang'
 type LanguageContextValue = {
   lang: Lang
   setLang: (lang: Lang) => void
+  /** True once the guest picked a language on this device (not just guessed from the browser). */
+  chosen: boolean
   /** Interface text: t('rsvp.lede', { name: 'Ama', date: '10 December 2026' }) */
   t: (key: MessageKey, values?: Record<string, string | number>) => string
   /** Picks the right version of a couple-written text: pick(event.title_en, event.title_fr) */
@@ -19,23 +21,31 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
-/** The guest's earlier choice, else French if the phone is set to French, else English. */
-function initialLang(): Lang {
+function savedLang(): Lang | null {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved === 'en' || saved === 'fr') return saved
   } catch {
-    // Private browsing can block localStorage; fall through to the browser language.
+    // Private browsing can block localStorage.
   }
+  return null
+}
+
+/** The guest's earlier choice, else French if the phone is set to French, else English. */
+function initialLang(): Lang {
+  const saved = savedLang()
+  if (saved) return saved
   const preferred = navigator.languages?.length ? navigator.languages : [navigator.language]
   return preferred.some((l) => l?.toLowerCase().startsWith('fr')) ? 'fr' : 'en'
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(initialLang)
+  const [chosen, setChosen] = useState(() => savedLang() !== null)
 
   const setLang = useCallback((next: Lang) => {
     setLangState(next)
+    setChosen(true)
     try {
       localStorage.setItem(STORAGE_KEY, next)
     } catch {
@@ -53,6 +63,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return {
       lang,
       setLang,
+      chosen,
       t: (key, values) => {
         const text = dict[key] ?? en[key] ?? key
         if (!values) return text
@@ -63,7 +74,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       },
       pick: (enText, frText) => (lang === 'fr' ? frText || enText : enText || frText) ?? '',
     }
-  }, [lang, setLang])
+  }, [lang, setLang, chosen])
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
 }

@@ -16,7 +16,7 @@ export function AdminPlaceholder() {
       </p>
       <p style={{ marginTop: 24 }}>
         <ButtonLink to="/i/demo" variant="ghost" size="sm">
-          Open the sample invitation
+          Open the test invitation
         </ButtonLink>
       </p>
     </main>

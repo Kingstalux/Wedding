@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Outlet, useLocation, useParams } from 'react-router'
+import { Outlet, useLocation, useParams, useSearchParams } from 'react-router'
 import { InvitationProvider, useInvitation, useInvitationState } from '../InvitationProvider'
 import { useMusic } from '../useMusic'
 import { Envelope } from './Envelope'
 import { HomePage } from './HomePage'
+import { LoadErrorScreen } from './LoadErrorScreen'
 import { LoadingScreen } from './LoadingScreen'
 import { PersonalPage } from './PersonalPage'
 
@@ -14,8 +15,10 @@ import { PersonalPage } from './PersonalPage'
  */
 export function InvitationLayout() {
   const { token = '' } = useParams()
+  // The studio opens /i/<token>?preview=1 so the couple's views aren't counted.
+  const [search] = useSearchParams()
   return (
-    <InvitationProvider token={token}>
+    <InvitationProvider token={token} preview={search.get('preview') === '1'}>
       <InvitationGate />
     </InvitationProvider>
   )
@@ -33,6 +36,7 @@ function InvitationGate() {
 
   if (state.status === 'loading') return <LoadingScreen />
   if (state.status === 'invalid') return <PersonalPage />
+  if (state.status === 'error') return <LoadErrorScreen error={state.error} retry={state.retry} />
   return <Outlet />
 }
 

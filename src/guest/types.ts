@@ -1,10 +1,10 @@
 import type { Lang } from '../lib/time'
 
 /*
- * The data the guest site needs. Field names match the database columns
- * (snake_case) so Step 6 can swap sample data for Supabase without changes
- * to the components. Image/audio fields here are full URLs; the database
- * stores storage paths and the loader turns them into URLs.
+ * The data the guest site needs, as returned by get_invitation (see api.ts).
+ * Field names match the database columns (snake_case). Image/audio fields
+ * here are full URLs; the database stores storage paths and api.ts turns
+ * them into URLs.
  */
 
 export type Settings = {
@@ -48,6 +48,8 @@ export type WeddingEvent = {
 export type GalleryPhoto = {
   id: string
   url: string | null
+  width?: number | null
+  height?: number | null
 }
 
 /** Readable by anyone: the same for every guest. */

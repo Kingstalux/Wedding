@@ -5,6 +5,7 @@ import { Eyebrow } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { dayKey, formatDate } from '../../lib/time'
 import { containsLink } from '../../lib/validation'
+import { errorMessageKey } from '../api'
 import { useInvitation } from '../InvitationProvider'
 import styles from './GuestBook.module.css'
 
@@ -37,7 +38,7 @@ export function GuestBook() {
       await actions.postWish(message)
       setDraft('')
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err))
+      setError(t(errorMessageKey(err)))
     } finally {
       setPosting(false)
     }

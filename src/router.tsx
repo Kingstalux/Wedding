@@ -1,6 +1,7 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
 import { AdminPlaceholder } from './admin/AdminPlaceholder'
 import { DoorPassPage } from './guest/pages/DoorPassPage'
+import { HomeRedirect } from './guest/pages/HomeRedirect'
 import { InvitationLayout, InvitationPage } from './guest/pages/InvitationPage'
 import { PassPage } from './guest/pages/PassPage'
 import { PersonalPage } from './guest/pages/PersonalPage'
@@ -12,7 +13,8 @@ import { PersonalPage } from './guest/pages/PersonalPage'
  *   /i/:token/pass     their entrance pass
  *   /pass/:code        what the door team sees when scanning a pass
  *   /admin/...         the couple's studio (built in Steps 10–14)
- *   / and anything else → "This invitation is personal"
+ *   /                  back to this device's invitation, else "personal" page
+ *   anything else      "This invitation is personal"
  */
 const routes: RouteObject[] = [
   {
@@ -23,6 +25,7 @@ const routes: RouteObject[] = [
       { path: 'pass', element: <PassPage /> },
     ],
   },
+  { path: '/', element: <HomeRedirect /> },
   { path: '/pass/:code', element: <DoorPassPage /> },
   { path: '/admin/*', element: <AdminPlaceholder /> },
   { path: '*', element: <PersonalPage /> },

@@ -147,5 +147,23 @@ export const fr: Record<MessageKey, string> = {
   'door.notAttending': 'Ne sera pas présent(e)',
   'door.notFound': 'Ce pass est introuvable.',
 
+  'error.invalid_token':
+    'Ce lien d’invitation n’est plus valide. Merci d’en demander un nouveau aux mariés.',
+  'error.rsvp_closed': 'Les réponses sont closes : la fête a commencé.',
+  'error.answer_required': 'Merci de choisir « Avec joie, oui » ou « Avec regret, non ».',
+  'error.links_not_allowed':
+    'Les liens ne sont pas autorisés dans les messages. Merci de les retirer.',
+  'error.message_length': 'Merci d’écrire un message de 500 caractères au maximum.',
+  'error.rate_limited':
+    'Vous avez envoyé plusieurs messages en peu de temps. Merci de réessayer un peu plus tard.',
+  'error.invalid_amount': 'Merci d’indiquer le montant en chiffres uniquement, ou de laisser vide.',
+  'error.method_required': 'Merci d’indiquer comment vous avez envoyé votre cadeau.',
+  'error.network': 'Pas de connexion. Vérifiez votre internet et réessayez.',
+  'error.generic': 'Un problème est survenu. Merci de réessayer dans un instant.',
+  'error.loadTitle': 'Impossible d’Ouvrir Votre Invitation',
+  'error.retry': 'Réessayer',
+
+  'door.noReply': 'Invité(e) · pas encore de réponse',
+  'door.checkedIn': 'déjà enregistré(e)',
   'common.loading': 'Chargement…',
 }

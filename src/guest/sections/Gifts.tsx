@@ -6,6 +6,7 @@ import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { cx } from '../../lib/cx'
 import { containsLink } from '../../lib/validation'
+import { errorMessageKey } from '../api'
 import { useInvitation } from '../InvitationProvider'
 import type { GiftMethod } from '../types'
 import styles from './Gifts.module.css'
@@ -104,7 +105,7 @@ export function Gifts() {
       })
       setSent(true)
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err))
+      setError(t(errorMessageKey(err)))
     } finally {
       setSending(false)
     }

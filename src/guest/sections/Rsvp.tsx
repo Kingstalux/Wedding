@@ -7,6 +7,7 @@ import { passUrl } from '../../lib/qr'
 import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { formatDate } from '../../lib/time'
+import { errorMessageKey } from '../api'
 import { useInvitation } from '../InvitationProvider'
 import styles from './Rsvp.module.css'
 
@@ -42,7 +43,7 @@ export function Rsvp() {
       })
       setEditing(false)
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err))
+      setError(t(errorMessageKey(err)))
     } finally {
       setSaving(false)
     }

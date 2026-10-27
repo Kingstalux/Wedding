@@ -146,6 +146,23 @@ export const en = {
   'door.notAttending': 'Not attending',
   'door.notFound': 'This pass could not be found.',
 
+  'error.invalid_token':
+    'This invitation link is no longer valid. Please ask the couple for a new one.',
+  'error.rsvp_closed': 'Replies are closed now that the celebration has begun.',
+  'error.answer_required': 'Please choose “Joyfully accepts” or “Regretfully declines”.',
+  'error.links_not_allowed': 'Links are not allowed in messages. Please remove them and try again.',
+  'error.message_length': 'Please write a message of up to 500 characters.',
+  'error.rate_limited':
+    'You have sent several messages in a short time. Please try again a little later.',
+  'error.invalid_amount': 'Please enter the amount in numbers only, or leave it empty.',
+  'error.method_required': 'Please choose how you sent your gift.',
+  'error.network': 'No connection. Please check your internet and try again.',
+  'error.generic': 'Something went wrong. Please try again in a moment.',
+  'error.loadTitle': 'We Couldn’t Open Your Invitation',
+  'error.retry': 'Try again',
+
+  'door.noReply': 'Invited · no reply yet',
+  'door.checkedIn': 'already checked in',
   'common.loading': 'Loading…',
 }
 
