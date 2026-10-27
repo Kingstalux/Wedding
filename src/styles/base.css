@@ -12,6 +12,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Menu links (#rsvp, #gifts…) stop below the fixed header instead of under it */
+[id] {
+  scroll-margin-top: 80px;
+}
+
 body {
   margin: 0;
   background: var(--ivory);

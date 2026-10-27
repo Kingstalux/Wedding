@@ -1,0 +1,22 @@
+.word {
+  padding: clamp(72px, 10vw, 128px) 0;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(40px, 7vw, 96px);
+  align-items: center;
+}
+
+.photo {
+  aspect-ratio: 4 / 5;
+}
+
+.text p {
+  max-width: 460px;
+}
+
+.signature {
+  margin-top: 24px;
+}

@@ -1,0 +1,85 @@
+.gifts {
+  padding: clamp(72px, 9vw, 112px) 0;
+  background: var(--white);
+}
+
+.intro {
+  text-align: center;
+}
+.intro .lede {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ways {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.way {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 28px 26px;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--primary);
+  background: var(--ivory);
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--emerald);
+}
+
+.number {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.numberSmall {
+  font-size: 22px;
+}
+
+.note {
+  flex: 1;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.tell {
+  max-width: 720px;
+  margin: 40px auto 0;
+  padding: clamp(24px, 4vw, 40px);
+  border: 1px solid var(--line);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.thanks {
+  text-align: center;
+}
+.thanks .script {
+  font-size: 44px;
+}
+.thanks p {
+  margin-bottom: 20px;
+}

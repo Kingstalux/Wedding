@@ -1,0 +1,145 @@
+.page {
+  min-height: 100dvh;
+  padding: 48px 20px 96px;
+}
+
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  align-items: start;
+}
+
+/* ---------- Ticket ---------- */
+.ticket {
+  position: relative;
+  background: var(--primary);
+  color: var(--ivory);
+}
+
+.top {
+  padding: 40px 36px 28px;
+  border-bottom: 1px dashed var(--line-dark);
+  text-align: center;
+}
+.top h1 {
+  margin-top: 14px;
+  font-size: 30px;
+}
+.topMeta {
+  margin: 10px 0 0;
+}
+
+/* Half-circle cut-outs on the dashed line */
+.notch {
+  position: absolute;
+  top: 166px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--ivory);
+}
+.left {
+  left: -13px;
+}
+.right {
+  right: -13px;
+}
+
+.qr {
+  width: min(260px, 80%);
+  margin: 28px auto;
+  padding: 18px;
+  background: var(--white);
+}
+.qr svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bottom {
+  padding: 0 36px 36px;
+  text-align: center;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: 26px;
+}
+
+.code {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  color: var(--on-dark);
+}
+
+.events {
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  border-top: 1px solid var(--line-dark);
+}
+.events li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-dark);
+  font-size: 13.5px;
+}
+.events li span:last-child {
+  color: var(--on-dark-soft);
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* ---------- Door result (/pass/:code) ---------- */
+.door {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 40px 32px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  text-align: center;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.ok {
+  background: var(--emerald);
+  color: var(--white);
+}
+.no {
+  background: var(--slate);
+  color: var(--white);
+}
+.unknown {
+  background: var(--ivory);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.doorName {
+  margin: 20px 0 6px;
+  font-family: var(--font-display);
+  font-size: 30px;
+}

@@ -1,0 +1,75 @@
+.hero {
+  position: relative;
+  min-height: max(640px, 92vh);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: var(--ivory);
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+/* Dark green wash so white text stays readable on any photo */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(12, 59, 46, 0.86) 0%,
+    rgba(12, 59, 46, 0.55) 45%,
+    rgba(12, 59, 46, 0.15) 100%
+  );
+}
+
+.inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 140px clamp(20px, 6vw, 96px) 120px;
+}
+
+.names {
+  font-size: clamp(56px, 9vw, 118px);
+  line-height: 0.98;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.names em {
+  display: block;
+  margin: 4px 0 6px;
+  font-size: 0.5em;
+  font-style: italic;
+  line-height: 1.3;
+  text-transform: none;
+}
+
+.meta {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  line-height: 2.2;
+  color: var(--on-dark);
+}
+
+.scroll {
+  position: absolute;
+  left: clamp(20px, 6vw, 96px);
+  bottom: 36px;
+  z-index: 2;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--ivory);
+}
+.scroll:hover {
+  color: var(--gold);
+}

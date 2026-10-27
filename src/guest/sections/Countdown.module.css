@@ -1,0 +1,41 @@
+.countdown {
+  padding: 56px 0;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.unit {
+  padding: 4px 10px;
+}
+.unit + .unit {
+  border-left: 1px solid var(--line);
+}
+
+.number {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 50px);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.done {
+  font-size: clamp(26px, 3vw, 34px);
+}
