@@ -1,0 +1,122 @@
+.layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.eventPick {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 420px;
+}
+.eventPick select {
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.scanner {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--primary);
+  color: var(--on-dark);
+}
+/* html5-qrcode draws its <video> inside this element */
+.reader {
+  position: absolute;
+  inset: 0;
+}
+.reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+.idle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.result {
+  padding: 24px 26px;
+  color: var(--white);
+}
+.result strong {
+  display: block;
+  margin: 6px 0 4px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 30px;
+}
+.result p {
+  font-size: 14px;
+}
+.ok {
+  background: var(--emerald);
+}
+.already {
+  background: var(--gold);
+  color: var(--ink);
+}
+.declined {
+  background: var(--slate);
+}
+.not_found {
+  background: var(--navy);
+}
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.matches {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.matches li,
+.log li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.log {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search {
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 15px;
+}

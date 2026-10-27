@@ -2,13 +2,15 @@ import { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import { AdminLayout } from './AdminLayout'
 import { AuthProvider } from './AuthProvider'
+import { DoorPage } from './pages/DoorPage'
 import { GalleryPage } from './pages/GalleryPage'
+import { GiftsPage } from './pages/GiftsPage'
 import { GuestsPage } from './pages/GuestsPage'
 import { LoginPage } from './pages/LoginPage'
 import { ProgrammePage } from './pages/ProgrammePage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
 import { SitePage } from './pages/SitePage'
-import { StudioPlaceholder } from './pages/StudioPlaceholder'
+import { WishesPage } from './pages/WishesPage'
 import { RequireAdmin } from './RequireAdmin'
 
 /*
@@ -37,20 +39,9 @@ export function StudioApp() {
           <Route path="site" element={<SitePage />} />
           <Route path="programme" element={<ProgrammePage />} />
           <Route path="gallery" element={<GalleryPage />} />
-          <Route
-            path="wishes"
-            element={<StudioPlaceholder title="Guest book" step={14} mockup="admin-wishes.html" />}
-          />
-          <Route
-            path="gifts"
-            element={
-              <StudioPlaceholder title="Gifts" step={14} mockup="admin-site.html (Cash gifts)" />
-            }
-          />
-          <Route
-            path="door"
-            element={<StudioPlaceholder title="Door check-in" step={14} mockup="admin-door.html" />}
-          />
+          <Route path="wishes" element={<WishesPage />} />
+          <Route path="gifts" element={<GiftsPage />} />
+          <Route path="door" element={<DoorPage />} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Routes>

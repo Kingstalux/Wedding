@@ -74,3 +74,21 @@ export function usePreviewLink() {
     },
   })
 }
+
+export const eventsKey = ['admin', 'events'] as const
+
+/** All moments of the programme, in time order (shared by Programme and Door). */
+export function useEvents() {
+  return useQuery({
+    queryKey: eventsKey,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .order('starts_at')
+        .order('sort')
+      if (error) throw error
+      return data
+    },
+  })
+}

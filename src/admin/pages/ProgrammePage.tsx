@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Button, ButtonLink } from '../../components/Button'
 import { Switch, TextField } from '../../components/Form'
@@ -10,7 +10,7 @@ import type { Database } from '../../lib/database.types'
 import { supabase } from '../../lib/supabase'
 import { dayKey, formatDayLong, joinLocal, splitLocal } from '../../lib/time'
 import { SaveBar } from '../components/SaveBar'
-import { studioErrorMessage } from '../queries'
+import { eventsKey, studioErrorMessage, useEvents } from '../queries'
 import studio from '../studio.module.css'
 import styles from './ProgrammePage.module.css'
 
@@ -26,8 +26,6 @@ type Draft = {
   maps_url: string
   visible: boolean
 }
-
-const eventsKey = ['admin', 'events'] as const
 
 function toDraft(e: EventRow): Draft {
   const start = splitLocal(e.starts_at)
@@ -59,18 +57,7 @@ const mapsSearch = (venue: string) =>
 export function ProgrammePage() {
   const queryClient = useQueryClient()
   const toast = useToast()
-  const events = useQuery({
-    queryKey: eventsKey,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .order('starts_at')
-        .order('sort')
-      if (error) throw error
-      return data
-    },
-  })
+  const events = useEvents()
 
   // Edits per moment, keyed by id. A moment with no entry here is unchanged.
   const [drafts, setDrafts] = useState<Record<string, Draft>>({})

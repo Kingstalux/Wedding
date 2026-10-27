@@ -143,3 +143,35 @@
   font-family: var(--font-display);
   font-size: 30px;
 }
+
+/* Check-in controls for the signed-in couple */
+.couple {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+.coupleLabel {
+  margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.eventSelect {
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: 12px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+}
+.coupleResult {
+  margin-top: 12px;
+  font-weight: 500;
+}
+.coupleLink {
+  margin-top: 12px;
+  font-size: 13px;
+}
