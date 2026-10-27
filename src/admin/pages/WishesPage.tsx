@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Button } from '../../components/Button'
+import { useConfirm } from '../../components/Confirm'
 import { Switch } from '../../components/Form'
 import { useToast } from '../../components/Toast'
 import { cx } from '../../lib/cx'
@@ -16,6 +17,7 @@ type Filter = 'all' | 'visible' | 'hidden'
 export function WishesPage() {
   const queryClient = useQueryClient()
   const toast = useToast()
+  const confirm = useConfirm()
   const settings = useSettings()
   const updateSettings = useUpdateSettings()
   const [filter, setFilter] = useState<Filter>('all')
@@ -117,9 +119,14 @@ export function WishesPage() {
               <Button
                 size="sm"
                 variant="danger"
-                onClick={() =>
-                  window.confirm('Delete this message? This cannot be undone.') &&
-                  change.mutate({ id: wish.id, remove: true })
+                onClick={async () =>
+                  (await confirm({
+                    title: 'Delete this message?',
+                    message:
+                      'This cannot be undone. To keep it but take it off the site, use Hide.',
+                    confirmLabel: 'Delete',
+                    danger: true,
+                  })) && change.mutate({ id: wish.id, remove: true })
                 }
               >
                 Delete

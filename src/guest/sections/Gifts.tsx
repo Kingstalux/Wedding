@@ -159,14 +159,12 @@ export function Gifts() {
                 <SelectField
                   label={t('gift.via')}
                   value={chosen}
-                  onChange={(e) => setMethod(e.target.value as GiftMethod)}
-                >
-                  {ways.map((way) => (
-                    <option key={way.method} value={way.method}>
-                      {way.method === 'cash' ? t('gift.cashOption') : way.label}
-                    </option>
-                  ))}
-                </SelectField>
+                  onChange={(v) => setMethod(v as GiftMethod)}
+                  options={ways.map((way) => ({
+                    value: way.method,
+                    label: way.method === 'cash' ? t('gift.cashOption') : way.label,
+                  }))}
+                />
                 <TextField
                   label={t('gift.amount')}
                   inputMode="numeric"

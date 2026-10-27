@@ -25,7 +25,7 @@ export function AdminLayout() {
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
         <NavLink to="/admin" end className={styles.brand}>
-          <Monogram bride={settings?.bride ?? ''} groom={settings?.groom ?? ''} size={24} gold />
+          <Monogram bride={settings?.bride || 'B'} groom={settings?.groom || 'G'} size={24} gold />
           <small>Couple’s studio</small>
         </NavLink>
 

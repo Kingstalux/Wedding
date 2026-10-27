@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Button } from '../../components/Button'
+import { SelectField } from '../../components/Form'
 import { Icon } from '../../components/Icon'
 import { IconButton } from '../../components/IconButton'
 import { useToast } from '../../components/Toast'
@@ -148,16 +149,18 @@ export function GuestsPage() {
               Send. The text is edited in Site &amp; texts.
             </p>
           </div>
-          <label className={styles.langPick}>
-            Language when the guest’s isn’t known
-            <select
+          <div className={styles.langPick}>
+            <SelectField
+              look="box"
+              label="Language when the guest’s isn’t known"
               value={defaultLang}
-              onChange={(e) => chooseDefaultLang(e.target.value as 'en' | 'fr')}
-            >
-              <option value="fr">Français</option>
-              <option value="en">English</option>
-            </select>
-          </label>
+              onChange={(v) => chooseDefaultLang(v as 'en' | 'fr')}
+              options={[
+                { value: 'fr', label: 'Français' },
+                { value: 'en', label: 'English' },
+              ]}
+            />
+          </div>
         </div>
       </section>
 

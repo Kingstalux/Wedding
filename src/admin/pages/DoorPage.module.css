@@ -12,18 +12,7 @@
 }
 
 .eventPick {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-width: 420px;
-}
-.eventPick select {
-  min-height: 46px;
-  padding: 0 12px;
-  border: 1px solid var(--line);
-  background: var(--white);
-  color: var(--ink);
-  font-size: 15px;
+  width: min(380px, 100%);
 }
 
 .scanner {

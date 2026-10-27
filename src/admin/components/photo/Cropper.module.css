@@ -1,0 +1,77 @@
+.frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--forest);
+  touch-action: none; /* let us handle dragging on phones */
+  user-select: none;
+}
+.frame img {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+}
+
+.interactive {
+  cursor: grab;
+}
+.interactive:active {
+  cursor: grabbing;
+}
+.interactive:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Rule-of-thirds guides while editing */
+.grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to right,
+      transparent calc(33.33% - 0.5px),
+      rgba(255, 255, 255, 0.35) 33.33%,
+      transparent calc(33.33% + 0.5px)
+    ),
+    linear-gradient(
+      to right,
+      transparent calc(66.66% - 0.5px),
+      rgba(255, 255, 255, 0.35) 66.66%,
+      transparent calc(66.66% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(33.33% - 0.5px),
+      rgba(255, 255, 255, 0.35) 33.33%,
+      transparent calc(33.33% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(66.66% - 0.5px),
+      rgba(255, 255, 255, 0.35) 66.66%,
+      transparent calc(66.66% + 0.5px)
+    );
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.controls input[type='range'] {
+  flex: 1;
+  accent-color: var(--primary);
+  min-height: 32px;
+}
+
+.hint {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}

@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
+import { GalleryUploadDialog } from '../admin/components/photo/GalleryUploadDialog'
+import { PhotoEditorDialog } from '../admin/components/photo/PhotoEditorDialog'
 import { Button, ButtonLink } from '../components/Button'
+import { useConfirm } from '../components/Confirm'
 import { Choice, SelectField, Switch, TextAreaField, TextField } from '../components/Form'
 import { Icon, type IconName } from '../components/Icon'
 import { IconButton } from '../components/IconButton'
@@ -55,6 +58,10 @@ export function DevUi() {
   const [loading, setLoading] = useState(false)
   const [shown, setShown] = useState(true)
   const [attend, setAttend] = useState('')
+  const [via, setVia] = useState('momo')
+  const confirm = useConfirm()
+  const [editorFile, setEditorFile] = useState<File | null>(null)
+  const [batch, setBatch] = useState<File[] | null>(null)
 
   return (
     <main className={cx('container', styles.page)}>
@@ -163,11 +170,16 @@ export function DevUi() {
             defaultValue="https://spam.example"
             error="Links are not allowed in messages."
           />
-          <SelectField label="Sent via" defaultValue="momo">
-            <option value="momo">MTN Mobile Money</option>
-            <option value="orange">Orange Money</option>
-            <option value="cash">Cash at the reception</option>
-          </SelectField>
+          <SelectField
+            label="Sent via"
+            value={via}
+            onChange={setVia}
+            options={[
+              { value: 'momo', label: 'MTN Mobile Money' },
+              { value: 'orange', label: 'Orange Money' },
+              { value: 'cash', label: 'Cash at the reception' },
+            ]}
+          />
           <TextAreaField label="A note for the couple (optional)" rows={3} />
         </div>
         <fieldset
@@ -237,6 +249,67 @@ export function DevUi() {
       </section>
 
       <section className={styles.section}>
+        <h2 className={styles.title}>Confirm window and photo editors</h2>
+        <div className={styles.row}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={async () => {
+              const ok = await confirm({
+                title: 'Delete this photo?',
+                message: 'It is removed from the gallery and from storage.',
+                confirmLabel: 'Delete',
+                danger: true,
+              })
+              toast(ok ? 'Confirmed' : 'Cancelled')
+            }}
+          >
+            Open confirm window
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={async () => setEditorFile(await samplePhoto(3000, 2000, 0))}
+          >
+            Landing photo editor
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={async () =>
+              setBatch(await Promise.all([1, 2, 3].map((i) => samplePhoto(1800, 2400, i))))
+            }
+          >
+            Gallery upload editor
+          </Button>
+        </div>
+        {editorFile && (
+          <PhotoEditorDialog
+            file={editorFile}
+            shape="hero"
+            names={{ bride: 'Favour', groom: 'Brandon' }}
+            onCancel={() => setEditorFile(null)}
+            onSave={async (photo) => {
+              toast(
+                `Would upload ${photo.width}×${photo.height} (${Math.round(photo.blob.size / 1024)} KB)`,
+              )
+              setEditorFile(null)
+            }}
+          />
+        )}
+        {batch && (
+          <GalleryUploadDialog
+            files={batch}
+            onCancel={() => setBatch(null)}
+            onUpload={async (photos) => {
+              toast(`Would upload ${photos.length} photos: ${photos.map((p) => p.name).join(', ')}`)
+              setBatch(null)
+            }}
+          />
+        )}
+      </section>
+
+      <section className={styles.section}>
         <h2 className={styles.title}>Toasts</h2>
         <div className={styles.row}>
           <Button variant="ghost" size="sm" onClick={() => toast('Saved — the site is updated')}>
@@ -281,4 +354,27 @@ function SupabaseStatus() {
       {text}
     </p>
   )
+}
+
+/** A made-up photo (stripes and circles) to try the editors without a real file. */
+async function samplePhoto(w: number, h: number, seed: number): Promise<File> {
+  const canvas = document.createElement('canvas')
+  canvas.width = w
+  canvas.height = h
+  const ctx = canvas.getContext('2d')!
+  const colours = ['#0a0e52', '#3a4575', '#0c3b2e', '#17705a', '#b8912f']
+  colours.forEach((c, i) => {
+    ctx.fillStyle = c
+    ctx.fillRect(0, (i * h) / colours.length, w, h / colours.length)
+  })
+  ctx.fillStyle = '#f7f4ec'
+  ctx.beginPath()
+  ctx.arc(w / 2, h / 2, Math.min(w, h) / 5, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.fillStyle = '#0c3b2e'
+  ctx.font = `${Math.round(h / 8)}px serif`
+  ctx.textAlign = 'center'
+  ctx.fillText(String(seed || 'Centre'), w / 2, h / 2 + h / 24)
+  const blob = await new Promise<Blob>((resolve) => canvas.toBlob((b) => resolve(b!), 'image/jpeg'))
+  return new File([blob], `sample-${seed}.jpg`, { type: 'image/jpeg' })
 }

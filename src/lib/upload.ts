@@ -60,3 +60,54 @@ export async function removeMedia(path: string | null | undefined): Promise<void
   if (!path) return
   await supabase.storage.from(MEDIA_BUCKET).remove([path])
 }
+
+/** Loads a chosen photo so it can be shown and cropped in the browser. */
+export function loadImage(file: Blob): Promise<{ img: HTMLImageElement; url: string }> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => resolve({ img, url })
+    img.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error('This photo couldn’t be opened. Please use a JPG or PNG.'))
+    }
+    img.src = url
+  })
+}
+
+/**
+ * Cuts the chosen rectangle out of the photo and saves it as a JPEG of at most
+ * `maxWidth` pixels wide (never enlarged), ready to upload.
+ */
+export async function renderCrop(
+  img: HTMLImageElement,
+  rect: { sx: number; sy: number; sw: number; sh: number },
+  maxWidth: number,
+): Promise<{ blob: Blob; width: number; height: number }> {
+  const width = Math.round(Math.min(maxWidth, rect.sw))
+  const height = Math.round((width * rect.sh) / rect.sw)
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const ctx = canvas.getContext('2d')!
+  ctx.imageSmoothingQuality = 'high'
+  ctx.drawImage(img, rect.sx, rect.sy, rect.sw, rect.sh, 0, 0, width, height)
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, 'image/jpeg', 0.85),
+  )
+  if (!blob) throw new Error('The photo couldn’t be prepared. Please try another one.')
+  return { blob, width, height }
+}
+
+/** Uploads an already-cropped photo (from the photo editor). */
+export async function uploadPhotoBlob(
+  folder: MediaFolder,
+  photo: { blob: Blob; width: number; height: number },
+): Promise<Uploaded> {
+  const path = `${folder}/${crypto.randomUUID()}.jpg`
+  const { error } = await supabase.storage
+    .from(MEDIA_BUCKET)
+    .upload(path, photo.blob, { contentType: 'image/jpeg', cacheControl: '31536000' })
+  if (error) throw new Error(`Upload failed: ${error.message}`)
+  return { path, width: photo.width, height: photo.height }
+}

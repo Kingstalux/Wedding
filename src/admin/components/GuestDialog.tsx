@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Button, ButtonLink } from '../../components/Button'
+import { useConfirm } from '../../components/Confirm'
 import { Dialog, DialogActions } from '../../components/Dialog'
 import { SelectField, TextField } from '../../components/Form'
 import { Icon } from '../../components/Icon'
@@ -22,6 +23,7 @@ export function GuestDialog({
   onClose: () => void
 }) {
   const toast = useToast()
+  const confirm = useConfirm()
   const add = useAddGuest()
   const update = useUpdateGuest()
   const newLink = useNewLink()
@@ -54,12 +56,13 @@ export function GuestDialog({
 
   async function regenerate() {
     if (!guest?.id) return
-    if (
-      !window.confirm(
-        `Create a new private link for ${guest.name}? The old link stops working immediately.`,
-      )
-    )
-      return
+    const ok = await confirm({
+      title: `New private link for ${guest.name}?`,
+      message: 'The old link stops working immediately, so send the new one to the guest.',
+      confirmLabel: 'Create new link',
+      danger: true,
+    })
+    if (!ok) return
     try {
       await newLink.mutateAsync(guest.id)
       toast('New link created — send it to the guest again')
@@ -72,12 +75,13 @@ export function GuestDialog({
   async function removeGuest() {
     if (!guest?.id) return
     const reply = guest.attending === null ? '' : ' Their reply is hidden with them.'
-    if (
-      !window.confirm(
-        `Remove ${guest.name} from the guest list?${reply} You can restore them for 60 days.`,
-      )
-    )
-      return
+    const ok = await confirm({
+      title: `Remove ${guest.name}?`,
+      message: `They disappear from the guest list.${reply} You can restore them for 60 days from “Recently removed”.`,
+      confirmLabel: 'Remove',
+      danger: true,
+    })
+    if (!ok) return
     try {
       await remove.mutateAsync(guest.id)
       toast(`${guest.name} was removed`)
@@ -93,6 +97,7 @@ export function GuestDialog({
         <TextField
           look="box"
           label="Name"
+          placeholder="Full name, as you’d write it on a card"
           value={name}
           onChange={(e) => setName(e.target.value)}
           autoFocus
@@ -110,13 +115,14 @@ export function GuestDialog({
           look="box"
           label="Language for messages"
           value={lang}
-          onChange={(e) => setLang(e.target.value as '' | 'en' | 'fr')}
+          onChange={(v) => setLang(v as '' | 'en' | 'fr')}
           hint="Set automatically when the guest switches language on the site."
-        >
-          <option value="">Not set (use the default)</option>
-          <option value="en">English</option>
-          <option value="fr">Français</option>
-        </SelectField>
+          options={[
+            { value: '', label: 'Not set (use the default)' },
+            { value: 'en', label: 'English' },
+            { value: 'fr', label: 'Français' },
+          ]}
+        />
 
         {guest && link && (
           <div className={studio.card} style={{ padding: 16, background: 'var(--ivory)' }}>

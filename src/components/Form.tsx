@@ -1,11 +1,7 @@
 import { useId } from 'react'
-import type {
-  InputHTMLAttributes,
-  ReactNode,
-  SelectHTMLAttributes,
-  TextareaHTMLAttributes,
-} from 'react'
+import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from 'react'
 import { cx } from '../lib/cx'
+import { Select, type SelectOption } from './Select'
 import styles from './Form.module.css'
 
 /** "line" = the guest site's underlined look; "box" = the studio's boxed look. */
@@ -112,9 +108,16 @@ export function TextAreaField({
   )
 }
 
-type SelectFieldProps = FieldShell &
-  Omit<SelectHTMLAttributes<HTMLSelectElement>, 'className'> & { children: ReactNode }
+type SelectFieldProps = FieldShell & {
+  id?: string
+  value: string
+  options: SelectOption[]
+  onChange: (value: string) => void
+  placeholder?: string
+  disabled?: boolean
+}
 
+/** A labelled dropdown, using the site's own styled Select. */
 export function SelectField({
   label,
   hint,
@@ -122,19 +125,13 @@ export function SelectField({
   look = 'line',
   className,
   id,
-  children,
   ...rest
 }: SelectFieldProps) {
   const ids = useFieldIds(id)
+  const { id: controlId, ...describe } = a11y(ids, hint, error)
   return (
     <Shell label={label} hint={hint} error={error} className={className} ids={ids}>
-      <select
-        className={cx(styles.control, styles[look], error && styles.invalid)}
-        {...a11y(ids, hint, error)}
-        {...rest}
-      >
-        {children}
-      </select>
+      <Select id={controlId} look={look} {...describe} {...rest} />
     </Shell>
   )
 }

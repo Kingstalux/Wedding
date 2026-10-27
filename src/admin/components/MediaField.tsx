@@ -1,12 +1,15 @@
 import { useRef, useState } from 'react'
 import { Button } from '../../components/Button'
+import { useConfirm } from '../../components/Confirm'
 import { Photo, type PhotoTone } from '../../components/Photo'
 import { useToast } from '../../components/Toast'
 import { cx } from '../../lib/cx'
 import { mediaUrl } from '../../lib/media'
-import { removeMedia, uploadAudio, uploadPhoto, type MediaFolder } from '../../lib/upload'
+import { removeMedia, uploadAudio, uploadPhotoBlob, type MediaFolder } from '../../lib/upload'
 import { studioErrorMessage } from '../queries'
 import styles from './MediaField.module.css'
+import { PhotoEditorDialog } from './photo/PhotoEditorDialog'
+import type { PhotoShape } from './photo/shapes'
 
 type Props = {
   kind: 'photo' | 'audio'
@@ -15,49 +18,75 @@ type Props = {
   path: string | null
   /** Saves the new path (or null to remove). The old file is deleted afterwards. */
   onSave: (path: string | null) => Promise<unknown>
-  shape?: 'wide' | 'tall' | 'normal'
+  /** The shape the photo has on the site; the editor crops to it. */
+  shape?: PhotoShape
+  /** Names shown on the landing-photo previews. */
+  names?: { bride: string; groom: string }
   tone?: PhotoTone
   placeholder?: string
 }
 
 /**
  * Shows the current photo (or song) with Replace / Remove buttons.
- * Changes are saved straight away, separately from the page's Save button,
- * because the file is uploaded the moment it's chosen.
+ * A new photo opens the photo editor first (crop, zoom, previews); it's
+ * uploaded and goes live only when the couple presses "Save photo".
  */
 export function MediaField({
   kind,
   folder,
   path,
   onSave,
-  shape = 'normal',
+  shape = 'portrait',
+  names,
   tone = 'slate',
   placeholder = 'No photo yet',
 }: Props) {
   const toast = useToast()
+  const confirm = useConfirm()
   const inputRef = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [editing, setEditing] = useState<File | null>(null)
   const url = mediaUrl(path)
 
-  async function replace(file: File) {
-    setBusy(true)
+  function chosen(file: File) {
     setError(null)
+    if (inputRef.current) inputRef.current.value = ''
+    if (kind === 'photo') setEditing(file)
+    else saveSong(file)
+  }
+
+  /** Called by the photo editor with the cropped photo. */
+  async function savePhoto(photo: { blob: Blob; width: number; height: number }) {
+    const uploaded = await uploadPhotoBlob(folder, photo)
+    await onSave(uploaded.path)
+    await removeMedia(path) // the previous file, now unused
+    setEditing(null)
+    toast('Photo updated on the site')
+  }
+
+  async function saveSong(file: File) {
+    setBusy(true)
     try {
-      const uploaded = kind === 'photo' ? await uploadPhoto(folder, file) : await uploadAudio(file)
+      const uploaded = await uploadAudio(file)
       await onSave(uploaded.path)
-      await removeMedia(path) // the previous file, now unused
-      toast(kind === 'photo' ? 'Photo updated on the site' : 'Song updated on the site')
+      await removeMedia(path)
+      toast('Song updated on the site')
     } catch (err) {
       setError(studioErrorMessage(err))
     } finally {
       setBusy(false)
-      if (inputRef.current) inputRef.current.value = ''
     }
   }
 
   async function remove() {
-    if (!window.confirm(kind === 'photo' ? 'Remove this photo?' : 'Remove the song?')) return
+    const ok = await confirm({
+      title: kind === 'photo' ? 'Remove this photo?' : 'Remove the song?',
+      message: 'It disappears from the site straight away.',
+      confirmLabel: 'Remove',
+      danger: true,
+    })
+    if (!ok) return
     setBusy(true)
     try {
       await onSave(null)
@@ -74,11 +103,7 @@ export function MediaField({
     <div className={styles.field}>
       {kind === 'photo' ? (
         <Photo
-          className={cx(
-            styles.preview,
-            shape === 'wide' && styles.wide,
-            shape === 'tall' && styles.tall,
-          )}
+          className={cx(styles.preview, shape === 'hero' ? styles.wide : styles.tall)}
           src={url}
           label={placeholder}
           tone={tone}
@@ -99,7 +124,7 @@ export function MediaField({
             className="sr-only"
             type="file"
             accept={kind === 'photo' ? 'image/jpeg,image/png,image/webp' : 'audio/*'}
-            onChange={(e) => e.target.files?.[0] && replace(e.target.files[0])}
+            onChange={(e) => e.target.files?.[0] && chosen(e.target.files[0])}
             disabled={busy}
           />
           <Button size="sm" loading={busy} onClick={() => inputRef.current?.click()}>
@@ -115,12 +140,25 @@ export function MediaField({
             </Button>
           )}
         </div>
+        {kind === 'photo' && (
+          <p className={styles.hint}>You’ll be able to crop and preview it before it’s saved.</p>
+        )}
         {error && (
           <p className={styles.error} role="alert">
             {error}
           </p>
         )}
       </div>
+
+      {editing && (
+        <PhotoEditorDialog
+          file={editing}
+          shape={shape}
+          names={names}
+          onCancel={() => setEditing(null)}
+          onSave={savePhoto}
+        />
+      )}
     </div>
   )
 }

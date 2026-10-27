@@ -1,0 +1,126 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.previews {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.previewLabel {
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.devices {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+}
+.desktop {
+  flex: 1;
+  border: 6px solid var(--ink);
+  border-bottom-width: 12px;
+}
+.phone {
+  width: 86px;
+  flex: none;
+  border: 5px solid var(--ink);
+  border-radius: 10px;
+}
+.portrait {
+  width: min(220px, 100%);
+}
+
+/* Fake hero text on the landing-photo previews */
+.heroText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8%;
+  background: linear-gradient(90deg, rgba(12, 59, 46, 0.86), rgba(12, 59, 46, 0.15));
+  color: var(--ivory);
+  font-family: var(--font-display);
+  line-height: 1;
+  text-transform: uppercase;
+}
+.heroText em {
+  font-size: 0.55em;
+  text-transform: none;
+}
+.desktop .heroText {
+  font-size: 18px;
+}
+.phone .heroText {
+  font-size: 11px;
+  padding: 10%;
+}
+
+/* ---------- Gallery batch ---------- */
+.batch {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  border: 2px solid transparent;
+  background: var(--white);
+}
+.item[aria-current='true'] {
+  border-color: var(--gold);
+}
+.item button.thumb {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+}
+.itemTools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.itemTools div {
+  display: flex;
+  gap: 2px;
+}
+
+.progress {
+  margin-right: auto;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.note {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.error {
+  padding-left: 12px;
+  border-left: 3px solid var(--gold);
+  font-weight: 500;
+}

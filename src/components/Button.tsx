@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { cx } from '../lib/cx'
 import styles from './Button.module.css'
 
-export type ButtonVariant = 'primary' | 'ghost' | 'ghostLight' | 'gold' | 'danger'
+export type ButtonVariant = 'primary' | 'ghost' | 'ghostLight' | 'gold' | 'danger' | 'destructive'
 
 type StyleProps = {
   variant?: ButtonVariant

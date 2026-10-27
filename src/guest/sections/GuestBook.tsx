@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Button } from '../../components/Button'
+import { useConfirm } from '../../components/Confirm'
 import { TextAreaField } from '../../components/Form'
 import { Eyebrow } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
@@ -12,6 +13,7 @@ import styles from './GuestBook.module.css'
 export function GuestBook() {
   const { t, lang } = useT()
   const { content, invitation, actions } = useInvitation()
+  const confirm = useConfirm()
   const [draft, setDraft] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [posting, setPosting] = useState(false)
@@ -45,7 +47,13 @@ export function GuestBook() {
   }
 
   async function onDelete(id: string) {
-    if (window.confirm(t('book.deleteConfirm'))) await actions.deleteWish(id)
+    const ok = await confirm({
+      title: t('book.deleteConfirm'),
+      confirmLabel: t('book.delete'),
+      cancelLabel: t('common.cancel'),
+      danger: true,
+    })
+    if (ok) await actions.deleteWish(id)
   }
 
   const when = (iso: string) =>

@@ -159,13 +159,7 @@
   color: var(--muted);
 }
 .eventSelect {
-  width: 100%;
-  min-height: 44px;
   margin-bottom: 12px;
-  padding: 0 10px;
-  border: 1px solid var(--line);
-  background: var(--white);
-  color: var(--ink);
 }
 .coupleResult {
   margin-top: 12px;

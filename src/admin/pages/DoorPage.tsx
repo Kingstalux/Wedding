@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '../../components/Button'
+import { SelectField } from '../../components/Form'
 import { Icon } from '../../components/Icon'
 import { cx } from '../../lib/cx'
 import { formatPhone } from '../../lib/phone'
@@ -135,16 +136,18 @@ export function DoorPage() {
           <h1 className="display">Door check-in</h1>
           <p>Open this page on a phone at the entrance and scan each guest’s pass.</p>
         </div>
-        <label className={styles.eventPick}>
-          <span className="sr-only">Event</span>
-          <select value={current} onChange={(e) => setEventId(e.target.value)}>
-            {(events.data ?? []).map((e) => (
-              <option key={e.id} value={e.id}>
-                {e.title_en} · {formatDayShort(e.starts_at, 'en')} {formatTime(e.starts_at, 'en')}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className={styles.eventPick}>
+          <SelectField
+            look="box"
+            label="Checking in for"
+            value={current}
+            onChange={setEventId}
+            options={(events.data ?? []).map((e) => ({
+              value: e.id,
+              label: `${e.title_en} · ${formatDayShort(e.starts_at, 'en')} ${formatTime(e.starts_at, 'en')}`,
+            }))}
+          />
+        </div>
       </div>
 
       <p className="muted">

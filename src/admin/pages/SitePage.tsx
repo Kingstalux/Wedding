@@ -128,7 +128,6 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
   })
 
   async function save() {
-    if (!draft.bride.trim() || !draft.groom.trim()) return setError('Both names are needed.')
     if (!draft.countdown) return setError('Please set the date and time the countdown leads to.')
     setError(null)
     try {
@@ -171,7 +170,8 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           folder="hero"
           path={settings.hero_path}
           onSave={saveMedia('hero_path')}
-          shape="wide"
+          shape="hero"
+          names={{ bride: draft.bride, groom: draft.groom }}
           placeholder="Landing photo"
         />
       </section>
@@ -182,9 +182,14 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           Shown in the header, the opening screen, the signature and the WhatsApp message.
         </p>
         <div className={styles.grid3}>
-          <TextField look="box" label="Bride’s name" {...text('bride')} />
-          <TextField look="box" label="Groom’s name" {...text('groom')} />
-          <TextField look="box" label="City" {...text('city')} />
+          <TextField look="box" label="Bride’s name" placeholder="e.g. Amina" {...text('bride')} />
+          <TextField look="box" label="Groom’s name" placeholder="e.g. Joël" {...text('groom')} />
+          <TextField
+            look="box"
+            label="City"
+            placeholder="e.g. Yaoundé, Cameroon"
+            {...text('city')}
+          />
           <TextField
             look="box"
             label="Countdown to (Cameroon time)"
@@ -215,8 +220,20 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           />
         </div>
         <div className={draft.show_word ? styles.grid2 : `${styles.grid2} ${styles.dimmed}`}>
-          <TextAreaField look="box" label="English" rows={7} {...text('word_en')} />
-          <TextAreaField look="box" label="Français" rows={7} {...text('word_fr')} />
+          <TextAreaField
+            look="box"
+            label="English"
+            rows={7}
+            placeholder="Dear {guest name}, thank you for being part of our story…"
+            {...text('word_en')}
+          />
+          <TextAreaField
+            look="box"
+            label="Français"
+            rows={7}
+            placeholder="Cher(e) {nom de l’invité}, merci de faire partie de notre histoire…"
+            {...text('word_fr')}
+          />
         </div>
         <h3>Photo beside the word</h3>
         <MediaField
@@ -224,7 +241,7 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           folder="word"
           path={settings.word_photo_path}
           onSave={saveMedia('word_photo_path')}
-          shape="tall"
+          shape="portrait"
           tone="forest"
           placeholder="Couple photo"
         />
@@ -242,8 +259,18 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           />
         </div>
         <div className={draft.show_dress ? styles.grid2 : `${styles.grid2} ${styles.dimmed}`}>
-          <TextAreaField look="box" label="English" {...text('dress_en')} />
-          <TextAreaField look="box" label="Français" {...text('dress_fr')} />
+          <TextAreaField
+            look="box"
+            label="English"
+            placeholder="e.g. Elegant formal attire, in our wedding colours…"
+            {...text('dress_en')}
+          />
+          <TextAreaField
+            look="box"
+            label="Français"
+            placeholder="ex. Tenue de soirée élégante, aux couleurs du mariage…"
+            {...text('dress_fr')}
+          />
         </div>
         <div className={styles.swatches} aria-label="Wedding colours">
           <span>
@@ -290,7 +317,12 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
             placeholder="+237 6XX XX XX XX"
             {...text('momo_number')}
           />
-          <TextField look="box" label="MTN MoMo account name" {...text('momo_name')} />
+          <TextField
+            look="box"
+            label="MTN MoMo account name"
+            placeholder="Name guests see when sending"
+            {...text('momo_name')}
+          />
           <TextField
             look="box"
             label="Orange Money number"
@@ -298,7 +330,12 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
             placeholder="+237 6XX XX XX XX"
             {...text('om_number')}
           />
-          <TextField look="box" label="Orange Money account name" {...text('om_name')} />
+          <TextField
+            look="box"
+            label="Orange Money account name"
+            placeholder="Name guests see when sending"
+            {...text('om_name')}
+          />
         </div>
         <div style={{ marginTop: 16 }}>
           <Switch label="Show “Gift box at the reception”" {...toggle('show_gift_box')} />
@@ -309,12 +346,14 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
               look="box"
               label="Gift box note (English)"
               rows={2}
+              placeholder="e.g. Saturday 26 December · Bansoa Hall…"
               {...text('gift_box_note_en')}
             />
             <TextAreaField
               look="box"
               label="Gift box note (Français)"
               rows={2}
+              placeholder="ex. Samedi 26 décembre · Salle Bansoa…"
               {...text('gift_box_note_fr')}
             />
           </div>
@@ -337,6 +376,7 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           <TextField
             look="box"
             label="Song title (shown on the opening screen)"
+            placeholder="e.g. The Best Part of You — Savvy"
             {...text('music_title')}
           />
         </div>
@@ -349,8 +389,20 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           {'{groom}'} {'{link}'}. Keep {'{link}'} so the guest receives their private link.
         </p>
         <div className={styles.grid2}>
-          <TextAreaField look="box" label="English" rows={5} {...text('wa_template_en')} />
-          <TextAreaField look="box" label="Français" rows={5} {...text('wa_template_fr')} />
+          <TextAreaField
+            look="box"
+            label="English"
+            rows={5}
+            placeholder="Dear {name}, {bride} & {groom} invite you… Open your invitation: {link}"
+            {...text('wa_template_en')}
+          />
+          <TextAreaField
+            look="box"
+            label="Français"
+            rows={5}
+            placeholder="Cher(e) {name}, {bride} & {groom} vous invitent… Votre invitation : {link}"
+            {...text('wa_template_fr')}
+          />
         </div>
       </section>
 

@@ -50,6 +50,9 @@ function fromRaw(raw: RawInvitation): LoadedInvitation {
     content: {
       settings: {
         ...settings,
+        // Until the couple enters their names in the studio
+        bride: settings.bride.trim() || 'Bride',
+        groom: settings.groom.trim() || 'Groom',
         hero_url: mediaUrl(hero_path),
         word_photo_url: mediaUrl(word_photo_path),
         music_url: mediaUrl(music_path),

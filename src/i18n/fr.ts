@@ -165,5 +165,6 @@ export const fr: Record<MessageKey, string> = {
 
   'door.noReply': 'Invité(e) · pas encore de réponse',
   'door.checkedIn': 'déjà enregistré(e)',
+  'common.cancel': 'Annuler',
   'common.loading': 'Chargement…',
 }

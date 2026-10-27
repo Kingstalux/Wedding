@@ -163,6 +163,7 @@ export const en = {
 
   'door.noReply': 'Invited · no reply yet',
   'door.checkedIn': 'already checked in',
+  'common.cancel': 'Cancel',
   'common.loading': 'Loading…',
 }
 

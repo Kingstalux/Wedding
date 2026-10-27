@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Button, ButtonLink } from '../../components/Button'
+import { useConfirm } from '../../components/Confirm'
 import { Switch, TextField } from '../../components/Form'
 import { Icon } from '../../components/Icon'
 import { IconButton } from '../../components/IconButton'
@@ -57,6 +58,7 @@ const mapsSearch = (venue: string) =>
 export function ProgrammePage() {
   const queryClient = useQueryClient()
   const toast = useToast()
+  const confirm = useConfirm()
   const events = useEvents()
 
   // Edits per moment, keyed by id. A moment with no entry here is unchanged.
@@ -192,7 +194,14 @@ export function ProgrammePage() {
                   icon="trash"
                   size="sm"
                   label={`Delete ${d.title_en}`}
-                  onClick={() => window.confirm(`Delete “${d.title_en}”?`) && remove.mutate(event)}
+                  onClick={async () =>
+                    (await confirm({
+                      title: `Delete “${d.title_en}”?`,
+                      message: 'It disappears from the schedule on the site.',
+                      confirmLabel: 'Delete',
+                      danger: true,
+                    })) && remove.mutate(event)
+                  }
                 />
               </div>
 
@@ -200,18 +209,21 @@ export function ProgrammePage() {
                 <TextField
                   look="box"
                   label="Title (English)"
+                  placeholder="e.g. Reception"
                   value={d.title_en}
                   onChange={(e) => edit(event, { title_en: e.target.value })}
                 />
                 <TextField
                   look="box"
                   label="Title (Français)"
+                  placeholder="ex. Réception"
                   value={d.title_fr}
                   onChange={(e) => edit(event, { title_fr: e.target.value })}
                 />
                 <TextField
                   look="box"
                   label="Venue & area"
+                  placeholder="e.g. Bansoa Hall, Montée Chapelle Simbock"
                   value={d.venue}
                   onChange={(e) => edit(event, { venue: e.target.value })}
                 />

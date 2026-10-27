@@ -13,8 +13,8 @@
 
 -- ---------- Settings: names, texts, gift options ----------------------------
 update public.settings set
-  bride            = 'Bride',
-  groom            = 'Groom',
+  bride            = '',   -- empty until the couple fills them in;
+  groom            = '',   -- the site shows "Bride" and "Groom" meanwhile
   city             = 'Yaoundé, Cameroon',
   countdown_at     = '2026-12-23 11:00:00+01',
   rsvp_deadline    = '2026-12-10',
@@ -22,10 +22,8 @@ update public.settings set
   word_fr          = 'Cher(e) {nom de l’invité}, merci de faire partie de notre histoire. Chaque pas a été porté par la grâce de Dieu, et nous voulons vous avoir à nos côtés pour dire oui devant la loi, nos familles et le Seigneur. Votre présence est déjà notre plus beau cadeau.',
   dress_en         = 'Elegant formal attire. We would love to see you in our wedding colours — midnight navy, emerald and gold — with ivory as a soft accent.',
   dress_fr         = 'Tenue de soirée élégante. Nous serions ravis de vous voir dans nos couleurs — bleu nuit, émeraude et or — avec une touche d’ivoire.',
-  momo_number      = '[MoMo number]',
-  momo_name        = '[Account name]',
-  om_number        = '[Orange Money number]',
-  om_name          = '[Account name]',
+  -- MoMo / Orange Money numbers stay empty until the couple fills them in;
+  -- the studio shows placeholders, and the site hides empty options.
   gift_box_note_en = 'Saturday 26 December · Bansoa Hall. An envelope with your name helps us thank you.',
   gift_box_note_fr = 'Samedi 26 décembre · Salle Bansoa. Une enveloppe à votre nom nous aidera à vous remercier.',
   music_title      = 'The Best Part of You — Savvy',

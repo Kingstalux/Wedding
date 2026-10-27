@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router'
 import { checkIn, pickCurrentEvent, type CheckInResult } from '../../admin/door'
 import { Button } from '../../components/Button'
 import { Icon } from '../../components/Icon'
+import { Select } from '../../components/Select'
 import { Eyebrow } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { cx } from '../../lib/cx'
@@ -117,18 +118,16 @@ function CoupleCheckIn({ code }: { code: string }) {
   return (
     <div className={styles.couple}>
       <p className={styles.coupleLabel}>Couple’s studio</p>
-      <select
+      <Select
         aria-label="Event"
         value={current}
-        onChange={(e) => setEventId(e.target.value)}
+        onChange={setEventId}
         className={styles.eventSelect}
-      >
-        {events.map((e) => (
-          <option key={e.id} value={e.id}>
-            {e.title_en} · {formatDayShort(e.starts_at, 'en')} {formatTime(e.starts_at, 'en')}
-          </option>
-        ))}
-      </select>
+        options={events.map((e) => ({
+          value: e.id,
+          label: `${e.title_en} · ${formatDayShort(e.starts_at, 'en')} ${formatTime(e.starts_at, 'en')}`,
+        }))}
+      />
       <Button block onClick={go} loading={busy} disabled={!current}>
         Check in
       </Button>

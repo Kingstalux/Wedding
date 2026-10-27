@@ -92,6 +92,17 @@
   color: var(--white);
 }
 
+/* Confirming a deletion: navy, clearly different from the emerald primary */
+.destructive {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+}
+.destructive:hover:not(:disabled) {
+  background: var(--slate);
+  border-color: var(--slate);
+}
+
 .spinner {
   width: 14px;
   height: 14px;

@@ -12,7 +12,7 @@
 }
 .wide {
   width: min(100%, 520px);
-  aspect-ratio: 16 / 7;
+  aspect-ratio: 16 / 9;
 }
 .tall {
   width: 120px;
@@ -45,4 +45,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--muted);
 }

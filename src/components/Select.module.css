@@ -1,0 +1,123 @@
+.select {
+  position: relative;
+  width: 100%;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Same two looks as the text fields */
+.line {
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  font-size: 16px;
+}
+.line:focus-visible,
+.line[aria-expanded='true'] {
+  outline: none;
+  border-bottom-color: var(--ink);
+}
+
+.box {
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--white);
+  font-size: 15px;
+}
+.box:hover:not(:disabled),
+.box[aria-expanded='true'] {
+  border-color: var(--ink);
+}
+.box:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.placeholder {
+  color: var(--muted);
+}
+
+.chevron {
+  flex: none;
+  color: var(--primary);
+  transition: transform 0.2s;
+}
+.trigger[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
+}
+
+.list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 60;
+  max-height: 264px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--primary);
+  background: var(--white);
+  box-shadow: var(--shadow);
+  animation: drop 0.14s ease-out;
+}
+.up {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
+.list:focus {
+  outline: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 42px;
+  padding: 8px 16px;
+  font-size: 15px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.active {
+  background: var(--ivory);
+}
+.option[aria-selected='true'] {
+  color: var(--emerald);
+  font-weight: 500;
+}
+.check {
+  flex: none;
+  color: var(--emerald);
+}
+
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

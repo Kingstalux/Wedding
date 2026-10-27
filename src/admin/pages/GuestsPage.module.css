@@ -180,16 +180,5 @@
 }
 
 .langPick {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--muted);
-}
-.langPick select {
-  min-height: 38px;
-  padding: 0 10px;
-  border: 1px solid var(--line);
-  background: var(--white);
-  color: var(--ink);
+  width: min(280px, 100%);
 }

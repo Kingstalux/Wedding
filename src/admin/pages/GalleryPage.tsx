@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
 import { Switch } from '../../components/Form'
+import { useConfirm } from '../../components/Confirm'
 import { Icon } from '../../components/Icon'
 import { IconButton } from '../../components/IconButton'
 import { Photo } from '../../components/Photo'
@@ -8,7 +9,8 @@ import { useToast } from '../../components/Toast'
 import type { Database } from '../../lib/database.types'
 import { mediaUrl } from '../../lib/media'
 import { supabase } from '../../lib/supabase'
-import { removeMedia, uploadPhoto } from '../../lib/upload'
+import { removeMedia, uploadPhotoBlob } from '../../lib/upload'
+import { GalleryUploadDialog, type PreparedPhoto } from '../components/photo/GalleryUploadDialog'
 import { studioErrorMessage, useSettings, useUpdateSettings } from '../queries'
 import studio from '../studio.module.css'
 import styles from './GalleryPage.module.css'
@@ -20,10 +22,11 @@ const photosKey = ['admin', 'gallery'] as const
 export function GalleryPage() {
   const queryClient = useQueryClient()
   const toast = useToast()
+  const confirm = useConfirm()
   const inputRef = useRef<HTMLInputElement>(null)
   const settings = useSettings()
   const updateSettings = useUpdateSettings()
-  const [progress, setProgress] = useState<string | null>(null)
+  const [picked, setPicked] = useState<File[] | null>(null)
 
   const photos = useQuery({
     queryKey: photosKey,
@@ -40,15 +43,15 @@ export function GalleryPage() {
   const list = photos.data ?? []
   const refresh = () => queryClient.invalidateQueries({ queryKey: photosKey })
 
-  // Upload one by one so progress is visible and a failure doesn't lose the rest.
-  async function addPhotos(files: FileList) {
-    const chosen = [...files]
+  // Upload the prepared photos one by one, in the chosen order, so progress is
+  // visible and a failure doesn't lose the rest.
+  async function uploadPrepared(prepared: PreparedPhoto[], onProgress: (done: number) => void) {
     let nextSort = Math.max(0, ...list.map((p) => p.sort)) + 1
     let failed = 0
-    for (const [i, file] of chosen.entries()) {
-      setProgress(`Uploading ${i + 1} of ${chosen.length}…`)
+    for (const [i, photo] of prepared.entries()) {
+      onProgress(i)
       try {
-        const { path, width, height } = await uploadPhoto('gallery', file)
+        const { path, width, height } = await uploadPhotoBlob('gallery', photo)
         const { error } = await supabase
           .from('gallery_photos')
           .insert({ path, width, height, sort: nextSort++ })
@@ -58,13 +61,12 @@ export function GalleryPage() {
         }
       } catch (err) {
         failed++
-        toast(`${file.name}: ${studioErrorMessage(err)}`, 'error')
+        toast(`${photo.name}: ${studioErrorMessage(err)}`, 'error')
       }
     }
-    setProgress(null)
-    if (inputRef.current) inputRef.current.value = ''
     await refresh()
-    const added = chosen.length - failed
+    setPicked(null)
+    const added = prepared.length - failed
     if (added)
       toast(added === 1 ? 'Photo added to the gallery' : `${added} photos added to the gallery`)
   }
@@ -156,8 +158,13 @@ export function GalleryPage() {
                     icon="trash"
                     size="sm"
                     label={`Delete photo ${i + 1}`}
-                    onClick={() =>
-                      window.confirm('Delete this photo from the gallery?') && remove.mutate(photo)
+                    onClick={async () =>
+                      (await confirm({
+                        title: 'Delete this photo?',
+                        message: 'It is removed from the gallery and from storage.',
+                        confirmLabel: 'Delete',
+                        danger: true,
+                      })) && remove.mutate(photo)
                     }
                   />
                 </div>
@@ -172,25 +179,31 @@ export function GalleryPage() {
               accept="image/jpeg,image/png,image/webp"
               multiple
               aria-label="Choose photos to add"
-              onChange={(e) => e.target.files?.length && addPhotos(e.target.files)}
+              onChange={(e) => {
+                if (e.target.files?.length) setPicked([...e.target.files])
+                e.target.value = ''
+              }}
             />
-            <button
-              type="button"
-              className={styles.add}
-              onClick={() => inputRef.current?.click()}
-              disabled={Boolean(progress)}
-            >
+            <button type="button" className={styles.add} onClick={() => inputRef.current?.click()}>
               <Icon name="plus" size={20} />
-              {progress ?? 'Add photos'}
+              Add photos
             </button>
           </li>
         </ul>
       )}
 
       <p className={studio.hint}>
-        Photos are resized automatically before upload, so they load quickly on phones. You can
-        select several at once.
+        You can select several photos at once, then crop and order them before they’re added.
+        They’re resized automatically so they load quickly on phones.
       </p>
+
+      {picked && (
+        <GalleryUploadDialog
+          files={picked}
+          onCancel={() => setPicked(null)}
+          onUpload={uploadPrepared}
+        />
+      )}
     </>
   )
 }
