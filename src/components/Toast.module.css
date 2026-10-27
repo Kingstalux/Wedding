@@ -1,0 +1,37 @@
+.region {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: min(380px, calc(100vw - 40px));
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 18px;
+  font-size: 14px;
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+  animation: rise 0.2s ease-out;
+}
+
+.success {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.error {
+  background: var(--white);
+  color: var(--ink);
+  border-left: 3px solid var(--gold);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}

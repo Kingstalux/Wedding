@@ -1,0 +1,108 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 30px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.button:disabled,
+.button[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.small {
+  min-height: 38px;
+  padding: 0 16px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+
+.block {
+  width: 100%;
+}
+
+/* Variants */
+.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+.primary:hover:not(:disabled) {
+  background: var(--primary-deep);
+  border-color: var(--primary-deep);
+}
+
+.ghost {
+  background: transparent;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.ghost:hover:not(:disabled) {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+
+/* For use on emerald/dark backgrounds */
+.ghostLight {
+  background: transparent;
+  border-color: var(--line-dark);
+  color: var(--ivory);
+}
+.ghostLight:hover:not(:disabled) {
+  background: var(--ivory);
+  color: var(--ink);
+}
+
+.gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+.gold:hover:not(:disabled) {
+  background: var(--ivory);
+  border-color: var(--ivory);
+}
+
+/* Destructive actions in the studio */
+.danger {
+  background: var(--white);
+  border-color: var(--line);
+  color: var(--ink);
+}
+.danger:hover:not(:disabled) {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--white);
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

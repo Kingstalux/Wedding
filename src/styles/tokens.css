@@ -1,0 +1,42 @@
+/*
+ * Design tokens: the single source of truth for colours, fonts and sizes.
+ * Ported from mockup/assets/styles.css. Components use these variables,
+ * never raw hex values, so re-theming means editing this file only.
+ *
+ * Palette: only the couple's five wedding colours, plus ivory/white neutrals.
+ */
+:root {
+  /* The five wedding colours */
+  --navy: #0a0e52;
+  --slate: #3a4575;
+  --forest: #0c3b2e;
+  --emerald: #17705a;
+  --gold: #b8912f;
+
+  /* Neutrals */
+  --ivory: #f7f4ec;
+  --white: #ffffff;
+
+  /* Theme roles: swap these to re-theme the whole site */
+  --primary: var(--emerald); /* bands, buttons, header, footer, sidebar */
+  --primary-deep: var(--forest); /* hover / pressed */
+  --ink: var(--forest); /* body text */
+  --muted: var(--slate); /* secondary text, labels */
+
+  /* Text and lines on dark (emerald) backgrounds */
+  --on-dark: var(--ivory);
+  --on-dark-soft: rgba(247, 244, 236, 0.92);
+  --line: rgba(12, 59, 46, 0.16);
+  --line-dark: rgba(247, 244, 236, 0.28);
+
+  /* Typography */
+  --font-display: 'Bodoni Moda', 'Didot', Georgia, serif;
+  --font-sans: 'Jost', 'Helvetica Neue', sans-serif;
+  --font-script: 'Pinyon Script', cursive;
+
+  /* Layout */
+  --max: 1180px;
+  --gutter: 24px;
+  --section-y: clamp(72px, 9vw, 112px);
+  --shadow: 0 6px 24px rgba(12, 59, 46, 0.14);
+}

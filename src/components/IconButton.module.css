@@ -1,0 +1,39 @@
+.iconButton {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background-color 0.2s;
+}
+.iconButton:hover:not(:disabled) {
+  border-color: var(--ink);
+}
+.iconButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.small {
+  width: 38px;
+  height: 38px;
+}
+
+/* On emerald/dark backgrounds (header, lightbox) */
+.light {
+  background: transparent;
+  border-color: var(--line-dark);
+  color: var(--ivory);
+}
+.light:hover:not(:disabled) {
+  border-color: var(--gold);
+  color: var(--white);
+}
