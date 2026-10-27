@@ -103,7 +103,8 @@ export function Cropper({
       <div
         ref={frameRef}
         className={`${styles.frame} ${styles.interactive}`}
-        style={{ aspectRatio: String(aspect) }}
+        // Tall frames (phone photos) are capped so the whole editor fits on screen.
+        style={{ aspectRatio: String(aspect), width: `min(100%, calc(60dvh * ${aspect}))` }}
         tabIndex={0}
         role="application"
         aria-label="Photo position. Drag, or use the arrow keys to move it and + or − to zoom."

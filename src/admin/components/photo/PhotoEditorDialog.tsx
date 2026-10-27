@@ -99,7 +99,23 @@ export function PhotoEditorDialog({
                   </CropPreview>
                 </div>
                 <p className={styles.note}>
-                  On phones the middle of the photo is shown, so keep faces near the centre.
+                  Phones show the middle of this photo. For a better result on phones, add a
+                  separate phone version below.
+                </p>
+              </div>
+            ) : shape === 'heroMobile' ? (
+              <div>
+                <p className={styles.previewLabel}>On a phone held upright</p>
+                <CropPreview
+                  url={loaded.url}
+                  size={loaded.size}
+                  rect={rect}
+                  className={styles.phoneLarge}
+                >
+                  <HeroText names={names} />
+                </CropPreview>
+                <p className={styles.note}>
+                  Keep faces in the right half: your names sit on the left side of the screen.
                 </p>
               </div>
             ) : (

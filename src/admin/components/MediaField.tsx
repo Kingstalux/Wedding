@@ -22,6 +22,8 @@ type Props = {
   shape?: PhotoShape
   /** Names shown on the landing-photo previews. */
   names?: { bride: string; groom: string }
+  /** Offer "Use the landing photo": re-crop another stored photo for this field. */
+  copyFrom?: { path: string | null; label: string }
   tone?: PhotoTone
   placeholder?: string
 }
@@ -38,6 +40,7 @@ export function MediaField({
   onSave,
   shape = 'portrait',
   names,
+  copyFrom,
   tone = 'slate',
   placeholder = 'No photo yet',
 }: Props) {
@@ -54,6 +57,22 @@ export function MediaField({
     if (inputRef.current) inputRef.current.value = ''
     if (kind === 'photo') setEditing(file)
     else saveSong(file)
+  }
+
+  /** Loads an already-uploaded photo into the editor, to crop it differently. */
+  async function editStored(storedPath: string) {
+    setBusy(true)
+    setError(null)
+    try {
+      const res = await fetch(mediaUrl(storedPath)!)
+      if (!res.ok) throw new Error('The photo couldn’t be loaded.')
+      const blob = await res.blob()
+      setEditing(new File([blob], 'landing-photo.jpg', { type: blob.type || 'image/jpeg' }))
+    } catch (err) {
+      setError(studioErrorMessage(err))
+    } finally {
+      setBusy(false)
+    }
   }
 
   /** Called by the photo editor with the cropped photo. */
@@ -103,7 +122,10 @@ export function MediaField({
     <div className={styles.field}>
       {kind === 'photo' ? (
         <Photo
-          className={cx(styles.preview, shape === 'hero' ? styles.wide : styles.tall)}
+          className={cx(
+            styles.preview,
+            shape === 'hero' ? styles.wide : shape === 'heroMobile' ? styles.phone : styles.tall,
+          )}
           src={url}
           label={placeholder}
           tone={tone}
@@ -134,6 +156,11 @@ export function MediaField({
                 ? `Replace ${kind === 'photo' ? 'photo' : 'song'}`
                 : 'Upload'}
           </Button>
+          {copyFrom?.path && !busy && (
+            <Button size="sm" variant="ghost" onClick={() => editStored(copyFrom.path!)}>
+              {copyFrom.label}
+            </Button>
+          )}
           {url && !busy && (
             <Button size="sm" variant="ghost" onClick={remove}>
               Remove

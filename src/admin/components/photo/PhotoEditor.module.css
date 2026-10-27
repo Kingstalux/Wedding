@@ -41,6 +41,16 @@
   border: 5px solid var(--ink);
   border-radius: 10px;
 }
+.phoneLarge {
+  width: 160px;
+  border: 6px solid var(--ink);
+  border-radius: 14px;
+}
+.phoneLarge .heroText {
+  font-size: 15px;
+  padding: 12%;
+}
+
 .portrait {
   width: min(220px, 100%);
 }

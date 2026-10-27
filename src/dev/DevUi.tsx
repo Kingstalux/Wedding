@@ -61,6 +61,7 @@ export function DevUi() {
   const [via, setVia] = useState('momo')
   const confirm = useConfirm()
   const [editorFile, setEditorFile] = useState<File | null>(null)
+  const [editorShape, setEditorShape] = useState<'hero' | 'heroMobile'>('hero')
   const [batch, setBatch] = useState<File[] | null>(null)
 
   return (
@@ -269,9 +270,22 @@ export function DevUi() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={async () => setEditorFile(await samplePhoto(3000, 2000, 0))}
+            onClick={async () => {
+              setEditorShape('hero')
+              setEditorFile(await samplePhoto(3000, 2000, 0))
+            }}
           >
             Landing photo editor
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={async () => {
+              setEditorShape('heroMobile')
+              setEditorFile(await samplePhoto(3000, 2000, 0))
+            }}
+          >
+            Phone landing photo editor
           </Button>
           <Button
             variant="ghost"
@@ -286,7 +300,7 @@ export function DevUi() {
         {editorFile && (
           <PhotoEditorDialog
             file={editorFile}
-            shape="hero"
+            shape={editorShape}
             names={{ bride: 'Favour', groom: 'Brandon' }}
             onCancel={() => setEditorFile(null)}
             onSave={async (photo) => {

@@ -14,6 +14,8 @@ export type Settings = {
   countdown_at: string
   rsvp_deadline: string | null
   hero_url: string | null
+  /** Optional upright version of the landing photo for phones. */
+  hero_mobile_url: string | null
   word_photo_url: string | null
   word_en: string
   word_fr: string

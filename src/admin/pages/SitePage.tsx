@@ -141,7 +141,8 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
 
   // Photos and the song are saved the moment they're uploaded.
   const saveMedia =
-    (column: 'hero_path' | 'word_photo_path' | 'music_path') => (path: string | null) =>
+    (column: 'hero_path' | 'hero_mobile_path' | 'word_photo_path' | 'music_path') =>
+    (path: string | null) =>
       update.mutateAsync({ [column]: path })
 
   return (
@@ -165,6 +166,7 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
         <p className={styles.lede} style={{ marginBottom: 20 }}>
           The large photo behind your names on the first screen. Landscape works best.
         </p>
+        <h3>On computers and tablets</h3>
         <MediaField
           kind="photo"
           folder="hero"
@@ -173,6 +175,22 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           shape="hero"
           names={{ bride: draft.bride, groom: draft.groom }}
           placeholder="Landing photo"
+        />
+
+        <h3>On phones (optional)</h3>
+        <p className={styles.lede} style={{ marginBottom: 16 }}>
+          An upright version for phones. Use the same photo cropped for a tall screen, or a
+          different one. Without it, phones show the middle of the photo above.
+        </p>
+        <MediaField
+          kind="photo"
+          folder="hero"
+          path={settings.hero_mobile_path}
+          onSave={saveMedia('hero_mobile_path')}
+          shape="heroMobile"
+          names={{ bride: draft.bride, groom: draft.groom }}
+          placeholder="Phone"
+          copyFrom={{ path: settings.hero_path, label: 'Use the landing photo' }}
         />
       </section>
 

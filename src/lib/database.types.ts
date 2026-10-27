@@ -280,6 +280,7 @@ export type Database = {
           gift_box_note_en: string
           gift_box_note_fr: string
           groom: string
+          hero_mobile_path: string | null
           hero_path: string | null
           id: boolean
           momo_name: string | null
@@ -311,6 +312,7 @@ export type Database = {
           gift_box_note_en?: string
           gift_box_note_fr?: string
           groom?: string
+          hero_mobile_path?: string | null
           hero_path?: string | null
           id?: boolean
           momo_name?: string | null
@@ -342,6 +344,7 @@ export type Database = {
           gift_box_note_en?: string
           gift_box_note_fr?: string
           groom?: string
+          hero_mobile_path?: string | null
           hero_path?: string | null
           id?: boolean
           momo_name?: string | null

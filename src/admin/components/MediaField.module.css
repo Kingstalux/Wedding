@@ -14,6 +14,10 @@
   width: min(100%, 520px);
   aspect-ratio: 16 / 9;
 }
+.phone {
+  width: 96px;
+  aspect-ratio: 9 / 16;
+}
 .tall {
   width: 120px;
   aspect-ratio: 4 / 5;

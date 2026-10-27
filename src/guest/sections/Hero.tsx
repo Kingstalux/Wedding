@@ -18,7 +18,8 @@ export function Hero() {
     <section className={styles.hero} aria-labelledby="hero-names">
       <Photo
         className={styles.photo}
-        src={settings.hero_url}
+        src={settings.hero_url ?? settings.hero_mobile_url}
+        portraitSrc={settings.hero_mobile_url}
         label={t('hero.photo')}
         tone="slate"
         loading="eager"
