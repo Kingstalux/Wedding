@@ -80,25 +80,35 @@ again with the prod ref only when we deploy (Step 16).
 
 Do the same in **prod** at Step 16, using the Vercel address instead of localhost.
 
-## 6. Migrations: how the database is built ⏳ Step 4–5
+## 6. Migrations: how the database is built ✅ Step 4 (first file)
 
-Each change to the database is a numbered SQL file in `supabase/migrations/`, committed to git:
-
-```
-0001_schema.sql            tables
-0002_security.sql          RLS policies + is_admin()
-0003_guest_functions.sql   get_invitation, submit_rsvp, post_wish, announce_gift…
-0004_admin_functions.sql   import_guests, check_in, dashboard_stats…
-0005_storage.sql           the "media" bucket and who may upload
-```
+Each change to the database is a SQL file in `supabase/migrations/`, committed to git.
+Create one with the CLI, which adds a timestamp so files always run in order:
 
 ```bash
-supabase db push                       # applies files not yet run on the linked project
-npm run db:types                       # regenerates src/lib/database.types.ts
+supabase migration new security      # → supabase/migrations/20261027…_security.sql
+```
+
+| File                    | What it adds                                         |
+| ----------------------- | ---------------------------------------------------- |
+| `…_schema.sql` ✅       | the 9 tables, with RLS switched on (deny everything) |
+| `…_security.sql`        | `is_admin()` + the RLS policies                      |
+| `…_guest_functions.sql` | `get_invitation`, `submit_rsvp`, `post_wish`…        |
+| `…_admin_functions.sql` | `import_guests`, `check_in`, `dashboard_stats`…      |
+| `…_storage.sql`         | the `media` bucket and who may upload                |
+
+```bash
+supabase db push --linked --dry-run  # shows what would run, changes nothing
+npm run db:push                      # applies new files to the linked project
+npm run db:types                     # regenerates src/lib/database.types.ts
+supabase migration list --linked     # which files have run
 ```
 
 Supabase records which files have already run, so `db push` is safe to repeat.
-**Never edit a file that has already been pushed.** Add a new one instead, e.g. `0006_add_x.sql`.
+**Never edit a file that has already been pushed.** Add a new one instead.
+
+After `db:types`, the client is `createClient<Database>(…)`, so TypeScript knows
+every table and column: a typo like `supabase.from('gusets')` fails to compile.
 
 ## 7. How React talks to Supabase ⏳ Steps 6–14
 

@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { Database } from './database.types'
 
 // Vite exposes variables that start with VITE_ through import.meta.env.
 // Locally they come from .env.local; on Vercel from the project's env settings.
@@ -23,7 +24,8 @@ if (!url || !key) {
  * The publishable/anon key only identifies the project. What it may read or
  * write is decided inside Postgres by Row Level Security policies.
  *
- * Once the schema exists (Step 4) this becomes createClient<Database>(...),
- * using generated types so table and column names are checked by TypeScript.
+ * <Database> comes from `npm run db:types`, generated from the real schema:
+ * TypeScript then checks every table name, column and function argument.
+ * Re-run it after each new migration.
  */
-export const supabase = createClient(url, key)
+export const supabase = createClient<Database>(url, key)
