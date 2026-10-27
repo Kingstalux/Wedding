@@ -1,0 +1,93 @@
+.page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  min-height: 280px;
+  padding: clamp(32px, 6vw, 72px);
+  background: var(--primary);
+  color: var(--ivory);
+}
+
+.mark {
+  font-size: 28px;
+  color: var(--gold);
+}
+
+.side h1 {
+  font-size: clamp(40px, 5vw, 64px);
+  text-transform: uppercase;
+}
+.side h1 em {
+  display: block;
+  font-size: 0.5em;
+  text-transform: none;
+}
+
+.formSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.form {
+  width: min(400px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.password {
+  position: relative;
+}
+.password input {
+  padding-right: 64px;
+}
+.reveal {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  min-height: 36px;
+  padding: 0 8px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.linkButton {
+  align-self: flex-start;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.notice {
+  padding: 12px 14px;
+  border-left: 3px solid var(--primary);
+  background: var(--white);
+  font-size: 14px;
+}
+
+.error {
+  padding: 12px 14px;
+  border-left: 3px solid var(--gold);
+  background: var(--white);
+  font-size: 14px;
+  font-weight: 500;
+}

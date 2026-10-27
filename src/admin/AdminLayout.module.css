@@ -1,0 +1,113 @@
+.shell {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100dvh;
+  background: var(--ivory);
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  flex: 1 1 248px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 28px 20px;
+  background: var(--primary);
+  color: var(--ivory);
+}
+@media (min-width: 900px) {
+  .sidebar {
+    flex: 0 0 248px;
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+  }
+}
+
+.brand {
+  color: var(--ivory);
+  text-decoration: none;
+}
+.brand small {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--on-dark-soft);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+@media (max-width: 899px) {
+  .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-left: 2px solid transparent;
+  color: var(--on-dark);
+  font-size: 14px;
+  text-decoration: none;
+}
+.nav a:hover {
+  background: rgba(247, 244, 236, 0.08);
+}
+.nav a[aria-current='page'] {
+  border-left-color: var(--gold);
+  background: rgba(247, 244, 236, 0.12);
+  color: var(--white);
+  font-weight: 500;
+}
+
+.foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-dark);
+  font-size: 13px;
+}
+.who {
+  color: var(--on-dark-soft);
+  overflow-wrap: anywhere;
+  margin-bottom: 4px;
+}
+.foot button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--on-dark);
+  font-size: 13px;
+  cursor: pointer;
+}
+.foot button:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+/* ---------- Content ---------- */
+.content {
+  flex: 999 1 600px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: clamp(24px, 4vw, 48px);
+}
