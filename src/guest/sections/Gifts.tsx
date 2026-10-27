@@ -4,29 +4,13 @@ import { SelectField, TextAreaField, TextField } from '../../components/Form'
 import { Icon } from '../../components/Icon'
 import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
+import { copyText } from '../../lib/clipboard'
 import { cx } from '../../lib/cx'
 import { containsLink } from '../../lib/validation'
 import { errorMessageKey } from '../api'
 import { useInvitation } from '../InvitationProvider'
 import type { GiftMethod } from '../types'
 import styles from './Gifts.module.css'
-
-/** Copies text, with a fallback for older phones without the Clipboard API. */
-async function copyText(text: string) {
-  try {
-    await navigator.clipboard.writeText(text)
-  } catch {
-    const area = document.createElement('textarea')
-    area.value = text
-    area.setAttribute('readonly', '')
-    area.style.position = 'fixed'
-    area.style.opacity = '0'
-    document.body.appendChild(area)
-    area.select()
-    document.execCommand('copy')
-    area.remove()
-  }
-}
 
 function CopyButton({ text }: { text: string }) {
   const { t } = useT()

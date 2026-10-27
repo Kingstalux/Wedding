@@ -117,3 +117,15 @@ export function splitLocal(iso: string | null | undefined): { date: string; time
 export function joinLocal(date: string, time: string): string | null {
   return date && time ? `${date}T${time}:00${DOUALA_OFFSET}` : null
 }
+
+/** "12 Oct, 19:02" in Douala time: for the studio's tables. */
+export function formatShortDateTime(iso: string | null | undefined): string {
+  if (!iso) return ''
+  return parts(iso, 'en', {
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
+}

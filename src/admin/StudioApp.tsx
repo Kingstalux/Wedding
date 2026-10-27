@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router'
 import { AdminLayout } from './AdminLayout'
 import { AuthProvider } from './AuthProvider'
 import { GalleryPage } from './pages/GalleryPage'
+import { GuestsPage } from './pages/GuestsPage'
 import { LoginPage } from './pages/LoginPage'
 import { ProgrammePage } from './pages/ProgrammePage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
@@ -32,12 +33,7 @@ export function StudioApp() {
             </RequireAdmin>
           }
         >
-          <Route
-            index
-            element={
-              <StudioPlaceholder title="Overview & guests" step={13} mockup="admin-guests.html" />
-            }
-          />
+          <Route index element={<GuestsPage />} />
           <Route path="site" element={<SitePage />} />
           <Route path="programme" element={<ProgrammePage />} />
           <Route path="gallery" element={<GalleryPage />} />

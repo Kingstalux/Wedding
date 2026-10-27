@@ -1,0 +1,43 @@
+.dialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+.wide {
+  width: min(820px, calc(100vw - 32px));
+}
+.dialog::backdrop {
+  background: rgba(12, 59, 46, 0.45);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 28px 0;
+}
+.head h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 26px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px 28px 28px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+}
