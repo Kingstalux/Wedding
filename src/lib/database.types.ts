@@ -57,6 +57,13 @@ export type Database = {
             foreignKeyName: "checkins_guest_id_fkey"
             columns: ["guest_id"]
             isOneToOne: false
+            referencedRelation: "guest_list"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "checkins_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
             referencedRelation: "guests"
             referencedColumns: ["id"]
           },
@@ -161,6 +168,13 @@ export type Database = {
             foreignKeyName: "gift_announcements_guest_id_fkey"
             columns: ["guest_id"]
             isOneToOne: false
+            referencedRelation: "guest_list"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_announcements_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
             referencedRelation: "guests"
             referencedColumns: ["id"]
           },
@@ -240,6 +254,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "rsvps_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: true
+            referencedRelation: "guest_list"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "rsvps_guest_id_fkey"
             columns: ["guest_id"]
@@ -372,6 +393,13 @@ export type Database = {
             foreignKeyName: "wishes_guest_id_fkey"
             columns: ["guest_id"]
             isOneToOne: false
+            referencedRelation: "guest_list"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wishes_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
             referencedRelation: "guests"
             referencedColumns: ["id"]
           },
@@ -379,10 +407,72 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      guest_list: {
+        Row: {
+          attending: boolean | null
+          created_at: string | null
+          deleted_at: string | null
+          diet: string | null
+          first_opened_at: string | null
+          id: string | null
+          invite_sent_at: string | null
+          lang: string | null
+          last_checked_in_at: string | null
+          last_opened_at: string | null
+          name: string | null
+          note: string | null
+          open_count: number | null
+          pass_code: string | null
+          phone: string | null
+          responded_at: string | null
+          token: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      announce_gift: {
+        Args: {
+          p_amount?: number
+          p_message?: string
+          p_method: Database["public"]["Enums"]["gift_method"]
+          p_token: string
+        }
+        Returns: undefined
+      }
+      check_in: { Args: { p_code: string; p_event_id: string }; Returns: Json }
+      dashboard_stats: { Args: never; Returns: Json }
+      delete_own_wish: {
+        Args: { p_token: string; p_wish_id: string }
+        Returns: boolean
+      }
+      get_invitation: {
+        Args: { p_preview?: boolean; p_token: string }
+        Returns: Json
+      }
+      import_guests: {
+        Args: { p_apply?: boolean; p_remove_missing?: boolean; p_rows: Json }
+        Returns: Json
+      }
+      is_admin: { Args: never; Returns: boolean }
+      mark_invite_sent: { Args: { p_guest_id: string }; Returns: undefined }
+      post_wish: { Args: { p_message: string; p_token: string }; Returns: Json }
+      read_pass: { Args: { p_code: string }; Returns: Json }
+      regenerate_token: { Args: { p_guest_id: string }; Returns: string }
+      restore_guest: { Args: { p_guest_id: string }; Returns: boolean }
+      set_language: {
+        Args: { p_lang: string; p_token: string }
+        Returns: undefined
+      }
+      submit_rsvp: {
+        Args: {
+          p_attending: boolean
+          p_diet?: string
+          p_note?: string
+          p_token: string
+        }
+        Returns: Json
+      }
     }
     Enums: {
       gift_method: "momo" | "orange" | "cash"

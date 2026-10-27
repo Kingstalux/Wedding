@@ -30,8 +30,9 @@ Parts marked ✅ are done; ⏳ are coming in later steps.
   in the page's JavaScript. That's fine, because it gives no rights by itself.
 - **Row Level Security (RLS) is the real gatekeeper.** Rules written in SQL, inside
   Postgres, decide what each request can read or change.
-  - An anonymous guest can read the programme, but never the guest list.
-  - Guests act only through SQL **functions** that take their private token.
+  - Anonymous visitors can't read **any** table, not even the programme or the names.
+  - Guests get the wedding content and act only through SQL **functions** that take
+    their private token (`get_invitation`, `submit_rsvp`, …).
   - The couple, once signed in, can do everything. The database checks this through an `admins` table.
 - **The secret key (`service_role`) bypasses RLS.** It never goes into the app or into git.
 
@@ -112,17 +113,23 @@ every table and column: a typo like `supabase.from('gusets')` fails to compile.
 
 ## 7. How React talks to Supabase ⏳ Steps 6–14
 
-**Read public content** (allowed for everyone by RLS):
-
-```ts
-const { data, error } = await supabase.from('events').select('*').order('starts_at')
-```
-
-**Guest actions go through functions** (the token proves who the guest is):
+**Guests: everything goes through functions** (the token proves who the guest is).
+`get_invitation` returns the settings, programme, gallery, the guest's reply and the
+guest book in one call; errors come back as short codes the site translates:
 
 ```ts
 const { data, error } = await supabase.rpc('get_invitation', { p_token: token })
 await supabase.rpc('submit_rsvp', { p_token: token, p_attending: true, p_diet: '', p_note: '' })
+await supabase.rpc('post_wish', { p_token: token, p_message: 'Congratulations!' })
+// error.message === 'links_not_allowed' | 'rate_limited' | 'rsvp_closed' | 'invalid_token' …
+```
+
+**The couple: tables directly** (allowed because RLS sees an admin) **plus a few functions:**
+
+```ts
+const { data } = await supabase.from('guest_list').select('*').is('deleted_at', null)
+await supabase.from('events').update({ maps_url }).eq('id', eventId)
+const { data: stats } = await supabase.rpc('dashboard_stats')
 ```
 
 **Couple sign-in:**
@@ -145,7 +152,7 @@ In components these calls are wrapped in **React Query** hooks (`useQuery` /
 `useMutation`). React Query handles loading states and caching, and refreshes data
 after a change, e.g. the RSVP section updates after "Submit".
 
-## 8. Proving it's secure ⏳ Step 5
+## 8. Proving it’s secure ✅ Step 5
 
 `npm run check:rls` acts like a stranger who only has the publishable key. It tries
 to read `guests`, `rsvps`, `wishes`, `gift_announcements` and `checkins`, and it

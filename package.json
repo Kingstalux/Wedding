@@ -14,7 +14,9 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc -b",
     "db:types": "supabase gen types typescript --linked --schema public > src/lib/database.types.ts",
-    "db:push": "supabase db push --linked"
+    "db:push": "supabase db push --linked",
+    "check:rls": "RLS_TEST_TOKEN=demo tsx --env-file=.env.local scripts/check-rls.ts",
+    "check:rls:prod": "tsx --env-file=.env.production.local scripts/check-rls.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
