@@ -1,0 +1,48 @@
+.field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.preview {
+  flex: none;
+  width: 160px;
+  aspect-ratio: 4 / 3;
+}
+.wide {
+  width: min(100%, 520px);
+  aspect-ratio: 16 / 7;
+}
+.tall {
+  width: 120px;
+  aspect-ratio: 4 / 5;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 200px;
+}
+
+.name {
+  font-size: 14px;
+}
+
+.audio {
+  width: min(100%, 360px);
+}
+
+.error {
+  font-size: 13px;
+  font-weight: 500;
+  padding-left: 10px;
+  border-left: 3px solid var(--gold);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

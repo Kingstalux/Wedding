@@ -2,8 +2,11 @@ import { useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import { AdminLayout } from './AdminLayout'
 import { AuthProvider } from './AuthProvider'
+import { GalleryPage } from './pages/GalleryPage'
 import { LoginPage } from './pages/LoginPage'
+import { ProgrammePage } from './pages/ProgrammePage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
+import { SitePage } from './pages/SitePage'
 import { StudioPlaceholder } from './pages/StudioPlaceholder'
 import { RequireAdmin } from './RequireAdmin'
 
@@ -35,20 +38,9 @@ export function StudioApp() {
               <StudioPlaceholder title="Overview & guests" step={13} mockup="admin-guests.html" />
             }
           />
-          <Route
-            path="site"
-            element={<StudioPlaceholder title="Site & texts" step={11} mockup="admin-site.html" />}
-          />
-          <Route
-            path="programme"
-            element={
-              <StudioPlaceholder title="Programme & maps" step={12} mockup="admin-programme.html" />
-            }
-          />
-          <Route
-            path="gallery"
-            element={<StudioPlaceholder title="Gallery" step={12} mockup="admin-gallery.html" />}
-          />
+          <Route path="site" element={<SitePage />} />
+          <Route path="programme" element={<ProgrammePage />} />
+          <Route path="gallery" element={<GalleryPage />} />
           <Route
             path="wishes"
             element={<StudioPlaceholder title="Guest book" step={14} mockup="admin-wishes.html" />}

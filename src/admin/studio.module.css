@@ -1,0 +1,134 @@
+/* Shared building blocks for studio pages (ported from mockup/assets/admin.css). */
+
+.pageHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+.pageHead h1 {
+  font-size: clamp(30px, 3.4vw, 40px);
+}
+.pageHead p {
+  margin-top: 6px;
+  color: var(--muted);
+}
+
+.card {
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+.card h2 {
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+}
+.card h3 {
+  margin: 24px 0 4px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.cardHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.lede {
+  color: var(--muted);
+  font-size: 14.5px;
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.dimmed {
+  opacity: 0.45;
+}
+
+/* Sticky bar at the bottom of a form with unsaved changes */
+.saveBar {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 0 calc(-1 * clamp(24px, 4vw, 48px)) calc(-1 * clamp(24px, 4vw, 48px));
+  padding: 14px clamp(20px, 3vw, 32px);
+  border-top: 1px solid var(--line);
+  background: var(--white);
+  box-shadow: 0 -6px 20px rgba(12, 59, 46, 0.06);
+}
+.saveBar p {
+  font-size: 14px;
+  color: var(--muted);
+}
+.dirty {
+  color: var(--ink) !important;
+  font-weight: 500;
+}
+
+.error {
+  padding: 12px 14px;
+  border-left: 3px solid var(--gold);
+  background: var(--white);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 18px;
+  font-size: 13px;
+}
+.swatches span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.swatches i {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+}
+
+.loading {
+  padding: 48px 0;
+  color: var(--muted);
+}

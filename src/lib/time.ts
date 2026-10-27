@@ -87,3 +87,33 @@ export function countdown(target: string | Date, now: Date = new Date()): Countd
   const minutes = Math.floor(s / 60)
   return { days, hours, minutes, seconds: s - minutes * 60, done: days + hours + minutes + s === 0 }
 }
+
+/*
+ * Studio form fields. <input type="datetime-local"> has no time zone, so the
+ * studio always reads and writes it as Douala time (UTC+1, no summer time),
+ * whatever time zone the couple's laptop is set to.
+ */
+const DOUALA_OFFSET = '+01:00'
+
+/** "2026-12-23T10:00:00Z" → "2026-12-23T11:00" for a datetime-local input. */
+export function toLocalInput(iso: string | null | undefined): string {
+  if (!iso) return ''
+  const shifted = new Date(new Date(iso).getTime() + 60 * 60 * 1000) // UTC → UTC+1
+  return shifted.toISOString().slice(0, 16)
+}
+
+/** "2026-12-23T11:00" (typed in Douala time) → "2026-12-23T11:00:00+01:00", or null if empty. */
+export function fromLocalInput(value: string): string | null {
+  return value ? `${value}:00${DOUALA_OFFSET}` : null
+}
+
+/** Splits an ISO time into Douala date ("2026-12-23") and time ("11:00") inputs. */
+export function splitLocal(iso: string | null | undefined): { date: string; time: string } {
+  const local = toLocalInput(iso)
+  return { date: local.slice(0, 10), time: local.slice(11, 16) }
+}
+
+/** Joins date + time inputs (Douala) back into an ISO string, or null if incomplete. */
+export function joinLocal(date: string, time: string): string | null {
+  return date && time ? `${date}T${time}:00${DOUALA_OFFSET}` : null
+}

@@ -7,6 +7,10 @@ import {
   formatDaySpan,
   formatTime,
   formatTimeRange,
+  fromLocalInput,
+  joinLocal,
+  splitLocal,
+  toLocalInput,
 } from './time'
 
 // 11:00 in Yaoundé is 10:00 UTC
@@ -46,5 +50,20 @@ describe('time helpers (Africa/Douala)', () => {
       done: false,
     })
     expect(countdown(civil, new Date('2027-01-01')).done).toBe(true)
+  })
+})
+
+describe('studio date fields (always Douala time)', () => {
+  it('round-trips datetime-local values', () => {
+    expect(toLocalInput('2026-12-23T10:00:00Z')).toBe('2026-12-23T11:00')
+    expect(fromLocalInput('2026-12-23T11:00')).toBe('2026-12-23T11:00:00+01:00')
+    expect(toLocalInput(fromLocalInput('2026-12-26T16:30'))).toBe('2026-12-26T16:30')
+    expect(fromLocalInput('')).toBeNull()
+  })
+
+  it('splits and joins date and time', () => {
+    expect(splitLocal('2026-12-26T19:00:00Z')).toEqual({ date: '2026-12-26', time: '20:00' })
+    expect(joinLocal('2026-12-26', '20:00')).toBe('2026-12-26T20:00:00+01:00')
+    expect(joinLocal('2026-12-26', '')).toBeNull()
   })
 })
