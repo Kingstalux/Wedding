@@ -16,6 +16,8 @@ export type Settings = {
   hero_url: string | null
   /** Optional upright version of the landing photo for phones. */
   hero_mobile_url: string | null
+  /** Which side the names sit on over the landing photo (computers). */
+  hero_text_side: 'left' | 'right'
   word_photo_url: string | null
   word_en: string
   word_fr: string
@@ -84,12 +86,4 @@ export type Invitation = {
   pass_code: string
   rsvp: Rsvp | null
   wishes: Wish[]
-}
-
-export type GiftMethod = 'momo' | 'orange' | 'cash'
-
-export type GiftAnnouncement = {
-  method: GiftMethod
-  amount_fcfa: number | null
-  message: string
 }

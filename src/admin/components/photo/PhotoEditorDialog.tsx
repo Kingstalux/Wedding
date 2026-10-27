@@ -24,7 +24,7 @@ export function PhotoEditorDialog({
   file: File
   shape: PhotoShape
   /** Shown on the landing photo previews. */
-  names?: { bride: string; groom: string }
+  names?: HeroNames
   onCancel: () => void
   onSave: (photo: { blob: Blob; width: number; height: number }) => Promise<void>
 }) {
@@ -87,7 +87,7 @@ export function PhotoEditorDialog({
                     rect={rect}
                     className={styles.desktop}
                   >
-                    <HeroText names={names} />
+                    <HeroText names={names} layout="desktop" />
                   </CropPreview>
                   <CropPreview
                     url={loaded.url}
@@ -95,7 +95,7 @@ export function PhotoEditorDialog({
                     rect={coverRect(rect, 9 / 16)}
                     className={styles.phone}
                   >
-                    <HeroText names={names} />
+                    <HeroText names={names} layout="phone" />
                   </CropPreview>
                 </div>
                 <p className={styles.note}>
@@ -112,10 +112,10 @@ export function PhotoEditorDialog({
                   rect={rect}
                   className={styles.phoneLarge}
                 >
-                  <HeroText names={names} />
+                  <HeroText names={names} layout="phone" />
                 </CropPreview>
                 <p className={styles.note}>
-                  Keep faces in the right half: your names sit on the left side of the screen.
+                  Your names sit at the bottom of the screen, so keep faces in the upper part.
                 </p>
               </div>
             ) : (
@@ -156,9 +156,14 @@ export function PhotoEditorDialog({
   )
 }
 
-function HeroText({ names }: { names?: { bride: string; groom: string } }) {
+export type HeroNames = { bride: string; groom: string; side?: 'left' | 'right' }
+
+/** The names as they sit on the landing photo: left/right on computers, bottom on phones. */
+function HeroText({ names, layout }: { names?: HeroNames; layout: 'desktop' | 'phone' }) {
+  const placement =
+    layout === 'phone' ? styles.heroBottom : names?.side === 'right' ? styles.heroRight : ''
   return (
-    <div className={styles.heroText} aria-hidden="true">
+    <div className={`${styles.heroText} ${placement}`} aria-hidden="true">
       <span>{names?.bride || 'Bride'}</span>
       <em>and</em>
       <span>{names?.groom || 'Groom'}</span>

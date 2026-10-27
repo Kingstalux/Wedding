@@ -48,7 +48,7 @@ export function Header({ music }: Props) {
     ['#dresscode', 'nav.dress', settings.show_dress],
     ['#gallery', 'nav.gallery', settings.show_gallery && content.gallery.length > 0],
     ['#rsvp', 'nav.rsvp', true],
-    ['#guestbook', 'nav.book', settings.show_wishes],
+    ['#wishes', 'nav.book', settings.show_wishes],
     ['#gifts', 'nav.gifts', settings.show_gifts],
   ]
 

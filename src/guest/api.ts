@@ -4,7 +4,6 @@ import { supabase } from '../lib/supabase'
 import type { Lang } from '../lib/time'
 import type {
   GalleryPhoto,
-  GiftAnnouncement,
   Invitation,
   PublicContent,
   Rsvp,
@@ -86,8 +85,6 @@ const KNOWN_ERRORS = [
   'links_not_allowed',
   'message_length',
   'rate_limited',
-  'invalid_amount',
-  'method_required',
 ] as const
 
 export class GuestError extends Error {
@@ -144,16 +141,6 @@ export async function postWish(token: string, message: string): Promise<Wish> {
 
 export async function deleteWish(token: string, wishId: string): Promise<void> {
   const { error } = await supabase.rpc('delete_own_wish', { p_token: token, p_wish_id: wishId })
-  if (error) fail(error)
-}
-
-export async function announceGift(token: string, gift: GiftAnnouncement): Promise<void> {
-  const { error } = await supabase.rpc('announce_gift', {
-    p_token: token,
-    p_method: gift.method,
-    p_amount: gift.amount_fcfa ?? undefined,
-    p_message: gift.message,
-  })
   if (error) fail(error)
 }
 

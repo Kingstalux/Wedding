@@ -8,7 +8,7 @@ import { mediaUrl } from '../../lib/media'
 import { removeMedia, uploadAudio, uploadPhotoBlob, type MediaFolder } from '../../lib/upload'
 import { studioErrorMessage } from '../queries'
 import styles from './MediaField.module.css'
-import { PhotoEditorDialog } from './photo/PhotoEditorDialog'
+import { PhotoEditorDialog, type HeroNames } from './photo/PhotoEditorDialog'
 import type { PhotoShape } from './photo/shapes'
 
 type Props = {
@@ -21,7 +21,7 @@ type Props = {
   /** The shape the photo has on the site; the editor crops to it. */
   shape?: PhotoShape
   /** Names shown on the landing-photo previews. */
-  names?: { bride: string; groom: string }
+  names?: HeroNames
   /** Offer "Use the landing photo": re-crop another stored photo for this field. */
   copyFrom?: { path: string | null; label: string }
   tone?: PhotoTone

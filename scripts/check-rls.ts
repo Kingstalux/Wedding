@@ -39,7 +39,6 @@ const tables = [
   'rsvps',
   'checkins',
   'wishes',
-  'gift_announcements',
   'admins',
   'guest_list',
 ] as const
@@ -113,19 +112,35 @@ for (const table of tables) {
 }
 
 // 6. Dev only: a valid link works and reveals only what it should.
+//    Skipped (not failed) when the test guest has been removed from the list.
 if (testToken) {
   const { data, error } = await anon.rpc('get_invitation', { p_token: testToken })
   const inv = data as Record<string, unknown> | null
-  report(Boolean(inv?.guest), `valid link "${testToken}" opens the invitation`, error?.message)
-  const settings = (inv?.settings ?? {}) as Record<string, unknown>
-  report(!('wa_template_en' in settings), 'invitation hides the WhatsApp templates')
+  if (!inv && !error) {
+    console.log(`– skipped: test guest "${testToken}" is not on the guest list`)
+  } else {
+    report(Boolean(inv?.guest), `valid link "${testToken}" opens the invitation`, error?.message)
+    const settings = (inv?.settings ?? {}) as Record<string, unknown>
+    report(!('wa_template_en' in settings), 'invitation hides the WhatsApp templates')
 
-  const { data: pass } = await anon.rpc('read_pass', { p_code: 'DEMOBB' })
-  const keys = Object.keys((pass ?? {}) as object).sort()
+    const code = String((inv?.guest as Record<string, unknown>)?.pass_code ?? '')
+    const { data: pass } = await anon.rpc('read_pass', { p_code: code })
+    const keys = Object.keys((pass ?? {}) as object).sort()
+    report(
+      JSON.stringify(keys) === JSON.stringify(['attending', 'checked_in', 'first_name']),
+      'scanned pass shows only first name and status',
+      keys.join(', '),
+    )
+  }
+}
+
+// 7. The one public photo (for the "invitation is personal" page) is just a file path.
+{
+  const { data, error } = await anon.rpc('get_cover_photo')
   report(
-    JSON.stringify(keys) === JSON.stringify(['attending', 'checked_in', 'first_name']),
-    'scanned pass shows only first name and status',
-    keys.join(', '),
+    !error && (data === null || (typeof data === 'string' && data.startsWith('word/'))),
+    'public cover photo reveals only a photo path',
+    error?.message ?? String(data),
   )
 }
 

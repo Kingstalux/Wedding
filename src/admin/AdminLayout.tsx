@@ -11,7 +11,6 @@ const links: Array<[to: string, label: string, icon: IconName]> = [
   ['/admin/programme', 'Programme & maps', 'pin'],
   ['/admin/gallery', 'Gallery', 'image'],
   ['/admin/wishes', 'Guest book', 'message'],
-  ['/admin/gifts', 'Gifts', 'gift'],
   ['/admin/door', 'Door check-in', 'scan'],
 ]
 

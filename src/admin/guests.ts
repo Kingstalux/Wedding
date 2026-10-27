@@ -20,7 +20,6 @@ export type Stats = {
   pending: number
   checked_in: number
   wishes: number
-  gifts: number
 }
 
 export type ImportSummary = {

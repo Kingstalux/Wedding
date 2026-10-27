@@ -2,84 +2,31 @@
   padding: clamp(72px, 9vw, 112px) 0;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: clamp(32px, 6vw, 80px);
-  align-items: start;
-  margin-top: 40px;
+.inner {
+  max-width: 720px;
+  text-align: center;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 32px;
+  margin-top: 12px;
+  padding: clamp(24px, 4vw, 36px);
   border: 1px solid var(--line);
   background: var(--white);
+  text-align: left;
 }
 
-.as {
-  font-size: 13px;
-  color: var(--muted);
-}
-.as strong {
-  font-weight: 500;
-}
-
-.list {
+.footer {
   display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.item {
-  padding: 22px 0;
-  border-bottom: 1px solid var(--line);
-}
-.item:first-child {
-  border-top: 1px solid var(--line);
-}
-
-.meta {
-  display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
 }
 
-.who {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--emerald);
-}
-
-.message {
-  margin-top: 8px;
-  font-family: var(--font-display);
-  font-size: 17px;
-  line-height: 1.6;
-  white-space: pre-line;
-  overflow-wrap: anywhere;
-}
-
-.delete {
-  min-height: 32px;
-  border: 0;
-  background: none;
+.as {
+  font-size: 13px;
   color: var(--muted);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.empty {
-  color: var(--muted);
-  font-style: italic;
 }

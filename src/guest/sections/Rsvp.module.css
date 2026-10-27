@@ -1,11 +1,15 @@
 .rsvp {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  align-items: center;
   background: var(--white);
 }
 
+/* The photo keeps its own shape (4:5, as uploaded), whatever the length of
+   the form beside it, so it's never cropped more after replying. */
 .photo {
-  min-height: 560px;
+  align-self: start;
+  aspect-ratio: 4 / 5;
 }
 
 .body {

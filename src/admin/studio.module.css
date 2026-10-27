@@ -132,3 +132,8 @@
   padding: 48px 0;
   color: var(--muted);
 }
+
+.sidePick {
+  max-width: 320px;
+  margin-bottom: 8px;
+}

@@ -1,28 +1,20 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Button } from '../../components/Button'
-import { useConfirm } from '../../components/Confirm'
 import { TextAreaField } from '../../components/Form'
-import { Eyebrow } from '../../components/Typography'
+import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
-import { dayKey, formatDate } from '../../lib/time'
 import { containsLink } from '../../lib/validation'
 import { errorMessageKey } from '../api'
 import { useInvitation } from '../InvitationProvider'
 import styles from './GuestBook.module.css'
 
+/** "Leave us a wish": the form. The messages themselves are in the Wishes carousel. */
 export function GuestBook() {
-  const { t, lang } = useT()
+  const { t } = useT()
   const { content, invitation, actions } = useInvitation()
-  const confirm = useConfirm()
   const [draft, setDraft] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [posting, setPosting] = useState(false)
-  // "just now" needs the current time; keep it in state so rendering stays pure.
-  const [now, setNow] = useState(() => Date.now())
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 30_000)
-    return () => clearInterval(id)
-  }, [])
 
   if (!content.settings.show_wishes) return null
 
@@ -39,6 +31,8 @@ export function GuestBook() {
     try {
       await actions.postWish(message)
       setDraft('')
+      // Show it: the new wish is first in the carousel just above.
+      document.getElementById('wishes')?.scrollIntoView({ behavior: 'smooth' })
     } catch (err) {
       setError(t(errorMessageKey(err)))
     } finally {
@@ -46,72 +40,31 @@ export function GuestBook() {
     }
   }
 
-  async function onDelete(id: string) {
-    const ok = await confirm({
-      title: t('book.deleteConfirm'),
-      confirmLabel: t('book.delete'),
-      cancelLabel: t('common.cancel'),
-      danger: true,
-    })
-    if (ok) await actions.deleteWish(id)
-  }
-
-  const when = (iso: string) =>
-    now - new Date(iso).getTime() < 60_000 ? t('book.justNow') : formatDate(dayKey(iso), lang)
-
   return (
     <section id="guestbook" className={styles.book} aria-labelledby="book-title">
-      <div className="container">
+      <div className={`container ${styles.inner}`}>
         <Eyebrow>{t('book.eyebrow')}</Eyebrow>
         <h2 id="book-title" className="display h2">
           {t('book.title')}
         </h2>
-
-        <div className={styles.grid}>
-          <form className={styles.form} onSubmit={onSubmit}>
-            <TextAreaField
-              label={t('book.label')}
-              placeholder={t('book.placeholder')}
-              rows={4}
-              maxLength={500}
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              error={error}
-            />
+        <Rule center />
+        <form className={styles.form} onSubmit={onSubmit}>
+          <TextAreaField
+            label={t('book.label')}
+            placeholder={t('book.placeholder')}
+            rows={4}
+            maxLength={500}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            error={error}
+          />
+          <div className={styles.footer}>
             <p className={styles.as}>{t('book.postingAs', { name: invitation.first_name })}</p>
-            <div>
-              <Button type="submit" loading={posting} disabled={!draft.trim()}>
-                {t('book.post')}
-              </Button>
-            </div>
-          </form>
-
-          {invitation.wishes.length === 0 ? (
-            <p className={styles.empty}>{t('book.empty')}</p>
-          ) : (
-            <ul className={styles.list} aria-live="polite">
-              {invitation.wishes.map((wish) => (
-                <li key={wish.id} className={styles.item}>
-                  <div className={styles.meta}>
-                    <span className={styles.who}>
-                      {wish.author} · {when(wish.created_at)}
-                    </span>
-                    {wish.mine && (
-                      <button
-                        type="button"
-                        className={styles.delete}
-                        onClick={() => onDelete(wish.id)}
-                      >
-                        {t('book.delete')}
-                      </button>
-                    )}
-                  </div>
-                  <p className={styles.message}>{wish.message}</p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+            <Button type="submit" loading={posting} disabled={!draft.trim()}>
+              {t('book.post')}
+            </Button>
+          </div>
+        </form>
       </div>
     </section>
   )

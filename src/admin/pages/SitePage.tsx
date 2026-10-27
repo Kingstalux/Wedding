@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ButtonLink } from '../../components/Button'
-import { Switch, TextAreaField, TextField } from '../../components/Form'
+import { SelectField, Switch, TextAreaField, TextField } from '../../components/Form'
 import { Icon } from '../../components/Icon'
 import { useToast } from '../../components/Toast'
 import { fromLocalInput, toLocalInput } from '../../lib/time'
@@ -21,6 +21,7 @@ type Draft = {
   bride: string
   groom: string
   city: string
+  hero_text_side: 'left' | 'right'
   countdown: string // datetime-local, Douala time
   rsvp_deadline: string // YYYY-MM-DD or ''
   word_en: string
@@ -47,6 +48,7 @@ function toDraft(s: SettingsRow): Draft {
     bride: s.bride,
     groom: s.groom,
     city: s.city,
+    hero_text_side: s.hero_text_side === 'right' ? 'right' : 'left',
     countdown: toLocalInput(s.countdown_at),
     rsvp_deadline: s.rsvp_deadline ?? '',
     word_en: s.word_en,
@@ -75,6 +77,7 @@ function toPatch(d: Draft): SettingsPatch {
     bride: d.bride.trim(),
     groom: d.groom.trim(),
     city: d.city.trim(),
+    hero_text_side: d.hero_text_side,
     countdown_at: fromLocalInput(d.countdown) ?? undefined,
     rsvp_deadline: d.rsvp_deadline || null,
     word_en: d.word_en.trim(),
@@ -166,6 +169,20 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
         <p className={styles.lede} style={{ marginBottom: 20 }}>
           The large photo behind your names on the first screen. Landscape works best.
         </p>
+        <div className={styles.sidePick}>
+          <SelectField
+            look="box"
+            label="Names on computers"
+            hint="Pick the side away from your faces. On phones the names sit at the bottom."
+            value={draft.hero_text_side}
+            onChange={(v) => setDraft((d) => ({ ...d, hero_text_side: v as 'left' | 'right' }))}
+            options={[
+              { value: 'left', label: 'On the left' },
+              { value: 'right', label: 'On the right' },
+            ]}
+          />
+        </div>
+
         <h3>On computers and tablets</h3>
         <MediaField
           kind="photo"
@@ -173,7 +190,7 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           path={settings.hero_path}
           onSave={saveMedia('hero_path')}
           shape="hero"
-          names={{ bride: draft.bride, groom: draft.groom }}
+          names={{ bride: draft.bride, groom: draft.groom, side: draft.hero_text_side }}
           placeholder="Landing photo"
         />
 
@@ -188,7 +205,7 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
           path={settings.hero_mobile_path}
           onSave={saveMedia('hero_mobile_path')}
           shape="heroMobile"
-          names={{ bride: draft.bride, groom: draft.groom }}
+          names={{ bride: draft.bride, groom: draft.groom, side: draft.hero_text_side }}
           placeholder="Phone"
           copyFrom={{ path: settings.hero_path, label: 'Use the landing photo' }}
         />

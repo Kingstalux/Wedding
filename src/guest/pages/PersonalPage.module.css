@@ -5,7 +5,13 @@
 }
 
 .photo {
-  min-height: 320px;
+  min-height: 360px;
+}
+@media (max-width: 700px) {
+  .photo {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
 }
 
 .body {
@@ -19,15 +25,19 @@
   max-width: 440px;
 }
 
+/* Same place and look as on the opening screen: fixed, top right */
 .lang {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
   display: inline-flex;
-  align-self: flex-start;
-  margin-bottom: 40px;
   border: 1px solid var(--line);
+  background: var(--white);
 }
 .lang button {
   min-width: 44px;
-  min-height: 40px;
+  min-height: 42px;
   border: 0;
   background: none;
   color: var(--muted);

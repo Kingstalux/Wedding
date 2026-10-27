@@ -54,32 +54,3 @@
   font-size: 14px;
   color: var(--muted);
 }
-
-.tell {
-  max-width: 720px;
-  margin: 40px auto 0;
-  padding: clamp(24px, 4vw, 40px);
-  border: 1px solid var(--line);
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.fields {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
-}
-
-.thanks {
-  text-align: center;
-}
-.thanks .script {
-  font-size: 44px;
-}
-.thanks p {
-  margin-bottom: 20px;
-}
