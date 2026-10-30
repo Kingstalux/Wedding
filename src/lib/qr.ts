@@ -1,5 +1,3 @@
-import QRCode from 'qrcode'
-
 /** Forest on white: high contrast, so every phone camera scans it reliably. */
 export const QR_COLORS = { dark: '#0c3b2e', light: '#ffffff' }
 
@@ -10,6 +8,7 @@ export function passUrl(code: string): string {
 
 /** Saves the QR code as a PNG file, for the "Download" button. */
 export async function downloadQrPng(value: string, fileName: string) {
+  const { default: QRCode } = await import('qrcode')
   const dataUrl = await QRCode.toDataURL(value, { width: 800, margin: 2, color: QR_COLORS })
   const link = document.createElement('a')
   link.href = dataUrl

@@ -1,5 +1,6 @@
-import { createBrowserRouter, type RouteObject } from 'react-router'
-import { DoorPassPage } from './guest/pages/DoorPassPage'
+import { createBrowserRouter, Outlet, type RouteObject } from 'react-router'
+import { ErrorPage } from './app/ErrorPage'
+import { OfflineBanner } from './app/OfflineBanner'
 import { HomeRedirect } from './guest/pages/HomeRedirect'
 import { InvitationLayout, InvitationPage } from './guest/pages/InvitationPage'
 import { PassPage } from './guest/pages/PassPage'
@@ -25,7 +26,11 @@ const routes: RouteObject[] = [
     ],
   },
   { path: '/', element: <HomeRedirect /> },
-  { path: '/pass/:code', element: <DoorPassPage /> },
+  {
+    path: '/pass/:code',
+    // Only the door team opens this, so guests never download it.
+    lazy: async () => ({ Component: (await import('./guest/pages/DoorPassPage')).DoorPassPage }),
+  },
   {
     path: '/admin/*',
     // Load the studio's code only when someone opens it.
@@ -43,4 +48,17 @@ if (import.meta.env.DEV) {
   })
 }
 
-export const router = createBrowserRouter(routes)
+// One parent around every page: a crash anywhere shows ErrorPage instead of a
+// blank screen, and the offline bar appears on every page.
+export const router = createBrowserRouter([
+  {
+    element: (
+      <>
+        <Outlet />
+        <OfflineBanner />
+      </>
+    ),
+    errorElement: <ErrorPage />,
+    children: routes,
+  },
+])

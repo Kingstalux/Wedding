@@ -73,7 +73,7 @@
 .gold {
   background: var(--gold);
   border-color: var(--gold);
-  color: var(--ink);
+  color: var(--navy); /* navy on gold reads clearly (6:1); forest falls just short */
 }
 .gold:hover:not(:disabled) {
   background: var(--ivory);

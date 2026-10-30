@@ -150,6 +150,10 @@ export const en = {
   'error.generic': 'Something went wrong. Please try again in a moment.',
   'error.loadTitle': 'We Couldn’t Open Your Invitation',
   'error.retry': 'Try again',
+  'error.crashTitle': 'Something Went Wrong',
+  'error.crashBody': 'This page hit a problem. Reloading usually fixes it.',
+  'error.reload': 'Reload the page',
+  'offline.banner': 'You’re offline. Some things may not work until you reconnect.',
 
   'door.noReply': 'Invited · no reply yet',
   'door.checkedIn': 'already checked in',

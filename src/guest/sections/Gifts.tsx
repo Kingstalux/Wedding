@@ -8,7 +8,8 @@ import { cx } from '../../lib/cx'
 import { useInvitation } from '../InvitationProvider'
 import styles from './Gifts.module.css'
 
-function CopyButton({ text }: { text: string }) {
+/** `label` (e.g. "Orange Money") tells screen readers which number this button copies. */
+function CopyButton({ text, label }: { text: string; label: string }) {
   const { t } = useT()
   const [copied, setCopied] = useState(false)
   return (
@@ -26,7 +27,10 @@ function CopyButton({ text }: { text: string }) {
           <Icon name="check" /> {t('gift.copied')}
         </>
       ) : (
-        t('gift.copy')
+        <>
+          {t('gift.copy')}
+          <span className="sr-only"> · {label}</span>
+        </>
       )}
     </Button>
   )
@@ -79,7 +83,7 @@ export function Gifts() {
                   <p className={styles.note}>
                     {way.name && t('gift.accountName', { name: way.name })}
                   </p>
-                  <CopyButton text={way.number} />
+                  <CopyButton text={way.number} label={way.label} />
                 </>
               ) : (
                 <>

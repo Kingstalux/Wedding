@@ -13,7 +13,7 @@ export function Envelope({ onOpen, hasMusic }: { onOpen: () => void; hasMusic: b
 
   return (
     <div className={styles.page}>
-      <div className={styles.lang} role="group" aria-label={t('lang.label')}>
+      <nav className={styles.lang} aria-label={t('lang.label')}>
         {(['en', 'fr'] as const).map((code) => (
           <button
             key={code}
@@ -24,7 +24,7 @@ export function Envelope({ onOpen, hasMusic }: { onOpen: () => void; hasMusic: b
             {code.toUpperCase()}
           </button>
         ))}
-      </div>
+      </nav>
 
       <main className={styles.card}>
         <Monogram bride={settings.bride} groom={settings.groom} size={44} gold />

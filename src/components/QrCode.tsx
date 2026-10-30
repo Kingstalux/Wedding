@@ -1,4 +1,3 @@
-import QRCode from 'qrcode'
 import { useEffect, useState } from 'react'
 import { QR_COLORS } from '../lib/qr'
 
@@ -16,12 +15,16 @@ export function QrCode({
 
   useEffect(() => {
     let cancelled = false
-    QRCode.toString(value, {
-      type: 'svg',
-      margin: 1,
-      errorCorrectionLevel: 'M',
-      color: QR_COLORS,
-    })
+    // The QR library is loaded only when a pass is shown (kept out of the main download).
+    import('qrcode')
+      .then(({ default: QRCode }) =>
+        QRCode.toString(value, {
+          type: 'svg',
+          margin: 1,
+          errorCorrectionLevel: 'M',
+          color: QR_COLORS,
+        }),
+      )
       .then((markup) => !cancelled && setSvg(markup))
       .catch(() => !cancelled && setSvg(''))
     return () => {

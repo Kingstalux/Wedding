@@ -47,7 +47,7 @@ export function LoginPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.side}>
+      <aside className={styles.side}>
         <span className={styles.mark} aria-hidden="true">
           ♥
         </span>
@@ -58,7 +58,7 @@ export function LoginPage() {
           </h1>
         </div>
         <Eyebrow light>Guests · Replies · Photos · Door</Eyebrow>
-      </div>
+      </aside>
 
       <main className={styles.formSide}>
         <form className={styles.form} onSubmit={onSubmit} noValidate>

@@ -30,7 +30,7 @@ export function PassPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.wrap}>
+      <main className={styles.wrap}>
         <article className={styles.ticket} aria-label={t('pass.ticket')}>
           <span className={`${styles.notch} ${styles.left}`} aria-hidden="true" />
           <span className={`${styles.notch} ${styles.right}`} aria-hidden="true" />
@@ -82,7 +82,7 @@ export function PassPage() {
             </ButtonLink>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

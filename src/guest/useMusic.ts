@@ -25,7 +25,9 @@ export function useMusic(url: string | null): Music {
     const audio = new Audio(url)
     audio.loop = true
     audio.volume = 0.5
-    audio.preload = 'auto'
+    // Don't download the song until the guest taps "Open": a song is several MB,
+    // and many guests are on mobile data. It then streams while playing.
+    audio.preload = 'none'
     const onPlay = () => setPlaying(true)
     const onPause = () => setPlaying(false)
     audio.addEventListener('play', onPlay)

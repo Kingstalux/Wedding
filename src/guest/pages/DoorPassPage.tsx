@@ -27,6 +27,7 @@ export function DoorPassPage() {
   return (
     <div className={styles.page}>
       <main className={styles.door} aria-live="polite">
+        <h1 className="sr-only">{t('door.eyebrow')}</h1>
         <Eyebrow>{t('door.eyebrow')}</Eyebrow>
 
         {pass.isPending && <p className="muted">{t('door.checking')}</p>}

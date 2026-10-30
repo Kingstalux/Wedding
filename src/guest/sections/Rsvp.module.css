@@ -56,6 +56,7 @@
 }
 
 .qr {
+  aspect-ratio: 1; /* reserve the space while the code is drawn: no jump */
   padding: 8px;
   background: var(--white);
 }

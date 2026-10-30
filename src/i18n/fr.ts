@@ -152,6 +152,11 @@ export const fr: Record<MessageKey, string> = {
   'error.generic': 'Un problème est survenu. Merci de réessayer dans un instant.',
   'error.loadTitle': 'Impossible d’Ouvrir Votre Invitation',
   'error.retry': 'Réessayer',
+  'error.crashTitle': 'Un Problème Est Survenu',
+  'error.crashBody': 'Cette page a rencontré un problème. Recharger la page suffit généralement.',
+  'error.reload': 'Recharger la page',
+  'offline.banner':
+    'Vous êtes hors ligne. Certaines fonctions peuvent ne pas marcher avant la reconnexion.',
 
   'door.noReply': 'Invité(e) · pas encore de réponse',
   'door.checkedIn': 'déjà enregistré(e)',

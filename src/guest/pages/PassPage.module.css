@@ -50,6 +50,7 @@
 
 .qr {
   width: min(260px, 80%);
+  aspect-ratio: 1; /* reserve the space while the code is drawn: no jump */
   margin: 28px auto;
   padding: 18px;
   background: var(--white);

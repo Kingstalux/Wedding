@@ -30,7 +30,7 @@ export function PersonalPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.lang} role="group" aria-label={t('lang.label')}>
+      <nav className={styles.lang} aria-label={t('lang.label')}>
         {(['en', 'fr'] as const).map((code) => (
           <button
             key={code}
@@ -41,7 +41,7 @@ export function PersonalPage() {
             {code.toUpperCase()}
           </button>
         ))}
-      </div>
+      </nav>
       <Photo className={styles.photo} src={cover.data} tone="emerald" loading="eager" />
       <main className={styles.body}>
         <h1 className="display h2">{t('personal.title')}</h1>
