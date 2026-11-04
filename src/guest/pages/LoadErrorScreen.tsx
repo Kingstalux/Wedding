@@ -14,7 +14,7 @@ export function LoadErrorScreen({ error, retry }: { error: unknown; retry: () =>
         display: 'grid',
         placeContent: 'center',
         padding: 24,
-        background: 'var(--navy)',
+        background: 'var(--surface)',
       }}
     >
       <h1 className="display h2">{t('error.loadTitle')}</h1>

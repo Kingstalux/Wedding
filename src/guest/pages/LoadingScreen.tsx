@@ -10,7 +10,7 @@ export function LoadingScreen() {
         minHeight: '100dvh',
         display: 'grid',
         placeItems: 'center',
-        background: 'var(--primary)',
+        background: 'var(--surface)',
         color: 'var(--on-dark-soft)',
         fontSize: 12,
         letterSpacing: '0.24em',

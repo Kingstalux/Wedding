@@ -10,6 +10,7 @@
   gap: 16px;
   padding: 26px clamp(20px, 4vw, 48px);
   color: var(--ivory);
+  font-weight: 400;
 }
 
 /* After scrolling past the hero, the header sticks on a navy band */
@@ -17,7 +18,7 @@
   position: fixed;
   padding-top: 14px;
   padding-bottom: 14px;
-  background: var(--primary);
+  background: var(--surface);
   box-shadow: 0 1px 0 var(--gold-line);
 }
 
@@ -131,7 +132,7 @@
     flex-direction: column;
     justify-content: center;
     gap: 22px;
-    background: var(--primary);
+    background: var(--surface);
   }
   .navOpen {
     display: flex;

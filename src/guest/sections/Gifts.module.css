@@ -35,7 +35,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--ivory); /* small gold text on the tinted card falls short of 4.5:1 */
 }
 
 .number {

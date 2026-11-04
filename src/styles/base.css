@@ -32,7 +32,7 @@ body {
    the studio keeps ivory. */
 html[data-area='guest'],
 html[data-area='guest'] body {
-  background: var(--navy);
+  background: var(--surface);
   color: var(--ivory);
 }
 
@@ -136,9 +136,16 @@ p {
 /* Inside a navy area: components that use --ink/--muted/--line read light. */
 .on-dark {
   --ink: var(--ivory);
-  --muted: rgba(247, 244, 236, 0.8);
+  --muted: rgba(247, 244, 236, 0.88);
   --line: var(--line-dark);
   color: var(--ink);
+  /* Light text on a dark background looks thinner than it is:
+     one step heavier keeps the fine strokes readable. */
+  font-weight: 400;
+}
+.on-dark .serif-body {
+  font-size: 18px;
+  font-weight: 500;
 }
 
 /* An ivory card on navy (forms, the pass): back to the light colours,

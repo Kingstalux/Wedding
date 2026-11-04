@@ -3,7 +3,7 @@
   display: grid;
   place-items: center;
   padding: 88px 24px 48px;
-  background: var(--navy);
+  background: var(--surface);
 }
 
 /* The same double gold frame as the opening screen's card */

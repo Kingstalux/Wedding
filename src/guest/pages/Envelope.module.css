@@ -3,8 +3,9 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background: var(--primary);
+  background: var(--surface);
   color: var(--ivory);
+  font-weight: 400; /* light text on dark reads thinner: one step heavier */
 }
 
 .card {

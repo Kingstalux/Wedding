@@ -12,7 +12,7 @@
   flex-direction: column;
   gap: 28px;
   padding: 28px 20px;
-  background: var(--primary);
+  background: var(--surface);
   color: var(--ivory);
 }
 @media (min-width: 900px) {

@@ -26,7 +26,7 @@ export function ErrorPage() {
         display: 'grid',
         placeContent: 'center',
         padding: 24,
-        background: 'var(--navy)',
+        background: 'var(--surface)',
       }}
     >
       <h1 className="display h2">{t('error.crashTitle')}</h1>

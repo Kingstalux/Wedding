@@ -29,9 +29,15 @@
   --line: rgba(10, 14, 82, 0.16);
   --line-dark: rgba(247, 244, 236, 0.28);
 
+  /* Large navy backgrounds use a softer navy: the couple's navy blended
+     with slate (55/45). Easier on the eyes than the deep, saturated navy,
+     and still dark enough for gold (4.7:1) and ivory (12:1) text.
+     Buttons, text and small details keep the deep navy. */
+  --navy-soft: #202762;
+
   /* The guest sections: each one arrives ivory and fills in to navy */
   --reveal-from: var(--ivory);
-  --surface: var(--navy);
+  --surface: var(--navy-soft);
   --card-dark: rgba(58, 69, 117, 0.28); /* slate tint: cards on navy */
   --gold-line: rgba(184, 145, 47, 0.45); /* gold hairlines on navy */
 

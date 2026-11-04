@@ -1,8 +1,9 @@
 .footer {
   position: relative;
   padding: 80px 24px 56px;
-  background: var(--primary);
+  background: var(--surface);
   color: var(--ivory);
+  font-weight: 400;
   text-align: center;
 }
 
