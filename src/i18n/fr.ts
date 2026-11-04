@@ -42,7 +42,6 @@ export const fr: Record<MessageKey, string> = {
   'count.done': 'La fête a commencé !',
 
   'word.eyebrow': 'Un mot des mariés',
-  'word.photo': 'Photo du couple',
 
   'sched.days': '{n} jours',
   'sched.day': 'Un jour',
@@ -87,7 +86,6 @@ export const fr: Record<MessageKey, string> = {
   'rsvp.change': 'Modifier ma réponse',
   'rsvp.passKicker': 'Votre pass d’entrée',
   'rsvp.openPass': 'Ouvrir mon pass',
-  'rsvp.photo': 'Photo du couple',
 
   'book.eyebrow': 'Livre d’or',
   'book.title': 'Laissez-nous un Mot',

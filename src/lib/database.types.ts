@@ -398,7 +398,6 @@ export type Database = {
         Args: { p_token: string; p_wish_id: string }
         Returns: boolean
       }
-      get_cover_photo: { Args: never; Returns: string }
       get_invitation: {
         Args: { p_preview?: boolean; p_token: string }
         Returns: Json

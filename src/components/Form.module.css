@@ -111,7 +111,7 @@
   height: 20px;
   border-radius: 50%;
   background: var(--white);
-  box-shadow: 0 1px 3px rgba(12, 59, 46, 0.3);
+  box-shadow: 0 1px 3px rgba(10, 14, 82, 0.3);
   transition: left 0.2s;
 }
 .switch input:checked {

@@ -1,8 +1,32 @@
 .footer {
+  position: relative;
   padding: 80px 24px 56px;
   background: var(--primary);
   color: var(--ivory);
   text-align: center;
+}
+
+/* The same gold hairline and diamond that separates the sections */
+.footer::before,
+.footer::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+}
+.footer::before {
+  top: 0;
+  width: min(280px, 50%);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--gold-line), transparent);
+}
+.footer::after {
+  top: -4px;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  transform: rotate(45deg);
+  background: var(--gold);
 }
 
 .monogram {

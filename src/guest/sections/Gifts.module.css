@@ -1,6 +1,5 @@
 .gifts {
   padding: clamp(72px, 9vw, 112px) 0;
-  background: var(--white);
 }
 
 .intro {
@@ -26,9 +25,9 @@
   align-items: flex-start;
   gap: 10px;
   padding: 28px 26px;
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--primary);
-  background: var(--ivory);
+  border: 1px solid var(--gold-line);
+  border-top: 3px solid var(--gold);
+  background: var(--card-dark);
 }
 
 .label {
@@ -36,7 +35,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--emerald);
+  color: var(--gold);
 }
 
 .number {

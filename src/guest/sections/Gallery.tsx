@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { IconButton } from '../../components/IconButton'
 import { Photo, type PhotoTone } from '../../components/Photo'
-import { Eyebrow } from '../../components/Typography'
+import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { useInvitation } from '../InvitationProvider'
 import styles from './Gallery.module.css'
@@ -34,13 +34,19 @@ export function Gallery() {
   }
 
   return (
-    <section id="gallery" className={styles.gallery} aria-labelledby="gallery-title">
+    <section
+      id="gallery"
+      data-reveal=""
+      className={`on-dark ${styles.gallery}`}
+      aria-labelledby="gallery-title"
+    >
       <div className="container">
         <div className={styles.head}>
           <Eyebrow>{t('gallery.eyebrow')}</Eyebrow>
           <h2 id="gallery-title" className="display h2">
             {t('gallery.title')}
           </h2>
+          <Rule center />
         </div>
 
         <ul className={styles.grid}>

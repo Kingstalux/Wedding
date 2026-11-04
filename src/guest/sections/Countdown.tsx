@@ -27,7 +27,12 @@ export function Countdown() {
   ]
 
   return (
-    <section id="countdown" className={styles.countdown} aria-label={t('count.label')}>
+    <section
+      id="countdown"
+      data-reveal=""
+      className={`on-dark ${styles.countdown}`}
+      aria-label={t('count.label')}
+    >
       <Eyebrow>{t('count.eyebrow')}</Eyebrow>
       {left.done ? (
         <p className={`display ${styles.done}`}>{t('count.done')}</p>

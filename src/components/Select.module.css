@@ -107,12 +107,12 @@
   background: var(--ivory);
 }
 .option[aria-selected='true'] {
-  color: var(--emerald);
+  color: var(--primary);
   font-weight: 500;
 }
 .check {
   flex: none;
-  color: var(--emerald);
+  color: var(--primary);
 }
 
 @keyframes drop {

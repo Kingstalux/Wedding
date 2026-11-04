@@ -1,6 +1,6 @@
 import { useT } from '../../i18n/LanguageProvider'
 
-/** Shown while an invitation loads. Emerald like the opening screen, so there's no flash. */
+/** Shown while an invitation loads. Navy like the opening screen, so there's no flash. */
 export function LoadingScreen() {
   const { t } = useT()
   return (

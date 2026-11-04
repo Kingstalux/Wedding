@@ -43,7 +43,6 @@ export const en = {
   'count.done': 'The celebration has begun!',
 
   'word.eyebrow': 'A word from the couple',
-  'word.photo': 'Couple photo',
 
   'sched.days': '{n} days',
   'sched.day': 'One day',
@@ -87,7 +86,6 @@ export const en = {
   'rsvp.change': 'Change my answer',
   'rsvp.passKicker': 'Your entrance pass',
   'rsvp.openPass': 'Open my pass',
-  'rsvp.photo': 'Couple photo',
 
   'book.eyebrow': 'Guest book',
   'book.title': 'Leave Us a Wish',

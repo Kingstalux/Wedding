@@ -14,7 +14,7 @@ function CopyButton({ text, label }: { text: string; label: string }) {
   const [copied, setCopied] = useState(false)
   return (
     <Button
-      variant="ghost"
+      variant="ghostLight"
       size="sm"
       onClick={async () => {
         await copyText(text)
@@ -62,7 +62,12 @@ export function Gifts() {
   if (ways.length === 0) return null
 
   return (
-    <section id="gifts" className={styles.gifts} aria-labelledby="gifts-title">
+    <section
+      id="gifts"
+      data-reveal=""
+      className={`on-dark ${styles.gifts}`}
+      aria-labelledby="gifts-title"
+    >
       <div className="container">
         <div className={styles.intro}>
           <Eyebrow>{t('gift.eyebrow')}</Eyebrow>

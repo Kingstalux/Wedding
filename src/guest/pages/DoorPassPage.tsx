@@ -25,8 +25,8 @@ export function DoorPassPage() {
   const pass = useQuery({ queryKey: ['pass', code], queryFn: () => readPass(code) })
 
   return (
-    <div className={styles.page}>
-      <main className={styles.door} aria-live="polite">
+    <div className={`on-dark ${styles.page}`}>
+      <main className={`paper ${styles.door}`} aria-live="polite">
         <h1 className="sr-only">{t('door.eyebrow')}</h1>
         <Eyebrow>{t('door.eyebrow')}</Eyebrow>
 

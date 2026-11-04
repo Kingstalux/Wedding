@@ -18,7 +18,12 @@ export function DressCode() {
   if (!settings.show_dress) return null
 
   return (
-    <section id="dresscode" className={styles.dresscode} aria-labelledby="dress-title">
+    <section
+      id="dresscode"
+      data-reveal=""
+      className={`on-dark ${styles.dresscode}`}
+      aria-labelledby="dress-title"
+    >
       <div className="container">
         <Eyebrow>{t('dress.eyebrow')}</Eyebrow>
         <h2 id="dress-title" className="display h2">

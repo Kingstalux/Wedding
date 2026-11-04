@@ -19,13 +19,9 @@ import type {
 
 // ---------- Shapes returned by the database functions -----------------------
 
-type RawSettings = Omit<
-  Settings,
-  'hero_url' | 'hero_mobile_url' | 'word_photo_url' | 'music_url'
-> & {
+type RawSettings = Omit<Settings, 'hero_url' | 'hero_mobile_url' | 'music_url'> & {
   hero_path: string | null
   hero_mobile_path: string | null
-  word_photo_path: string | null
   music_path: string | null
 }
 
@@ -42,7 +38,7 @@ export type LoadedInvitation = { content: PublicContent; invitation: Invitation 
 
 /** Storage paths → full image/audio addresses; guest name → first name. */
 function fromRaw(raw: RawInvitation): LoadedInvitation {
-  const { hero_path, hero_mobile_path, word_photo_path, music_path, ...settings } = raw.settings
+  const { hero_path, hero_mobile_path, music_path, ...settings } = raw.settings
   const gallery: GalleryPhoto[] = raw.gallery.map((p) => ({
     id: p.id,
     url: mediaUrl(p.path),
@@ -58,7 +54,6 @@ function fromRaw(raw: RawInvitation): LoadedInvitation {
         groom: settings.groom.trim() || 'Groom',
         hero_url: mediaUrl(hero_path),
         hero_mobile_url: mediaUrl(hero_mobile_path),
-        word_photo_url: mediaUrl(word_photo_path),
         music_url: mediaUrl(music_path),
       },
       events: raw.events,

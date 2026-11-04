@@ -11,9 +11,11 @@ import { Schedule } from '../sections/Schedule'
 import { Wishes } from '../sections/Wishes'
 import { Word } from '../sections/Word'
 import type { Music } from '../useMusic'
+import { useReveal } from '../useReveal'
 
 /** The guest's invitation page: every section, top to bottom, as in the mockup. */
 export function HomePage({ music }: { music: Music }) {
+  useReveal()
   return (
     <>
       <Header music={music} />

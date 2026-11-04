@@ -59,7 +59,7 @@
   color: var(--white);
 }
 
-/* For use on emerald/dark backgrounds */
+/* For use on navy/dark backgrounds */
 .ghostLight {
   background: transparent;
   border-color: var(--line-dark);
@@ -67,7 +67,7 @@
 }
 .ghostLight:hover:not(:disabled) {
   background: var(--ivory);
-  color: var(--ink);
+  color: var(--navy);
 }
 
 .gold {
@@ -92,15 +92,15 @@
   color: var(--white);
 }
 
-/* Confirming a deletion: navy, clearly different from the emerald primary */
+/* Confirming a deletion: forest, clearly different from the navy primary */
 .destructive {
-  background: var(--navy);
-  border-color: var(--navy);
+  background: var(--forest);
+  border-color: var(--forest);
   color: var(--white);
 }
 .destructive:hover:not(:disabled) {
-  background: var(--slate);
-  border-color: var(--slate);
+  background: var(--emerald);
+  border-color: var(--emerald);
 }
 
 .spinner {

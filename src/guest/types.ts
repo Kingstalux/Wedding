@@ -18,7 +18,6 @@ export type Settings = {
   hero_mobile_url: string | null
   /** Which side the names sit on over the landing photo (computers). */
   hero_text_side: 'left' | 'right'
-  word_photo_url: string | null
   word_en: string
   word_fr: string
   show_word: boolean

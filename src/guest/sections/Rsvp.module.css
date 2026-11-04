@@ -1,26 +1,23 @@
 .rsvp {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  align-items: center;
-  background: var(--white);
+  padding: clamp(72px, 9vw, 112px) var(--gutter);
 }
 
-/* The photo keeps its own shape (4:5, as uploaded), whatever the length of
-   the form beside it, so it's never cropped more after replying. */
-.photo {
-  align-self: start;
-  aspect-ratio: 4 / 5;
+.head {
+  text-align: center;
 }
 
-.body {
-  padding: clamp(48px, 7vw, 96px) clamp(24px, 6vw, 88px);
+/* The reply card: ivory on navy, like printed stationery */
+.card {
+  max-width: 600px;
+  margin: 8px auto 0;
+  padding: clamp(28px, 5vw, 48px);
+  border-top: 3px solid var(--gold);
 }
 
 .form {
   display: flex;
   flex-direction: column;
   gap: 26px;
-  max-width: 460px;
 }
 
 .lede {
@@ -48,17 +45,14 @@
   grid-template-columns: 120px 1fr;
   gap: 22px;
   align-items: center;
-  max-width: 460px;
   margin: 24px 0;
   padding: 20px;
   border: 1px solid var(--line);
-  background: var(--ivory);
+  background: var(--white);
 }
 
 .qr {
   aspect-ratio: 1; /* reserve the space while the code is drawn: no jump */
-  padding: 8px;
-  background: var(--white);
 }
 .qr svg {
   display: block;

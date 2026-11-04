@@ -1,37 +1,47 @@
 .countdown {
-  padding: 56px 0;
-  background: var(--white);
-  border-bottom: 1px solid var(--line);
+  padding: 64px var(--gutter);
   text-align: center;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  max-width: 640px;
+  gap: clamp(8px, 2vw, 16px);
+  max-width: 680px;
   margin: 0 auto;
 }
 
+/* A tile with cut corners, in a gold hairline */
 .unit {
-  padding: 4px 10px;
-}
-.unit + .unit {
-  border-left: 1px solid var(--line);
+  padding: clamp(14px, 3vw, 22px) 6px;
+  border: 1px solid var(--gold-line);
+  background: var(--card-dark);
+  clip-path: polygon(
+    12px 0,
+    calc(100% - 12px) 0,
+    100% 12px,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    12px 100%,
+    0 calc(100% - 12px),
+    0 12px
+  );
 }
 
 .number {
   display: block;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(34px, 5vw, 50px);
+  font-size: clamp(30px, 5vw, 48px);
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
+  color: var(--gold);
 }
 
 .label {
-  font-size: 11px;
+  font-size: clamp(9px, 2.4vw, 11px);
   font-weight: 500;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--muted);
 }

@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Button, ButtonLink } from '../../components/Button'
 import { Choice, TextAreaField, TextField } from '../../components/Form'
-import { Photo } from '../../components/Photo'
 import { QrCode } from '../../components/QrCode'
 import { passUrl } from '../../lib/qr'
 import { Eyebrow, Rule } from '../../components/Typography'
@@ -50,20 +49,21 @@ export function Rsvp() {
   }
 
   return (
-    <section id="rsvp" className={styles.rsvp} aria-labelledby="rsvp-title">
-      <Photo
-        className={styles.photo}
-        src={content.settings.word_photo_url}
-        label={t('rsvp.photo')}
-        tone="slate"
-      />
-      <div className={styles.body}>
+    <section
+      id="rsvp"
+      data-reveal=""
+      className={`on-dark ${styles.rsvp}`}
+      aria-labelledby="rsvp-title"
+    >
+      <div className={styles.head}>
         <Eyebrow>RSVP</Eyebrow>
         <h2 id="rsvp-title" className="display h2">
           {t('rsvp.title')}
         </h2>
-        <Rule />
-
+        <Rule center />
+      </div>
+      {/* The reply card: ivory, like printed stationery */}
+      <div className={`paper ${styles.card}`}>
         {editing || !rsvp ? (
           <form className={styles.form} onSubmit={onSubmit} noValidate>
             <p className={styles.lede}>

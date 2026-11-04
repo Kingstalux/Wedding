@@ -17,8 +17,8 @@ export function PassPage() {
 
   if (!invitation.rsvp?.attending) {
     return (
-      <div className={styles.page}>
-        <div className={styles.door}>
+      <div className={`on-dark ${styles.page}`}>
+        <div className={`paper ${styles.door}`}>
           <p className="serif-body">{t('pass.notAttending')}</p>
           <div className={styles.actions} style={{ justifyContent: 'center' }}>
             <ButtonLink to={back}>{t('pass.back')}</ButtonLink>
@@ -29,15 +29,15 @@ export function PassPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <div className={`on-dark ${styles.page}`}>
       <main className={styles.wrap}>
-        <article className={styles.ticket} aria-label={t('pass.ticket')}>
+        <article className={`paper ${styles.ticket}`} aria-label={t('pass.ticket')}>
           <span className={`${styles.notch} ${styles.left}`} aria-hidden="true" />
           <span className={`${styles.notch} ${styles.right}`} aria-hidden="true" />
           <div className={styles.top}>
             <Monogram bride={settings.bride} groom={settings.groom} size={30} gold />
             <h1 className="display">{t('pass.ticket')}</h1>
-            <Eyebrow light className={styles.topMeta}>
+            <Eyebrow className={styles.topMeta}>
               {formatDaySpan(
                 events.map((e) => e.starts_at),
                 lang,
@@ -74,10 +74,13 @@ export function PassPage() {
           <Rule />
           <p className="serif-body">{t('pass.body')}</p>
           <div className={styles.actions}>
-            <Button onClick={() => downloadQrPng(url, `pass-${invitation.pass_code}.png`)}>
+            <Button
+              variant="gold"
+              onClick={() => downloadQrPng(url, `pass-${invitation.pass_code}.png`)}
+            >
               {t('pass.download')}
             </Button>
-            <ButtonLink to={back} variant="ghost">
+            <ButtonLink to={back} variant="ghostLight">
               {t('pass.back')}
             </ButtonLink>
           </div>

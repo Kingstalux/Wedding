@@ -1,6 +1,5 @@
 .dresscode {
   padding: clamp(72px, 9vw, 112px) 0;
-  background: var(--white);
   text-align: center;
 }
 
@@ -31,9 +30,10 @@
   width: 84px;
   height: 84px;
   border-radius: 50%;
+  /* A gold ring, so the navy swatch shows on the navy page */
   box-shadow:
-    0 0 0 6px var(--white),
-    0 0 0 7px var(--line);
+    0 0 0 5px var(--surface),
+    0 0 0 6px var(--gold);
 }
 
 .name {
@@ -41,5 +41,5 @@
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ivory);
 }

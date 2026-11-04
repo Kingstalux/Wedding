@@ -39,7 +39,12 @@ export function Schedule() {
   ].join(' · ')
 
   return (
-    <section id="schedule" className={styles.schedule} aria-labelledby="schedule-title">
+    <section
+      id="schedule"
+      data-reveal=""
+      className={`on-dark ${styles.schedule}`}
+      aria-labelledby="schedule-title"
+    >
       <div className="container">
         <Eyebrow light>{eyebrow}</Eyebrow>
         <h2 id="schedule-title" className="display h2">

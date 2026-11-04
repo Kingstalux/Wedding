@@ -20,8 +20,14 @@ export function ErrorPage() {
 
   return (
     <main
-      className="center"
-      style={{ minHeight: '100dvh', display: 'grid', placeContent: 'center', padding: 24 }}
+      className="center on-dark"
+      style={{
+        minHeight: '100dvh',
+        display: 'grid',
+        placeContent: 'center',
+        padding: 24,
+        background: 'var(--navy)',
+      }}
     >
       <h1 className="display h2">{t('error.crashTitle')}</h1>
       <Rule center />
@@ -29,7 +35,9 @@ export function ErrorPage() {
         {t('error.crashBody')}
       </p>
       <div>
-        <Button onClick={() => window.location.reload()}>{t('error.reload')}</Button>
+        <Button variant="gold" onClick={() => window.location.reload()}>
+          {t('error.reload')}
+        </Button>
       </div>
     </main>
   )

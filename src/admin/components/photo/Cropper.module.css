@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: var(--forest);
+  background: var(--navy);
   touch-action: none; /* let us handle dragging on phones */
   user-select: none;
 }

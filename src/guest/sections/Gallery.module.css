@@ -1,9 +1,10 @@
 .gallery {
   padding: clamp(72px, 9vw, 112px) 0;
+  text-align: center;
 }
 
 .head {
-  margin-bottom: 36px;
+  margin-bottom: 8px;
 }
 
 .grid {
@@ -17,6 +18,7 @@
 
 .tile {
   display: block;
+  outline-offset: 4px;
   width: 100%;
   aspect-ratio: 4 / 5;
   padding: 0;
@@ -41,7 +43,7 @@
   margin: 0;
   padding: 24px;
   border: 0;
-  background: rgba(12, 59, 46, 0.95);
+  background: rgba(10, 14, 82, 0.96);
   color: var(--ivory);
 }
 .viewer[open] {
@@ -50,7 +52,7 @@
   justify-content: center;
 }
 .viewer::backdrop {
-  background: rgba(12, 59, 46, 0.6);
+  background: rgba(10, 14, 82, 0.6);
 }
 
 .big {

@@ -28,6 +28,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* The guest site is navy edge to edge (RootLayout sets data-area);
+   the studio keeps ivory. */
+html[data-area='guest'],
+html[data-area='guest'] body {
+  background: var(--navy);
+  color: var(--ivory);
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -121,4 +129,90 @@ p {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+/* ---------- Light-on-navy, and the ivory "paper" card ---------- */
+
+/* Inside a navy area: components that use --ink/--muted/--line read light. */
+.on-dark {
+  --ink: var(--ivory);
+  --muted: rgba(247, 244, 236, 0.8);
+  --line: var(--line-dark);
+  color: var(--ink);
+}
+
+/* An ivory card on navy (forms, the pass): back to the light colours,
+   so fields, choices and buttons look exactly as on a light page. */
+.paper {
+  --ink: var(--navy);
+  --muted: var(--slate);
+  --line: rgba(10, 14, 82, 0.16);
+  color: var(--ink);
+  background: var(--ivory);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+/* ---------- Guest sections: ivory that "solidifies" into navy ----------
+ * Each section of the invitation has data-reveal (see guest/useReveal.ts).
+ * Below the screen it waits as "pending": ivory, content hidden. When it
+ * scrolls into view it becomes "in": the background fills to navy and the
+ * content rises in. Without JavaScript the attribute stays empty: plain navy.
+ */
+section[data-reveal] {
+  position: relative;
+  background-color: var(--surface);
+  transition: background-color 0.9s ease;
+}
+section[data-reveal] > * {
+  transition:
+    opacity 0.7s ease 0.3s,
+    transform 0.7s ease 0.3s;
+}
+section[data-reveal='pending'] {
+  background-color: var(--reveal-from);
+}
+section[data-reveal='pending'] > * {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* A gold hairline with a small diamond between two navy sections */
+section[data-reveal] + section[data-reveal]::before,
+section[data-reveal] + section[data-reveal]::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  pointer-events: none;
+}
+section[data-reveal] + section[data-reveal]::before {
+  top: 0;
+  width: min(280px, 50%);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--gold-line), transparent);
+}
+section[data-reveal] + section[data-reveal]::after {
+  top: -4px;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  transform: rotate(45deg);
+  background: var(--gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  section[data-reveal],
+  section[data-reveal] > * {
+    transition: none;
+  }
+}
+
+@media print {
+  section[data-reveal='pending'] {
+    background-color: var(--surface);
+  }
+  section[data-reveal='pending'] > * {
+    opacity: 1;
+    transform: none;
+  }
 }

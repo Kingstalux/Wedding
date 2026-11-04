@@ -1,5 +1,5 @@
-/** Forest on white: high contrast, so every phone camera scans it reliably. */
-export const QR_COLORS = { dark: '#0c3b2e', light: '#ffffff' }
+/** Navy on white: high contrast, so every phone camera scans it reliably. */
+export const QR_COLORS = { dark: '#0a0e52', light: '#ffffff' }
 
 /** The address a pass's QR code opens: the door team scans it with any phone camera. */
 export function passUrl(code: string): string {

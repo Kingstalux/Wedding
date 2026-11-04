@@ -8,8 +8,14 @@ export function LoadErrorScreen({ error, retry }: { error: unknown; retry: () =>
   const { t } = useT()
   return (
     <main
-      className="center"
-      style={{ minHeight: '100dvh', display: 'grid', placeContent: 'center', padding: 24 }}
+      className="center on-dark"
+      style={{
+        minHeight: '100dvh',
+        display: 'grid',
+        placeContent: 'center',
+        padding: 24,
+        background: 'var(--navy)',
+      }}
     >
       <h1 className="display h2">{t('error.loadTitle')}</h1>
       <Rule center />
@@ -17,7 +23,9 @@ export function LoadErrorScreen({ error, retry }: { error: unknown; retry: () =>
         {t(errorMessageKey(error))}
       </p>
       <div>
-        <Button onClick={retry}>{t('error.retry')}</Button>
+        <Button variant="gold" onClick={retry}>
+          {t('error.retry')}
+        </Button>
       </div>
     </main>
   )

@@ -12,13 +12,13 @@
   color: var(--ivory);
 }
 
-/* After scrolling past the hero, the header sticks on an emerald band */
+/* After scrolling past the hero, the header sticks on a navy band */
 .solid {
   position: fixed;
   padding-top: 14px;
   padding-bottom: 14px;
   background: var(--primary);
-  box-shadow: 0 1px 0 var(--line-dark);
+  box-shadow: 0 1px 0 var(--gold-line);
 }
 
 .monogram {

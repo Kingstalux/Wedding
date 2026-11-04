@@ -18,16 +18,22 @@
   --white: #ffffff;
 
   /* Theme roles: swap these to re-theme the whole site */
-  --primary: var(--emerald); /* bands, buttons, header, footer, sidebar */
-  --primary-deep: var(--forest); /* hover / pressed */
-  --ink: var(--forest); /* body text */
+  --primary: var(--navy); /* bands, buttons, header, footer, sidebar */
+  --primary-deep: var(--slate); /* hover / pressed (nothing is darker than navy) */
+  --ink: var(--navy); /* body text */
   --muted: var(--slate); /* secondary text, labels */
 
-  /* Text and lines on dark (emerald) backgrounds */
+  /* Text and lines on dark (navy) backgrounds */
   --on-dark: var(--ivory);
   --on-dark-soft: rgba(247, 244, 236, 0.92);
-  --line: rgba(12, 59, 46, 0.16);
+  --line: rgba(10, 14, 82, 0.16);
   --line-dark: rgba(247, 244, 236, 0.28);
+
+  /* The guest sections: each one arrives ivory and fills in to navy */
+  --reveal-from: var(--ivory);
+  --surface: var(--navy);
+  --card-dark: rgba(58, 69, 117, 0.28); /* slate tint: cards on navy */
+  --gold-line: rgba(184, 145, 47, 0.45); /* gold hairlines on navy */
 
   /* Typography */
   --font-display: 'Bodoni Moda', 'Didot', Georgia, serif;
@@ -38,5 +44,5 @@
   --max: 1180px;
   --gutter: 24px;
   --section-y: clamp(72px, 9vw, 112px);
-  --shadow: 0 6px 24px rgba(12, 59, 46, 0.14);
+  --shadow: 0 6px 24px rgba(10, 14, 82, 0.14);
 }

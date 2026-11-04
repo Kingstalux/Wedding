@@ -134,15 +134,5 @@ if (testToken) {
   }
 }
 
-// 7. The one public photo (for the "invitation is personal" page) is just a file path.
-{
-  const { data, error } = await anon.rpc('get_cover_photo')
-  report(
-    !error && (data === null || (typeof data === 'string' && data.startsWith('word/'))),
-    'public cover photo reveals only a photo path',
-    error?.message ?? String(data),
-  )
-}
-
 console.log(failures === 0 ? '\nAll checks passed.' : `\n${failures} check(s) FAILED.`)
 process.exit(failures === 0 ? 0 : 1)

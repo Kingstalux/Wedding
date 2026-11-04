@@ -1,5 +1,6 @@
 .page {
   min-height: 100dvh;
+  background: var(--surface);
   padding: 48px 20px 96px;
 }
 
@@ -15,13 +16,12 @@
 /* ---------- Ticket ---------- */
 .ticket {
   position: relative;
-  background: var(--primary);
-  color: var(--ivory);
+  border-top: 3px solid var(--gold);
 }
 
 .top {
   padding: 40px 36px 28px;
-  border-bottom: 1px dashed var(--line-dark);
+  border-bottom: 1px dashed var(--line);
   text-align: center;
 }
 .top h1 {
@@ -39,7 +39,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--ivory);
+  background: var(--surface);
 }
 .left {
   left: -13px;
@@ -53,6 +53,7 @@
   aspect-ratio: 1; /* reserve the space while the code is drawn: no jump */
   margin: 28px auto;
   padding: 18px;
+  border: 1px solid var(--line);
   background: var(--white);
 }
 .qr svg {
@@ -75,7 +76,7 @@
   margin-top: 8px;
   font-size: 12px;
   letter-spacing: 0.26em;
-  color: var(--on-dark);
+  color: var(--muted);
 }
 
 .events {
@@ -83,18 +84,18 @@
   padding: 0;
   list-style: none;
   text-align: left;
-  border-top: 1px solid var(--line-dark);
+  border-top: 1px solid var(--line);
 }
 .events li {
   display: flex;
   justify-content: space-between;
   gap: 16px;
   padding: 12px 0;
-  border-bottom: 1px solid var(--line-dark);
+  border-bottom: 1px solid var(--line);
   font-size: 13.5px;
 }
 .events li span:last-child {
-  color: var(--on-dark-soft);
+  color: var(--muted);
   text-align: right;
 }
 

@@ -62,7 +62,12 @@ export function Wishes() {
   }
 
   return (
-    <section id="wishes" className={styles.wishes} aria-labelledby="wishes-title">
+    <section
+      id="wishes"
+      data-reveal=""
+      className={`on-dark ${styles.wishes}`}
+      aria-labelledby="wishes-title"
+    >
       <div className="container">
         <div className={styles.head}>
           <div>
@@ -105,7 +110,7 @@ export function Wishes() {
             {wishes.map((wish, i) => (
               <li
                 key={wish.id}
-                className={styles.card}
+                className={`paper ${styles.card}`}
                 aria-roledescription="slide"
                 aria-label={t('wishes.count', { n: i + 1, total: wishes.length })}
               >

@@ -1,7 +1,5 @@
 .schedule {
   padding: clamp(72px, 9vw, 112px) 0;
-  background: var(--primary);
-  color: var(--ivory);
   text-align: center;
 }
 
@@ -37,7 +35,7 @@
 .num {
   font-family: var(--font-display);
   font-size: 18px;
-  color: var(--on-dark-soft);
+  color: var(--gold);
 }
 
 /* The line with a gold dot, continuous across the stops of a day */
@@ -53,7 +51,7 @@
   right: 0;
   top: 5px;
   height: 1px;
-  background: var(--line-dark);
+  background: var(--gold-line);
 }
 .track::after {
   content: '';

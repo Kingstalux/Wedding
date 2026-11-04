@@ -1,6 +1,6 @@
-import { createBrowserRouter, Outlet, type RouteObject } from 'react-router'
+import { createBrowserRouter, type RouteObject } from 'react-router'
 import { ErrorPage } from './app/ErrorPage'
-import { OfflineBanner } from './app/OfflineBanner'
+import { RootLayout } from './app/RootLayout'
 import { HomeRedirect } from './guest/pages/HomeRedirect'
 import { InvitationLayout, InvitationPage } from './guest/pages/InvitationPage'
 import { PassPage } from './guest/pages/PassPage'
@@ -52,12 +52,7 @@ if (import.meta.env.DEV) {
 // blank screen, and the offline bar appears on every page.
 export const router = createBrowserRouter([
   {
-    element: (
-      <>
-        <Outlet />
-        <OfflineBanner />
-      </>
-    ),
+    element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: routes,
   },

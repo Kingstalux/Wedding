@@ -41,14 +41,19 @@ export function GuestBook() {
   }
 
   return (
-    <section id="guestbook" className={styles.book} aria-labelledby="book-title">
+    <section
+      id="guestbook"
+      data-reveal=""
+      className={`on-dark ${styles.book}`}
+      aria-labelledby="book-title"
+    >
       <div className={`container ${styles.inner}`}>
         <Eyebrow>{t('book.eyebrow')}</Eyebrow>
         <h2 id="book-title" className="display h2">
           {t('book.title')}
         </h2>
         <Rule center />
-        <form className={styles.form} onSubmit={onSubmit}>
+        <form className={`paper ${styles.form}`} onSubmit={onSubmit}>
           <TextAreaField
             label={t('book.label')}
             placeholder={t('book.placeholder')}

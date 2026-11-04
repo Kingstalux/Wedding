@@ -144,8 +144,7 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
 
   // Photos and the song are saved the moment they're uploaded.
   const saveMedia =
-    (column: 'hero_path' | 'hero_mobile_path' | 'word_photo_path' | 'music_path') =>
-    (path: string | null) =>
+    (column: 'hero_path' | 'hero_mobile_path' | 'music_path') => (path: string | null) =>
       update.mutateAsync({ [column]: path })
 
   return (
@@ -270,16 +269,6 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
             {...text('word_fr')}
           />
         </div>
-        <h3>Photo beside the word</h3>
-        <MediaField
-          kind="photo"
-          folder="word"
-          path={settings.word_photo_path}
-          onSave={saveMedia('word_photo_path')}
-          shape="portrait"
-          tone="forest"
-          placeholder="Couple photo"
-        />
       </section>
 
       <section className={styles.card} aria-labelledby="dress-title">
