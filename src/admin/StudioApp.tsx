@@ -9,6 +9,7 @@ import { LoginPage } from './pages/LoginPage'
 import { ProgrammePage } from './pages/ProgrammePage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
 import { SitePage } from './pages/SitePage'
+import { TablesPage } from './pages/TablesPage'
 import { WishesPage } from './pages/WishesPage'
 import { RequireAdmin } from './RequireAdmin'
 
@@ -36,6 +37,7 @@ export function StudioApp() {
         >
           <Route index element={<GuestsPage />} />
           <Route path="site" element={<SitePage />} />
+          <Route path="tables" element={<TablesPage />} />
           <Route path="programme" element={<ProgrammePage />} />
           <Route path="gallery" element={<GalleryPage />} />
           <Route path="wishes" element={<WishesPage />} />

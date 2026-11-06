@@ -146,8 +146,12 @@ export type Database = {
           last_opened_at: string | null
           name: string
           open_count: number
+          partner_name: string | null
+          partner_phone: string | null
           pass_code: string
           phone: string | null
+          table_locked: boolean
+          table_no: number | null
           token: string
           updated_at: string
         }
@@ -161,8 +165,12 @@ export type Database = {
           last_opened_at?: string | null
           name: string
           open_count?: number
+          partner_name?: string | null
+          partner_phone?: string | null
           pass_code?: string
           phone?: string | null
+          table_locked?: boolean
+          table_no?: number | null
           token?: string
           updated_at?: string
         }
@@ -176,10 +184,41 @@ export type Database = {
           last_opened_at?: string | null
           name?: string
           open_count?: number
+          partner_name?: string | null
+          partner_phone?: string | null
           pass_code?: string
           phone?: string | null
+          table_locked?: boolean
+          table_no?: number | null
           token?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      reservations: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          note: string
+          seats: number
+          table_no: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label: string
+          note?: string
+          seats: number
+          table_no: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          note?: string
+          seats?: number
+          table_no?: number
         }
         Relationships: []
       }
@@ -250,9 +289,14 @@ export type Database = {
           show_gallery: boolean
           show_gift_box: boolean
           show_gifts: boolean
+          show_tables: boolean
           show_wishes: boolean
           show_word: boolean
+          table_capacity: number
+          table_count: number
           updated_at: string
+          wa_template_couple_en: string
+          wa_template_couple_fr: string
           wa_template_en: string
           wa_template_fr: string
           word_en: string
@@ -283,9 +327,14 @@ export type Database = {
           show_gallery?: boolean
           show_gift_box?: boolean
           show_gifts?: boolean
+          show_tables?: boolean
           show_wishes?: boolean
           show_word?: boolean
+          table_capacity?: number
+          table_count?: number
           updated_at?: string
+          wa_template_couple_en?: string
+          wa_template_couple_fr?: string
           wa_template_en?: string
           wa_template_fr?: string
           word_en?: string
@@ -316,9 +365,14 @@ export type Database = {
           show_gallery?: boolean
           show_gift_box?: boolean
           show_gifts?: boolean
+          show_tables?: boolean
           show_wishes?: boolean
           show_word?: boolean
+          table_capacity?: number
+          table_count?: number
           updated_at?: string
+          wa_template_couple_en?: string
+          wa_template_couple_fr?: string
           wa_template_en?: string
           wa_template_fr?: string
           word_en?: string
@@ -383,9 +437,14 @@ export type Database = {
           name: string | null
           note: string | null
           open_count: number | null
+          partner_name: string | null
+          partner_phone: string | null
           pass_code: string | null
           phone: string | null
           responded_at: string | null
+          seats: number | null
+          table_locked: boolean | null
+          table_no: number | null
           token: string | null
         }
         Relationships: []
@@ -408,10 +467,15 @@ export type Database = {
       }
       is_admin: { Args: never; Returns: boolean }
       mark_invite_sent: { Args: { p_guest_id: string }; Returns: undefined }
+      move_guest: {
+        Args: { p_guest_id: string; p_table: number }
+        Returns: undefined
+      }
       post_wish: { Args: { p_message: string; p_token: string }; Returns: Json }
       read_pass: { Args: { p_code: string }; Returns: Json }
       regenerate_token: { Args: { p_guest_id: string }; Returns: string }
       restore_guest: { Args: { p_guest_id: string }; Returns: boolean }
+      seat_waiting: { Args: never; Returns: number }
       set_language: {
         Args: { p_lang: string; p_token: string }
         Returns: undefined

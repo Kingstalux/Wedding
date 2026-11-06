@@ -1,4 +1,5 @@
 import type { MessageKey } from '../i18n/en'
+import { seatsFor } from '../lib/guestNames'
 import { mediaUrl } from '../lib/media'
 import { supabase } from '../lib/supabase'
 import type { Lang } from '../lib/time'
@@ -26,7 +27,13 @@ type RawSettings = Omit<Settings, 'hero_url' | 'hero_mobile_url' | 'music_url'> 
 }
 
 type RawInvitation = {
-  guest: { name: string; lang: Lang | null; pass_code: string }
+  guest: {
+    name: string
+    partner_name: string | null
+    lang: Lang | null
+    pass_code: string
+    table_no: number | null
+  }
   rsvp: Rsvp | null
   wishes: Wish[]
   settings: RawSettings
@@ -36,7 +43,7 @@ type RawInvitation = {
 
 export type LoadedInvitation = { content: PublicContent; invitation: Invitation }
 
-/** Storage paths → full image/audio addresses; guest name → first name. */
+/** Storage paths → full image/audio addresses. */
 function fromRaw(raw: RawInvitation): LoadedInvitation {
   const { hero_path, hero_mobile_path, music_path, ...settings } = raw.settings
   const gallery: GalleryPhoto[] = raw.gallery.map((p) => ({
@@ -61,7 +68,9 @@ function fromRaw(raw: RawInvitation): LoadedInvitation {
     },
     invitation: {
       name: raw.guest.name,
-      first_name: raw.guest.name.trim().split(/\s+/)[0] ?? raw.guest.name,
+      partner_name: raw.guest.partner_name,
+      seats: seatsFor(raw.guest.partner_name),
+      table_no: raw.guest.table_no,
       lang: raw.guest.lang,
       pass_code: raw.guest.pass_code,
       rsvp: raw.rsvp,
@@ -117,7 +126,11 @@ export async function loadInvitation(
   return data ? fromRaw(data as unknown as RawInvitation) : null
 }
 
-export async function submitRsvp(token: string, rsvp: Rsvp): Promise<Rsvp> {
+/** The saved reply, plus the table the guest was given (null if none). */
+export async function submitRsvp(
+  token: string,
+  rsvp: Rsvp,
+): Promise<Rsvp & { table_no: number | null }> {
   const { data, error } = await supabase.rpc('submit_rsvp', {
     p_token: token,
     p_attending: rsvp.attending,
@@ -125,7 +138,7 @@ export async function submitRsvp(token: string, rsvp: Rsvp): Promise<Rsvp> {
     p_note: rsvp.note,
   })
   if (error) fail(error)
-  return data as unknown as Rsvp
+  return data as unknown as Rsvp & { table_no: number | null }
 }
 
 export async function postWish(token: string, message: string): Promise<Wish> {
@@ -144,7 +157,14 @@ export async function setLanguage(token: string, lang: Lang): Promise<void> {
   if (error) fail(error)
 }
 
-export type PassStatus = { first_name: string; attending: boolean | null; checked_in: boolean }
+export type PassStatus = {
+  /** "Ama", or "Kingsley & Vanessa" for a couple */
+  first_name: string
+  seats: number
+  attending: boolean | null
+  table_no: number | null
+  checked_in: boolean
+}
 
 /** What the door sees for a scanned pass; null = no such pass. */
 export async function readPass(code: string): Promise<PassStatus | null> {

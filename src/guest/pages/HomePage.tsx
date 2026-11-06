@@ -8,6 +8,7 @@ import { Header } from '../sections/Header'
 import { Hero } from '../sections/Hero'
 import { Rsvp } from '../sections/Rsvp'
 import { Schedule } from '../sections/Schedule'
+import { Tables } from '../sections/Tables'
 import { Wishes } from '../sections/Wishes'
 import { Word } from '../sections/Word'
 import type { Music } from '../useMusic'
@@ -27,6 +28,7 @@ export function HomePage({ music }: { music: Music }) {
         <DressCode />
         <Gallery />
         <Rsvp />
+        <Tables />
         <Wishes />
         <GuestBook />
         <Gifts />

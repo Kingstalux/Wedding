@@ -13,7 +13,7 @@ type Props = { music: Music }
 
 export function Header({ music }: Props) {
   const { t, lang, setLang } = useT()
-  const { content } = useInvitation()
+  const { content, invitation } = useInvitation()
   const { settings } = content
   const [solid, setSolid] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -48,6 +48,7 @@ export function Header({ music }: Props) {
     ['#dresscode', 'nav.dress', settings.show_dress],
     ['#gallery', 'nav.gallery', settings.show_gallery && content.gallery.length > 0],
     ['#rsvp', 'nav.rsvp', true],
+    ['#tables', 'nav.table', settings.show_tables && invitation.rsvp?.attending === true],
     ['#wishes', 'nav.book', settings.show_wishes],
     ['#gifts', 'nav.gifts', settings.show_gifts],
   ]

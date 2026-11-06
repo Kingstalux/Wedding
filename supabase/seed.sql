@@ -28,7 +28,9 @@ update public.settings set
   gift_box_note_fr = 'Samedi 26 décembre · Salle Bansoa. Une enveloppe à votre nom nous aidera à vous remercier.',
   music_title      = 'The Best Part of You — Savvy',
   wa_template_en   = 'Dear {name}, {bride} & {groom} joyfully invite you to their wedding on 23 & 26 December 2026 in Yaoundé. Open your personal invitation here: {link}',
-  wa_template_fr   = 'Cher(e) {name}, {bride} & {groom} ont la joie de vous inviter à leur mariage les 23 et 26 décembre 2026 à Yaoundé. Ouvrez votre invitation personnelle ici : {link}';
+  wa_template_fr   = 'Cher(e) {name}, {bride} & {groom} ont la joie de vous inviter à leur mariage les 23 et 26 décembre 2026 à Yaoundé. Ouvrez votre invitation personnelle ici : {link}',
+  wa_template_couple_en = 'Dear {name}, {bride} & {groom} joyfully invite you both to their wedding on 23 & 26 December 2026 in Yaoundé. Open your personal invitation here: {link}',
+  wa_template_couple_fr = 'Chers {name}, {bride} & {groom} ont la joie de vous inviter tous les deux à leur mariage les 23 et 26 décembre 2026 à Yaoundé. Ouvrez votre invitation personnelle ici : {link}';
 
 -- ---------- The programme (fixed ids so re-running updates instead of duplicating)
 insert into public.events (id, title_en, title_fr, starts_at, ends_at, venue, maps_url, sort) values
@@ -56,10 +58,23 @@ insert into public.guests (id, name, phone, token, pass_code) values
   ('00000000-0000-4000-9000-000000000003', 'Paul Test',  '237600000003', 'demo-no',  'DEMOCC')
 on conflict (id) do nothing;
 
+-- A couple invitation (two names, one shared pass, two seats)
+insert into public.guests (id, name, phone, partner_name, partner_phone, token, pass_code) values
+  ('00000000-0000-4000-9000-000000000004', 'Kingsley Test', '237600000004',
+   'Vanessa Test', '237600000005', 'demo-couple', 'DEMODD')
+on conflict (id) do nothing;
+
 insert into public.rsvps (guest_id, attending, diet, note) values
   ('00000000-0000-4000-9000-000000000002', true,  'Vegetarian', 'Can’t wait!'),
-  ('00000000-0000-4000-9000-000000000003', false, '',           'So sorry to miss it.')
+  ('00000000-0000-4000-9000-000000000003', false, '',           'So sorry to miss it.'),
+  ('00000000-0000-4000-9000-000000000004', true,  '',           'We’ll be there together!')
 on conflict (guest_id) do nothing;
+-- (Accepting seats them automatically, couples together.)
+
+-- Seats held for people without an invitation
+insert into public.reservations (id, label, seats, table_no, note) values
+  ('00000000-0000-4000-b000-000000000001', 'Bride’s family', 6, 1, 'Front table')
+on conflict (id) do nothing;
 
 insert into public.wishes (id, guest_id, message, created_at) values
   ('00000000-0000-4000-a000-000000000001', '00000000-0000-4000-9000-000000000002',

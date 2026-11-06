@@ -8,6 +8,7 @@ import styles from './AdminLayout.module.css'
 const links: Array<[to: string, label: string, icon: IconName]> = [
   ['/admin', 'Overview & guests', 'users'],
   ['/admin/site', 'Site & texts', 'layout'],
+  ['/admin/tables', 'Tables & seating', 'table'],
   ['/admin/programme', 'Programme & maps', 'pin'],
   ['/admin/gallery', 'Gallery', 'image'],
   ['/admin/wishes', 'Guest book', 'message'],

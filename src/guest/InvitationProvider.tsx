@@ -101,8 +101,8 @@ export function InvitationProvider({
 
     return {
       submitRsvp: async (rsvp) => {
-        const saved = await api.submitRsvp(token, rsvp)
-        update((inv) => ({ ...inv, rsvp: saved }))
+        const { table_no, ...saved } = await api.submitRsvp(token, rsvp)
+        update((inv) => ({ ...inv, rsvp: saved, table_no }))
       },
       postWish: async (message) => {
         const wish = await api.postWish(token, message)

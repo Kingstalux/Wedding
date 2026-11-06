@@ -3,6 +3,7 @@ import { Button } from '../../components/Button'
 import { Dialog, DialogActions } from '../../components/Dialog'
 import { Icon } from '../../components/Icon'
 import { useToast } from '../../components/Toast'
+import { fullNames } from '../../lib/guestNames'
 import { formatPhone } from '../../lib/phone'
 import { formatShortDateTime } from '../../lib/time'
 import { ImportFormatError, parseGuestRows, type ParseResult } from '../guestImport'
@@ -65,11 +66,12 @@ export function ImportPanel({ guests, origin }: { guests: GuestRow[]; origin: st
   async function downloadTemplate() {
     const XLSX = await loadXlsx()
     const sheet = XLSX.utils.aoa_to_sheet([
-      ['Name', 'Phone'],
-      ['Ama Ngono', '677123456'],
-      ['Paul Etoa', '+237 6 99 88 77 66'],
+      ['Name', 'Phone', 'Partner name', 'Partner phone'],
+      ['Ama Ngono', '677123456', '', ''],
+      ['Kingsley Ngu', '+237 6 99 88 77 66', 'Vanessa Ngu', '655443322'],
+      ['Paul Etoa', '677000111', 'Marie Etoa', ''],
     ])
-    sheet['!cols'] = [{ wch: 32 }, { wch: 22 }]
+    sheet['!cols'] = [{ wch: 32 }, { wch: 22 }, { wch: 32 }, { wch: 22 }]
     const book = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(book, sheet, 'Guests')
     XLSX.writeFile(book, 'guest-list-template.xlsx')
@@ -84,6 +86,10 @@ export function ImportPanel({ guests, origin }: { guests: GuestRow[]; origin: st
       .map((g) => ({
         Name: g.name,
         Phone: formatPhone(g.phone),
+        'Partner name': g.partner_name ?? '',
+        'Partner phone': formatPhone(g.partner_phone),
+        Seats: g.seats ?? 1,
+        Table: g.table_no ?? '',
         Language: g.lang ?? '',
         'Invitation sent': formatShortDateTime(g.invite_sent_at),
         'First opened': formatShortDateTime(g.first_opened_at),
@@ -112,8 +118,10 @@ export function ImportPanel({ guests, origin }: { guests: GuestRow[]; origin: st
     <section className={studio.card} aria-labelledby="import-title">
       <h2 id="import-title">Guest list</h2>
       <p className={studio.lede} style={{ marginBottom: 20 }}>
-        Upload an Excel or CSV file with a <strong>Name</strong> column and, optionally, a{' '}
-        <strong>Phone</strong> column. Guests who already replied keep their answer.
+        Upload an Excel or CSV file with a <strong>Name</strong> column and, optionally,{' '}
+        <strong>Phone</strong>, <strong>Partner name</strong> and <strong>Partner phone</strong>.
+        Fill in Partner name to invite a couple together. Guests who already replied keep their
+        answer.
       </p>
 
       <div className={styles.dropzone}>
@@ -184,7 +192,12 @@ export function ImportPanel({ guests, origin }: { guests: GuestRow[]; origin: st
                 <ul>
                   {summary.added.map((g, i) => (
                     <li key={i}>
-                      {g.name} <span className="muted">{formatPhone(g.phone)}</span>
+                      {fullNames(g.name, g.partner_name)}{' '}
+                      <span className="muted">
+                        {[formatPhone(g.phone), formatPhone(g.partner_phone)]
+                          .filter(Boolean)
+                          .join(' · ')}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -197,16 +210,24 @@ export function ImportPanel({ guests, origin }: { guests: GuestRow[]; origin: st
                 <ul>
                   {summary.changed.map((g) => (
                     <li key={g.id}>
-                      {g.old_name !== g.name ? (
+                      {fullNames(g.old_name, g.old_partner_name) !==
+                      fullNames(g.name, g.partner_name) ? (
                         <>
-                          {g.old_name} → <strong>{g.name}</strong>
+                          {fullNames(g.old_name, g.old_partner_name)} →{' '}
+                          <strong>{fullNames(g.name, g.partner_name)}</strong>
                         </>
                       ) : (
-                        g.name
+                        fullNames(g.name, g.partner_name)
                       )}{' '}
                       {g.old_phone !== g.phone && (
                         <span className="muted">
                           {formatPhone(g.old_phone) || 'no phone'} → {formatPhone(g.phone)}
+                        </span>
+                      )}{' '}
+                      {g.old_partner_phone !== g.partner_phone && (
+                        <span className="muted">
+                          partner: {formatPhone(g.old_partner_phone) || 'no phone'} →{' '}
+                          {formatPhone(g.partner_phone) || 'no phone'}
                         </span>
                       )}
                     </li>
@@ -222,7 +243,8 @@ export function ImportPanel({ guests, origin }: { guests: GuestRow[]; origin: st
                   <ul>
                     {summary.missing.map((g) => (
                       <li key={g.id}>
-                        {g.name} <span className="muted">{formatPhone(g.phone)}</span>
+                        {fullNames(g.name, g.partner_name)}{' '}
+                        <span className="muted">{formatPhone(g.phone)}</span>
                       </li>
                     ))}
                   </ul>

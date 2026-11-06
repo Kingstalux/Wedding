@@ -5,6 +5,7 @@ import { Eyebrow, Monogram, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { formatDaySpan, formatDayShort, formatTime } from '../../lib/time'
 import { useInvitation } from '../InvitationProvider'
+import { useGuestNames } from '../useGuestNames'
 import styles from './PassPage.module.css'
 
 /** Route: /i/:token/pass. The guest's entrance ticket with its QR code. */
@@ -12,6 +13,8 @@ export function PassPage() {
   const { t, lang, pick } = useT()
   const { token, content, invitation } = useInvitation()
   const { settings, events } = content
+  const { full, tc } = useGuestNames()
+  const table = settings.show_tables ? invitation.table_no : null
   const url = passUrl(invitation.pass_code)
   const back = `/i/${token}#rsvp`
 
@@ -45,15 +48,13 @@ export function PassPage() {
               · {settings.city.split(',')[0]}
             </Eyebrow>
           </div>
-          <QrCode
-            className={styles.qr}
-            value={url}
-            label={t('pass.qrAlt', { name: invitation.name })}
-          />
+          <QrCode className={styles.qr} value={url} label={t('pass.qrAlt', { name: full })} />
           <div className={styles.bottom}>
-            <p className={styles.name}>{invitation.name}</p>
+            <p className={styles.name}>{full}</p>
+            {table && <p className={styles.table}>{t('pass.table', { n: table })}</p>}
             <p className={styles.code}>
-              {invitation.pass_code} · {t('pass.seat')}
+              {invitation.pass_code} ·{' '}
+              {invitation.seats > 1 ? t('pass.seats', { n: invitation.seats }) : t('pass.seat')}
             </p>
             <ul className={styles.events}>
               {events.map((event) => (
@@ -72,7 +73,7 @@ export function PassPage() {
           <Eyebrow>{t('pass.eyebrow')}</Eyebrow>
           <h2 className="display h2">{t('pass.title')}</h2>
           <Rule />
-          <p className="serif-body">{t('pass.body')}</p>
+          <p className="serif-body">{tc('pass.body')}</p>
           <div className={styles.actions}>
             <Button
               variant="gold"

@@ -15,6 +15,7 @@ export const en = {
   'nav.dress': 'Dress code',
   'nav.gallery': 'Gallery',
   'nav.rsvp': 'RSVP',
+  'nav.table': 'Your table',
   'nav.book': 'Guest book',
   'nav.gifts': 'Gifts',
   'nav.open': 'Open menu',
@@ -27,6 +28,8 @@ export const en = {
 
   'envelope.dear': 'Dear {name}',
   'envelope.invited': 'You are warmly invited to the wedding of',
+  'envelope.dearBoth': 'Dear {name}',
+  'envelope.invitedBoth': 'You are both warmly invited to the wedding of',
   'envelope.open': 'Open your invitation',
 
   'hero.eyebrow': 'Together with their families',
@@ -73,16 +76,26 @@ export const en = {
   'rsvp.lede': 'Dear {name}, one seat is reserved in your name. Please respond by {date}.',
   'rsvp.ledeNoDate':
     'Dear {name}, one seat is reserved in your name. Please let us know if you can join us.',
+  'rsvp.ledeBoth': 'Dear {name}, two seats are reserved in your names. Please respond by {date}.',
+  'rsvp.ledeNoDateBoth':
+    'Dear {name}, two seats are reserved in your names. Please let us know if you can join us.',
   'rsvp.legend': 'Will you attend?',
+  'rsvp.legendBoth': 'Will you both attend?',
   'rsvp.yes': 'Joyfully accepts',
   'rsvp.no': 'Regretfully declines',
+  'rsvp.yesBoth': 'Joyfully accept',
+  'rsvp.noBoth': 'Regretfully decline',
   'rsvp.diet': 'Dietary notes (optional)',
   'rsvp.dietPlaceholder': 'Vegetarian, allergies…',
   'rsvp.note': 'A note for the couple (optional)',
   'rsvp.submit': 'Submit response',
   'rsvp.choose': 'Please choose “Joyfully accepts” or “Regretfully declines”.',
+  'rsvp.chooseBoth': 'Please choose “Joyfully accept” or “Regretfully decline”.',
   'rsvp.thanksYes': 'Thank you, {name}. We have your yes!',
   'rsvp.thanksNo': 'Thank you for letting us know, {name}. You will be missed.',
+  'rsvp.thanksYesBoth': 'Thank you, {name}. We have your yes — see you both there!',
+  'rsvp.thanksNoBoth': 'Thank you for letting us know, {name}. You will both be missed.',
+  'rsvp.tableLink': 'Table {n} · see the plan',
   'rsvp.change': 'Change my answer',
   'rsvp.passKicker': 'Your entrance pass',
   'rsvp.openPass': 'Open my pass',
@@ -104,6 +117,14 @@ export const en = {
   'wishes.prev': 'Previous wishes',
   'wishes.next': 'Next wishes',
   'wishes.write': 'Write your wish',
+  'tables.eyebrow': 'Seating',
+  'tables.title': 'Your Table',
+  'tables.seated': 'You are seated at Table {n}.',
+  'tables.seatedBoth': 'You are both seated at Table {n}.',
+  'tables.pending': 'Your table will be confirmed soon.',
+  'tables.plan': 'Seating plan',
+  'tables.you': 'You',
+  'tables.yours': 'Table {n}, your table',
   'gift.eyebrow': 'Gifts',
   'gift.title': 'A Gift From the Heart',
   'gift.lede':
@@ -123,8 +144,12 @@ export const en = {
   'pass.title': 'Keep This QR Code',
   'pass.body':
     'Save it to your phone and show it at the entrance. It confirms your name and your reply.',
+  'pass.bodyBoth':
+    'Save it to your phone and show it at the entrance. It confirms your names and your reply.',
   'pass.ticket': 'Entrance Pass',
   'pass.seat': '1 seat',
+  'pass.seats': '{n} seats',
+  'pass.table': 'Table {n}',
   'pass.download': 'Download QR image',
   'pass.back': 'Back to the invitation',
   'pass.qrAlt': 'Entrance QR code for {name}',
@@ -134,6 +159,8 @@ export const en = {
   'door.checking': 'Checking this pass…',
   'door.confirmed': 'Confirmed guest',
   'door.notAttending': 'Not attending',
+  'door.confirmedBoth': 'Confirmed guests',
+  'door.notAttendingBoth': 'Not attending',
   'door.notFound': 'This pass could not be found.',
 
   'error.invalid_token':
@@ -155,8 +182,11 @@ export const en = {
 
   'door.noReply': 'Invited · no reply yet',
   'door.checkedIn': 'already checked in',
+  'door.noReplyBoth': 'Invited · no reply yet',
+  'door.checkedInBoth': 'already checked in',
   'common.cancel': 'Cancel',
   'common.loading': 'Loading…',
+  'common.and': 'and',
 }
 
 export type MessageKey = keyof typeof en

@@ -36,6 +36,10 @@ export type Settings = {
   gift_box_note_fr: string
   music_url: string | null
   music_title: string | null
+  /** Seating: how many tables, and whether guests see theirs. */
+  table_count: number
+  table_capacity: number
+  show_tables: boolean
 }
 
 export type WeddingEvent = {
@@ -80,7 +84,12 @@ export type Wish = {
 /** Private to one guest, loaded with their token. */
 export type Invitation = {
   name: string
-  first_name: string
+  /** Set when the invitation is for a couple. */
+  partner_name: string | null
+  /** 1, or 2 for a couple. */
+  seats: 1 | 2
+  /** The guest's table once they have accepted and been seated. */
+  table_no: number | null
   lang: Lang | null
   pass_code: string
   rsvp: Rsvp | null

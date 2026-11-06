@@ -1,0 +1,100 @@
+.tables {
+  padding: clamp(72px, 9vw, 112px) 0;
+  text-align: center;
+}
+
+.lede {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.plan {
+  max-width: 720px;
+  margin: 44px auto 0;
+  padding: clamp(24px, 4vw, 40px) clamp(16px, 4vw, 40px);
+  border: 1px solid var(--gold-line);
+  outline: 1px solid var(--gold-line);
+  outline-offset: 6px;
+  background: var(--card-dark);
+}
+
+.planLabel {
+  margin-bottom: 28px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 36px clamp(8px, 2vw, 18px);
+  margin: 0;
+  padding: 0 0 12px;
+  list-style: none;
+}
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.grid li {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* A round table; the dotted ring suggests the chairs around it. */
+.table {
+  display: grid;
+  place-items: center;
+  width: clamp(38px, 9vw, 52px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(247, 244, 236, 0.32);
+  border-radius: 50%;
+  outline: 2px dotted rgba(247, 244, 236, 0.22);
+  outline-offset: 4px;
+  font-size: clamp(12px, 2.6vw, 14px);
+  color: rgba(247, 244, 236, 0.75);
+}
+
+.mine .table {
+  border-color: var(--gold);
+  outline-color: var(--gold);
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 600;
+  box-shadow:
+    0 0 0 10px rgba(184, 145, 47, 0.16),
+    0 0 28px rgba(184, 145, 47, 0.45);
+  animation: glow 2.4s ease-in-out infinite;
+}
+
+.you {
+  /* Under the table, without making its row taller than the others */
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+@keyframes glow {
+  50% {
+    box-shadow:
+      0 0 0 14px rgba(184, 145, 47, 0.08),
+      0 0 36px rgba(184, 145, 47, 0.55);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mine .table {
+    animation: none;
+  }
+}

@@ -5,6 +5,7 @@ import { useConfirm } from '../../components/Confirm'
 import { Switch } from '../../components/Form'
 import { useToast } from '../../components/Toast'
 import { cx } from '../../lib/cx'
+import { fullNames } from '../../lib/guestNames'
 import { supabase } from '../../lib/supabase'
 import { formatShortDateTime } from '../../lib/time'
 import { studioErrorMessage, useSettings, useUpdateSettings } from '../queries'
@@ -25,10 +26,10 @@ export function WishesPage() {
   const wishes = useQuery({
     queryKey: wishesKey,
     queryFn: async () => {
-      // guests(name): Supabase follows the guest_id foreign key and adds the guest's name.
+      // guests(…): Supabase follows the guest_id foreign key and adds the guest's names.
       const { data, error } = await supabase
         .from('wishes')
-        .select('id, message, hidden, created_at, guests(name)')
+        .select('id, message, hidden, created_at, guests(name, partner_name)')
         .order('created_at', { ascending: false })
       if (error) throw error
       return data
@@ -103,7 +104,9 @@ export function WishesPage() {
           <div className={styles.toolbar}>
             <p>
               <strong style={{ fontWeight: 500, color: 'var(--emerald)' }}>
-                {wish.guests?.name ?? 'Removed guest'}
+                {wish.guests
+                  ? fullNames(wish.guests.name, wish.guests.partner_name)
+                  : 'Removed guest'}
               </strong>{' '}
               <span className="muted">· {formatShortDateTime(wish.created_at)}</span>
               {wish.hidden && <span className={cx(styles.badge, styles.waiting)}> Hidden</span>}

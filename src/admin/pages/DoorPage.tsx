@@ -4,11 +4,13 @@ import { Button } from '../../components/Button'
 import { SelectField } from '../../components/Form'
 import { Icon } from '../../components/Icon'
 import { cx } from '../../lib/cx'
+import { fullNames } from '../../lib/guestNames'
 import { formatPhone } from '../../lib/phone'
 import { supabase } from '../../lib/supabase'
 import { formatDayShort, formatShortDateTime, formatTime } from '../../lib/time'
 import { checkIn, codeFromScan, pickCurrentEvent, type CheckInResult } from '../door'
 import { useGuests } from '../guests'
+import { seatsLabel, useReservations } from '../tables'
 import { studioErrorMessage, useEvents } from '../queries'
 import studio from '../studio.module.css'
 import styles from './DoorPage.module.css'
@@ -27,6 +29,7 @@ export function DoorPage() {
   const queryClient = useQueryClient()
   const events = useEvents()
   const guests = useGuests()
+  const reservations = useReservations()
   const [eventId, setEventId] = useState('')
   const [result, setResult] = useState<Shown | null>(null)
   const [log, setLog] = useState<Shown[]>([])
@@ -43,12 +46,13 @@ export function DoorPage() {
     queryKey: ['admin', 'checkins', current],
     enabled: Boolean(current),
     queryFn: async () => {
-      const { count, error } = await supabase
+      // People, not passes: a couple's pass counts as two.
+      const { data, error } = await supabase
         .from('checkins')
-        .select('guest_id', { count: 'exact', head: true })
+        .select('guest_id, guests(partner_name)')
         .eq('event_id', current)
       if (error) throw error
-      return count ?? 0
+      return data.reduce((sum, c) => sum + (c.guests?.partner_name ? 2 : 1), 0)
     },
   })
 
@@ -124,9 +128,16 @@ export function DoorPage() {
           .filter(
             (g) =>
               g.name?.toLowerCase().includes(q) ||
-              (g.phone ?? '').includes(q.replace(/\D/g, '') || '#'),
+              g.partner_name?.toLowerCase().includes(q) ||
+              (g.phone ?? '').includes(q.replace(/\D/g, '') || '#') ||
+              (g.partner_phone ?? '').includes(q.replace(/\D/g, '') || '#'),
           )
           .slice(0, 8)
+      : []
+  // Reserved seats (people without an invitation) can be found by their label.
+  const reservedMatches =
+    q.length >= 2
+      ? (reservations.data ?? []).filter((r) => r.label.toLowerCase().includes(q)).slice(0, 4)
       : []
 
   return (
@@ -152,7 +163,7 @@ export function DoorPage() {
 
       <p className="muted">
         <strong style={{ color: 'var(--ink)', fontWeight: 500 }}>{counts.data ?? '–'}</strong>{' '}
-        checked in for this event.
+        people checked in for this event.
       </p>
 
       <div className={styles.layout}>
@@ -187,12 +198,26 @@ export function DoorPage() {
               onChange={(e) => setSearch(e.target.value)}
               className={styles.search}
             />
-            {matches.length > 0 && (
+            {(matches.length > 0 || reservedMatches.length > 0) && (
               <ul className={styles.matches}>
+                {reservedMatches.map((r) => (
+                  <li key={r.id}>
+                    <span>
+                      {r.label}{' '}
+                      <span className="muted">
+                        Reserved · {seatsLabel(r.seats)} · Table {r.table_no}
+                      </span>
+                    </span>
+                  </li>
+                ))}
                 {matches.map((g) => (
                   <li key={g.id}>
                     <span>
-                      {g.name} <span className="muted">{formatPhone(g.phone)}</span>
+                      {fullNames(g.name ?? '', g.partner_name)}{' '}
+                      <span className="muted">
+                        {formatPhone(g.phone)}
+                        {g.table_no && ` · Table ${g.table_no}`}
+                      </span>
                     </span>
                     <Button size="sm" onClick={() => g.pass_code && run(g.pass_code)}>
                       Check in
@@ -216,6 +241,12 @@ export function DoorPage() {
               <section className={cx(styles.result, styles[result.status])}>
                 <span className={styles.label}>{MESSAGES[result.status]}</span>
                 <strong>{result.name ?? result.code}</strong>
+                {(result.table_no || (result.seats ?? 1) > 1) && result.status !== 'declined' && (
+                  <p className={styles.table}>
+                    {result.table_no ? `Table ${result.table_no}` : 'No table yet'}
+                    {(result.seats ?? 1) > 1 && ` · ${seatsLabel(result.seats ?? 1)}`}
+                  </p>
+                )}
                 <p>
                   {result.code}
                   {result.status === 'already' &&

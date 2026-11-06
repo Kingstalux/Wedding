@@ -2,6 +2,7 @@ import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { fillGuestName, splitGreeting } from '../../lib/template'
 import { useInvitation } from '../InvitationProvider'
+import { useGuestNames } from '../useGuestNames'
 import styles from './Word.module.css'
 
 /**
@@ -10,11 +11,15 @@ import styles from './Word.module.css'
  */
 export function Word() {
   const { t, pick } = useT()
-  const { content, invitation } = useInvitation()
+  const { content } = useInvitation()
+  const { dear, couple } = useGuestNames()
   const { settings } = content
   if (!settings.show_word) return null
 
-  const text = fillGuestName(pick(settings.word_en, settings.word_fr), invitation.name)
+  let written = pick(settings.word_en, settings.word_fr)
+  // French "Cher(e) {nom de l’invité}" becomes "Chers Kingsley et Vanessa" for a couple.
+  if (couple) written = written.replace(/Cher\(e\)(\s*\{)/gi, 'Chers$1')
+  const text = fillGuestName(written, dear)
   const { greeting, body } = splitGreeting(text)
 
   return (

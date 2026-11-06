@@ -7,15 +7,27 @@ import { normalizePhone } from '../lib/phone'
  * Expected columns (any order, English or French, case doesn't matter):
  *   Name / Nom / Full name / Nom complet      (required)
  *   Phone / Téléphone / Phone number / Tel…   (optional)
+ *   Partner name / Nom du conjoint…           (optional: fill it for a couple)
+ *   Partner phone / Téléphone du conjoint…    (optional)
  */
 
-export type ImportRow = { name: string; phone: string | null }
+export type ImportRow = {
+  name: string
+  phone: string | null
+  /**
+   * Only present when the file has a partner column. A file without one
+   * leaves existing couples as they are; with one, an empty cell means
+   * "one person".
+   */
+  partner_name?: string | null
+  partner_phone?: string | null
+}
 
 export type ParseResult = {
   rows: ImportRow[]
   /** Rows that can't be imported, with the spreadsheet row number (as Excel shows it). */
   problems: Array<{ row: number; message: string }>
-  /** Repeated people (same phone, or same name without phone): only the first is kept. */
+  /** Repeated people (a phone used twice, or same name without phone): only the first is kept. */
   duplicates: Array<{ row: number; name: string }>
 }
 
@@ -33,6 +45,30 @@ const PHONE_HEADERS = [
   'numero',
 ]
 
+const PARTNER_NAME_HEADERS = [
+  'partner name',
+  'partner',
+  'second guest',
+  'spouse',
+  'nom du conjoint',
+  'conjoint',
+  'conjointe',
+  'partenaire',
+  'nom du partenaire',
+]
+const PARTNER_PHONE_HEADERS = [
+  'partner phone',
+  'partner whatsapp',
+  'partner number',
+  'spouse phone',
+  'téléphone du conjoint',
+  'telephone du conjoint',
+  'téléphone conjoint',
+  'téléphone partenaire',
+  'telephone partenaire',
+  'téléphone du partenaire',
+]
+
 const clean = (v: unknown) =>
   String(v ?? '')
     .trim()
@@ -47,6 +83,8 @@ export function parseGuestRows(table: unknown[][]): ParseResult {
   const headers = header.map(clean)
   const nameCol = headers.findIndex((h) => NAME_HEADERS.includes(h))
   const phoneCol = headers.findIndex((h) => PHONE_HEADERS.includes(h))
+  const partnerCol = headers.findIndex((h) => PARTNER_NAME_HEADERS.includes(h))
+  const partnerPhoneCol = headers.findIndex((h) => PARTNER_PHONE_HEADERS.includes(h))
   if (nameCol === -1) {
     throw new ImportFormatError(
       'The first row needs a “Name” column (and optionally “Phone”). Download the template to see the format.',
@@ -62,13 +100,26 @@ export function parseGuestRows(table: unknown[][]): ParseResult {
       .trim()
       .replace(/\s+/g, ' ')
     const rawPhone = phoneCol === -1 ? '' : cells[phoneCol]
-    if (!name && !String(rawPhone ?? '').trim()) return // blank line
+    const partnerName =
+      partnerCol === -1
+        ? ''
+        : String(cells[partnerCol] ?? '')
+            .trim()
+            .replace(/\s+/g, ' ')
+    const rawPartnerPhone = partnerPhoneCol === -1 ? '' : cells[partnerPhoneCol]
+    if (
+      !name &&
+      !String(rawPhone ?? '').trim() &&
+      !partnerName &&
+      !String(rawPartnerPhone ?? '').trim()
+    )
+      return // blank line
 
     if (!name) {
       result.problems.push({ row: rowNumber, message: 'has a phone number but no name' })
       return
     }
-    if (name.length > 120) {
+    if (name.length > 120 || partnerName.length > 120) {
       result.problems.push({ row: rowNumber, message: 'has a name longer than 120 characters' })
       return
     }
@@ -81,13 +132,38 @@ export function parseGuestRows(table: unknown[][]): ParseResult {
       return
     }
 
-    const key = phone.phone ?? `name:${name.toLowerCase()}`
-    if (seen.has(key)) {
+    const partnerPhone = normalizePhone(rawPartnerPhone as string | number | null)
+    if (!partnerPhone.ok) {
+      result.problems.push({
+        row: rowNumber,
+        message: `“${partnerPhone.input}” isn’t a valid partner phone number`,
+      })
+      return
+    }
+    if (partnerPhone.phone && !partnerName) {
+      result.problems.push({ row: rowNumber, message: 'has a partner phone but no partner name' })
+      return
+    }
+    if (partnerPhone.phone && partnerPhone.phone === phone.phone) {
+      result.problems.push({ row: rowNumber, message: 'has the same number for both partners' })
+      return
+    }
+
+    // A number may only appear once in the whole file, whichever column it's in.
+    const phones = [phone.phone, partnerPhone.phone].filter((p): p is string => !!p)
+    const keys = phones.length ? phones : [`name:${name.toLowerCase()}`]
+    if (keys.some((k) => seen.has(k))) {
       result.duplicates.push({ row: rowNumber, name })
       return
     }
-    seen.add(key)
-    result.rows.push({ name, phone: phone.phone })
+    keys.forEach((k) => seen.add(k))
+
+    const row: ImportRow = { name, phone: phone.phone }
+    if (partnerCol !== -1) {
+      row.partner_name = partnerName || null
+      row.partner_phone = partnerName ? partnerPhone.phone : null
+    }
+    result.rows.push(row)
   })
 
   return result

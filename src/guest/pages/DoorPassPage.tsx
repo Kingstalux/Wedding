@@ -6,6 +6,7 @@ import { Button } from '../../components/Button'
 import { Icon } from '../../components/Icon'
 import { Select } from '../../components/Select'
 import { Eyebrow } from '../../components/Typography'
+import type { MessageKey } from '../../i18n/en'
 import { useT } from '../../i18n/LanguageProvider'
 import { cx } from '../../lib/cx'
 import { supabase } from '../../lib/supabase'
@@ -23,6 +24,9 @@ export function DoorPassPage() {
   const { t } = useT()
   const { code = '' } = useParams()
   const pass = useQuery({ queryKey: ['pass', code], queryFn: () => readPass(code) })
+  /** The couple's version of a message ("door.confirmedBoth") for a two-person pass. */
+  const both = (key: 'door.notAttending' | 'door.confirmed' | 'door.noReply' | 'door.checkedIn') =>
+    (pass.data && pass.data.seats > 1 ? `${key}Both` : key) as MessageKey
 
   return (
     <div className={`on-dark ${styles.page}`}>
@@ -54,15 +58,19 @@ export function DoorPassPage() {
             >
               {pass.data.attending !== false && <Icon name="check" />}
               {pass.data.attending === false
-                ? t('door.notAttending')
+                ? t(both('door.notAttending'))
                 : pass.data.attending
-                  ? t('door.confirmed')
-                  : t('door.noReply')}
+                  ? t(both('door.confirmed'))
+                  : t(both('door.noReply'))}
             </span>
             <p className={styles.doorName}>{pass.data.first_name}</p>
+            {pass.data.attending && pass.data.table_no && (
+              <p className={styles.doorTable}>{t('pass.table', { n: pass.data.table_no })}</p>
+            )}
             <p className="muted">
-              {code.toUpperCase()} · {t('pass.seat')}
-              {pass.data.checked_in && ` · ${t('door.checkedIn')}`}
+              {code.toUpperCase()} ·{' '}
+              {pass.data.seats > 1 ? t('pass.seats', { n: pass.data.seats }) : t('pass.seat')}
+              {pass.data.checked_in && ` · ${t(both('door.checkedIn'))}`}
             </p>
             <CoupleCheckIn code={code} />
           </>

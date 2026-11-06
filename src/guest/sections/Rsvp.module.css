@@ -51,6 +51,18 @@
   background: var(--white);
 }
 
+/* Narrow phones: code on top, names underneath, so long names have room */
+@media (max-width: 440px) {
+  .passCard {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+  .passCard .qr {
+    width: 140px;
+  }
+}
+
 .qr {
   aspect-ratio: 1; /* reserve the space while the code is drawn: no jump */
 }
@@ -70,6 +82,16 @@
   font-size: 13px;
   letter-spacing: 0.1em;
   color: var(--muted);
+}
+.tableLink {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 4px;
 }
 
 .actions {

@@ -3,12 +3,14 @@ import { Eyebrow, Monogram, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { formatDaySpan } from '../../lib/time'
 import { useInvitation } from '../InvitationProvider'
+import { useGuestNames } from '../useGuestNames'
 import styles from './Envelope.module.css'
 
 /** The opening screen. Its button is the tap that lets the music start. */
 export function Envelope({ onOpen, hasMusic }: { onOpen: () => void; hasMusic: boolean }) {
   const { t, lang, setLang } = useT()
-  const { content, invitation } = useInvitation()
+  const { content } = useInvitation()
+  const { dear, tc } = useGuestNames()
   const { settings, events } = content
 
   return (
@@ -28,8 +30,8 @@ export function Envelope({ onOpen, hasMusic }: { onOpen: () => void; hasMusic: b
 
       <main className={styles.card}>
         <Monogram bride={settings.bride} groom={settings.groom} size={44} gold />
-        <p className={styles.dear}>{t('envelope.dear', { name: invitation.name })}</p>
-        <Eyebrow light>{t('envelope.invited')}</Eyebrow>
+        <p className={styles.dear}>{tc('envelope.dear', { name: dear })}</p>
+        <Eyebrow light>{tc('envelope.invited')}</Eyebrow>
         <h1 className={`display ${styles.names}`}>
           {settings.bride} <em>{t('hero.and')}</em> {settings.groom}
         </h1>

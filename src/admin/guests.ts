@@ -19,24 +19,38 @@ export type Stats = {
   declined: number
   pending: number
   checked_in: number
+  /** People, not invitations: a couple counts as two. */
+  invited_people: number
+  attending_people: number
+  checked_in_people: number
   wishes: number
 }
 
 export type ImportSummary = {
-  added: Array<{ name: string; phone: string | null }>
+  added: Array<{
+    name: string
+    phone: string | null
+    partner_name: string | null
+    partner_phone: string | null
+  }>
   changed: Array<{
     id: string
     name: string
     old_name: string
     phone: string | null
     old_phone: string | null
+    partner_name: string | null
+    old_partner_name: string | null
+    partner_phone: string | null
+    old_partner_phone: string | null
   }>
-  missing: Array<{ id: string; name: string; phone: string | null }>
+  missing: Array<{ id: string; name: string; phone: string | null; partner_name: string | null }>
   unchanged: number
 }
 
 const guestsKey = ['admin', 'guests'] as const
 const statsKey = ['admin', 'stats'] as const
+export const reservationsKey = ['admin', 'reservations'] as const
 
 export function useGuests() {
   return useQuery({
@@ -64,13 +78,14 @@ export function useStats() {
 }
 
 /** Wraps a change so the list and the figures refresh afterwards. */
-function useGuestChange<T>(run: (input: T) => Promise<unknown>) {
+export function useGuestChange<T>(run: (input: T) => Promise<unknown>) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: run,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: guestsKey })
       queryClient.invalidateQueries({ queryKey: statsKey })
+      queryClient.invalidateQueries({ queryKey: reservationsKey })
       queryClient.invalidateQueries({ queryKey: ['admin', 'preview-token'] })
     },
   })
@@ -81,7 +96,14 @@ const check = <R extends { error: unknown }>(result: R) => {
   return result
 }
 
-export type GuestInput = { name: string; phone: string | null; lang: 'en' | 'fr' | null }
+export type GuestInput = {
+  name: string
+  phone: string | null
+  /** Set for a couple invitation; null for one person. */
+  partner_name: string | null
+  partner_phone: string | null
+  lang: 'en' | 'fr' | null
+}
 
 export function useAddGuest() {
   return useGuestChange(async (guest: GuestInput) =>

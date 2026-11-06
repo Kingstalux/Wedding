@@ -151,6 +151,13 @@
   background: var(--slate);
   color: var(--white);
 }
+.couple {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-color: var(--gold);
+  color: var(--ink);
+  font-size: 11px;
+}
 .waiting {
   background: var(--ivory);
   border-color: var(--line);
@@ -159,6 +166,7 @@
 
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 

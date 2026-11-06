@@ -6,7 +6,9 @@ import { IconButton } from '../../components/IconButton'
 import { useToast } from '../../components/Toast'
 import { copyText } from '../../lib/clipboard'
 import { cx } from '../../lib/cx'
+import { fullNames } from '../../lib/guestNames'
 import { formatPhone } from '../../lib/phone'
+import { firstName } from '../../lib/template'
 import { formatShortDateTime } from '../../lib/time'
 import { invitationUrl, inviteMessage, whatsappUrl } from '../../lib/whatsapp'
 import { GuestDialog } from '../components/GuestDialog'
@@ -67,15 +69,22 @@ export function GuestsPage() {
   const shown = q
     ? base.filter(
         (g) =>
-          g.name?.toLowerCase().includes(q) || (digits.length >= 3 && g.phone?.includes(digits)),
+          g.name?.toLowerCase().includes(q) ||
+          g.partner_name?.toLowerCase().includes(q) ||
+          (digits.length >= 3 && (g.phone?.includes(digits) || g.partner_phone?.includes(digits))),
       )
     : base
 
   function messageFor(g: GuestRow) {
     const lang = (g.lang as 'en' | 'fr' | null) ?? defaultLang
-    const template = (lang === 'fr' ? settings?.wa_template_fr : settings?.wa_template_en) || ''
+    const single = (lang === 'fr' ? settings?.wa_template_fr : settings?.wa_template_en) || ''
+    const forCouple =
+      (lang === 'fr' ? settings?.wa_template_couple_fr : settings?.wa_template_couple_en) || ''
+    const template = g.partner_name ? forCouple || single : single
     return inviteMessage(template, {
       guestName: g.name ?? '',
+      partnerName: g.partner_name,
+      and: lang === 'fr' ? 'et' : 'and',
       bride: settings?.bride ?? '',
       groom: settings?.groom ?? '',
       link: invitationUrl(origin, g.token ?? ''),
@@ -89,6 +98,18 @@ export function GuestsPage() {
     } catch {
       // Remembered for this visit only.
     }
+  }
+
+  /** One WhatsApp button per number; a couple with two numbers gets two. */
+  function sendTargets(g: GuestRow): Array<{ phone: string | null; label: string; who: string }> {
+    const who = fullNames(g.name ?? '', g.partner_name)
+    if (g.partner_name && g.partner_phone) {
+      return [
+        { phone: g.phone, label: firstName(g.name ?? ''), who: g.name ?? '' },
+        { phone: g.partner_phone, label: firstName(g.partner_name), who: g.partner_name },
+      ]
+    }
+    return [{ phone: g.phone ?? g.partner_phone, label: 'WhatsApp', who }]
   }
 
   const percent = (n: number) => (stats && stats.invited ? (n / stats.invited) * 100 : 0)
@@ -107,8 +128,11 @@ export function GuestsPage() {
 
       <section className={styles.stats} aria-label="Figures">
         <div className={cx(styles.stat, styles.accent)}>
-          <strong>{stats?.invited ?? '–'}</strong>
-          <span>Invited</span>
+          <strong>{stats?.invited_people ?? '–'}</strong>
+          <span>
+            People invited
+            {stats && stats.invited_people !== stats.invited && ` · ${stats.invited} invitations`}
+          </span>
         </div>
         <div className={styles.stat}>
           <strong>{stats?.sent ?? '–'}</strong>
@@ -119,8 +143,13 @@ export function GuestsPage() {
           <span>Opened</span>
         </div>
         <div className={styles.stat}>
-          <strong>{stats?.attending ?? '–'}</strong>
-          <span>Attending</span>
+          <strong>{stats?.attending_people ?? '–'}</strong>
+          <span>
+            People attending
+            {stats &&
+              stats.attending_people !== stats.attending &&
+              ` · ${stats.attending} invitations`}
+          </span>
         </div>
         <div className={styles.stat}>
           <strong>{stats?.declined ?? '–'}</strong>
@@ -221,9 +250,14 @@ export function GuestsPage() {
                 {shown.map((g) => (
                   <tr key={g.id}>
                     <td>
-                      <span className={styles.name}>{g.name}</span>
+                      <span className={styles.name}>{fullNames(g.name ?? '', g.partner_name)}</span>
+                      {g.partner_name && (
+                        <span className={cx(styles.badge, styles.couple)}>Couple · 2 seats</span>
+                      )}
                       <span className={styles.sub}>
-                        {formatPhone(g.phone) || 'No phone'}
+                        {[formatPhone(g.phone), formatPhone(g.partner_phone)]
+                          .filter(Boolean)
+                          .join(' · ') || 'No phone'}
                         {g.lang && ` · ${g.lang.toUpperCase()}`}
                       </span>
                     </td>
@@ -254,6 +288,11 @@ export function GuestsPage() {
                       {g.attending === null && (
                         <span className={cx(styles.badge, styles.waiting)}>Awaiting</span>
                       )}
+                      {g.attending === true && (
+                        <span className={styles.sub}>
+                          {g.table_no ? `Table ${g.table_no}` : 'Waiting for a table'}
+                        </span>
+                      )}
                       {g.diet && <span className={styles.sub}>Diet: {g.diet}</span>}
                     </td>
                     <td>
@@ -271,7 +310,10 @@ export function GuestsPage() {
                           loading={restore.isPending && restore.variables === g.id}
                           onClick={() =>
                             restore.mutate(g.id!, {
-                              onSuccess: () => toast(`${g.name} is back on the list`),
+                              onSuccess: () =>
+                                toast(
+                                  `${fullNames(g.name ?? '', g.partner_name)} is back on the list`,
+                                ),
                               onError: (err) => toast(studioErrorMessage(err), 'error'),
                             })
                           }
@@ -280,16 +322,19 @@ export function GuestsPage() {
                         </Button>
                       ) : (
                         <div className={styles.actions}>
-                          <a
-                            className={styles.whatsapp}
-                            href={whatsappUrl(g.phone, messageFor(g))}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => markSent.mutate(g.id!)}
-                            aria-label={`Send ${g.name}’s invitation on WhatsApp`}
-                          >
-                            <Icon name="whatsapp" /> WhatsApp
-                          </a>
+                          {sendTargets(g).map((target) => (
+                            <a
+                              key={target.label}
+                              className={styles.whatsapp}
+                              href={whatsappUrl(target.phone, messageFor(g))}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => markSent.mutate(g.id!)}
+                              aria-label={`Send the invitation to ${target.who} on WhatsApp`}
+                            >
+                              <Icon name="whatsapp" /> {target.label}
+                            </a>
+                          ))}
                           <IconButton
                             icon="copy"
                             size="sm"

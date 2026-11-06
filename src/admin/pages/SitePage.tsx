@@ -41,6 +41,8 @@ type Draft = {
   music_title: string
   wa_template_en: string
   wa_template_fr: string
+  wa_template_couple_en: string
+  wa_template_couple_fr: string
 }
 
 function toDraft(s: SettingsRow): Draft {
@@ -68,6 +70,8 @@ function toDraft(s: SettingsRow): Draft {
     music_title: s.music_title ?? '',
     wa_template_en: s.wa_template_en,
     wa_template_fr: s.wa_template_fr,
+    wa_template_couple_en: s.wa_template_couple_en,
+    wa_template_couple_fr: s.wa_template_couple_fr,
   }
 }
 
@@ -97,6 +101,8 @@ function toPatch(d: Draft): SettingsPatch {
     music_title: orNull(d.music_title),
     wa_template_en: d.wa_template_en.trim(),
     wa_template_fr: d.wa_template_fr.trim(),
+    wa_template_couple_en: d.wa_template_couple_en.trim(),
+    wa_template_couple_fr: d.wa_template_couple_fr.trim(),
   }
 }
 
@@ -426,6 +432,27 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
             rows={5}
             placeholder="Cher(e) {name}, {bride} & {groom} vous invitent… Votre invitation : {link}"
             {...text('wa_template_fr')}
+          />
+        </div>
+        <h3>For couples</h3>
+        <p className={styles.hint} style={{ marginBottom: 16 }}>
+          Used when an invitation is for two people. {'{name}'} becomes both first names, e.g.
+          “Kingsley and Vanessa”. Leave empty to use the text above.
+        </p>
+        <div className={styles.grid2}>
+          <TextAreaField
+            look="box"
+            label="English (couples)"
+            rows={5}
+            placeholder="Dear {name}, you are both invited… Open your invitation: {link}"
+            {...text('wa_template_couple_en')}
+          />
+          <TextAreaField
+            look="box"
+            label="Français (couples)"
+            rows={5}
+            placeholder="Chers {name}, vous êtes tous les deux invités… Votre invitation : {link}"
+            {...text('wa_template_couple_fr')}
           />
         </div>
       </section>

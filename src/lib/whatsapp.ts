@@ -1,4 +1,5 @@
-import { fill, firstName } from './template'
+import { shortNames } from './guestNames'
+import { fill } from './template'
 
 /*
  * WhatsApp "click to chat": https://wa.me/<phone>?text=<message>
@@ -14,10 +15,19 @@ export function invitationUrl(origin: string, token: string): string {
 /** The couple's template with this guest's details filled in. */
 export function inviteMessage(
   template: string,
-  values: { guestName: string; bride: string; groom: string; link: string },
+  values: {
+    guestName: string
+    /** A couple's second name; {name} then becomes "Kingsley and Vanessa". */
+    partnerName?: string | null
+    /** "and" in the guest's language. */
+    and?: string
+    bride: string
+    groom: string
+    link: string
+  },
 ): string {
   return fill(template, {
-    name: firstName(values.guestName),
+    name: shortNames(values.guestName, values.partnerName, values.and ?? 'and'),
     bride: values.bride,
     groom: values.groom,
     link: values.link,

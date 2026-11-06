@@ -1,0 +1,144 @@
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+.summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 20px;
+  background: var(--white);
+}
+.summary strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1;
+}
+.summary span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--line);
+  background: var(--white);
+}
+.table header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.table h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 22px;
+}
+.full {
+  border-top-color: var(--gold);
+}
+
+.count {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.bar {
+  height: 4px;
+  background: var(--ivory);
+}
+.bar i {
+  display: block;
+  height: 100%;
+  background: var(--navy);
+}
+.full .bar i {
+  background: var(--gold);
+}
+
+.empty {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.people {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.people li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.person {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.tag {
+  padding: 1px 7px;
+  border: 1px solid var(--gold);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.reserved {
+  border-color: var(--slate);
+  background: var(--ivory);
+}
+
+.note {
+  flex-basis: 100%;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.locked {
+  display: inline-flex;
+  color: var(--muted);
+}
+
+.rowActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.move {
+  min-width: 150px;
+  font-size: 13px;
+}
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: end;
+  gap: 16px;
+  margin-top: 20px;
+}

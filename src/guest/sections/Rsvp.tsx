@@ -8,6 +8,7 @@ import { useT } from '../../i18n/LanguageProvider'
 import { formatDate } from '../../lib/time'
 import { errorMessageKey } from '../api'
 import { useInvitation } from '../InvitationProvider'
+import { useGuestNames } from '../useGuestNames'
 import styles from './Rsvp.module.css'
 
 type Answer = '' | 'yes' | 'no'
@@ -16,6 +17,8 @@ export function Rsvp() {
   const { t, lang } = useT()
   const { token, content, invitation, actions } = useInvitation()
   const { rsvp } = invitation
+  const { greeting, dear, full, tc } = useGuestNames()
+  const showTable = content.settings.show_tables && rsvp?.attending && invitation.table_no
   const deadline = content.settings.rsvp_deadline
 
   // Show the form when the guest hasn't replied yet, or chose "Change my answer".
@@ -29,7 +32,7 @@ export function Rsvp() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault()
     if (!answer) {
-      setError(t('rsvp.choose'))
+      setError(tc('rsvp.choose'))
       return
     }
     setError(null)
@@ -68,22 +71,22 @@ export function Rsvp() {
           <form className={styles.form} onSubmit={onSubmit} noValidate>
             <p className={styles.lede}>
               {deadline
-                ? t('rsvp.lede', { name: invitation.name, date: formatDate(deadline, lang) })
-                : t('rsvp.ledeNoDate', { name: invitation.name })}
+                ? tc('rsvp.lede', { name: dear, date: formatDate(deadline, lang) })
+                : tc('rsvp.ledeNoDate', { name: dear })}
             </p>
             <fieldset className={styles.choices}>
-              <legend className="sr-only">{t('rsvp.legend')}</legend>
+              <legend className="sr-only">{tc('rsvp.legend')}</legend>
               <Choice
                 name="attend"
                 value="yes"
-                label={t('rsvp.yes')}
+                label={tc('rsvp.yes')}
                 checked={answer === 'yes'}
                 onChange={() => setAnswer('yes')}
               />
               <Choice
                 name="attend"
                 value="no"
-                label={t('rsvp.no')}
+                label={tc('rsvp.no')}
                 checked={answer === 'no'}
                 onChange={() => setAnswer('no')}
               />
@@ -117,17 +120,25 @@ export function Rsvp() {
           </form>
         ) : rsvp.attending ? (
           <div aria-live="polite">
-            <p className={styles.thanks}>{t('rsvp.thanksYes', { name: invitation.first_name })}</p>
+            <p className={styles.thanks}>{tc('rsvp.thanksYes', { name: greeting })}</p>
             <div className={styles.passCard}>
               <QrCode
                 className={styles.qr}
                 value={passUrl(invitation.pass_code)}
-                label={t('pass.qrAlt', { name: invitation.name })}
+                label={t('pass.qrAlt', { name: full })}
               />
               <div>
                 <Eyebrow className={styles.passKicker}>{t('rsvp.passKicker')}</Eyebrow>
-                <p className={styles.passName}>{invitation.name}</p>
-                <p className={styles.passCode}>{invitation.pass_code}</p>
+                <p className={styles.passName}>{full}</p>
+                <p className={styles.passCode}>
+                  {invitation.pass_code}
+                  {invitation.seats > 1 && ` · ${t('pass.seats', { n: invitation.seats })}`}
+                </p>
+                {showTable && (
+                  <a className={styles.tableLink} href="#tables">
+                    {t('rsvp.tableLink', { n: invitation.table_no! })}
+                  </a>
+                )}
               </div>
             </div>
             <div className={styles.actions}>
@@ -139,7 +150,7 @@ export function Rsvp() {
           </div>
         ) : (
           <div aria-live="polite">
-            <p className={styles.thanks}>{t('rsvp.thanksNo', { name: invitation.first_name })}</p>
+            <p className={styles.thanks}>{tc('rsvp.thanksNo', { name: greeting })}</p>
             <div className={styles.actions}>
               <Button variant="ghost" onClick={() => setEditing(true)}>
                 {t('rsvp.change')}

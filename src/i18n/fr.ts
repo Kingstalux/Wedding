@@ -14,6 +14,7 @@ export const fr: Record<MessageKey, string> = {
   'nav.dress': 'Tenue',
   'nav.gallery': 'Galerie',
   'nav.rsvp': 'RSVP',
+  'nav.table': 'Votre table',
   'nav.book': 'Livre d’or',
   'nav.gifts': 'Cadeaux',
   'nav.open': 'Ouvrir le menu',
@@ -26,6 +27,8 @@ export const fr: Record<MessageKey, string> = {
 
   'envelope.dear': 'Cher(e) {name}',
   'envelope.invited': 'Vous êtes chaleureusement invité(e) au mariage de',
+  'envelope.dearBoth': 'Chers {name}',
+  'envelope.invitedBoth': 'Vous êtes tous les deux chaleureusement invités au mariage de',
   'envelope.open': 'Ouvrir votre invitation',
 
   'hero.eyebrow': 'Avec leurs familles',
@@ -73,16 +76,28 @@ export const fr: Record<MessageKey, string> = {
     'Cher(e) {name}, une place est réservée à votre nom. Merci de répondre avant le {date}.',
   'rsvp.ledeNoDate':
     'Cher(e) {name}, une place est réservée à votre nom. Merci de nous dire si vous serez des nôtres.',
+  'rsvp.ledeBoth':
+    'Chers {name}, deux places sont réservées à vos noms. Merci de répondre avant le {date}.',
+  'rsvp.ledeNoDateBoth':
+    'Chers {name}, deux places sont réservées à vos noms. Merci de nous dire si vous serez des nôtres.',
   'rsvp.legend': 'Serez-vous présent(e) ?',
+  'rsvp.legendBoth': 'Serez-vous présents ?',
   'rsvp.yes': 'Avec joie, oui',
   'rsvp.no': 'Avec regret, non',
+  'rsvp.yesBoth': 'Avec joie, oui',
+  'rsvp.noBoth': 'Avec regret, non',
   'rsvp.diet': 'Régime alimentaire (facultatif)',
   'rsvp.dietPlaceholder': 'Végétarien, allergies…',
   'rsvp.note': 'Un mot pour les mariés (facultatif)',
   'rsvp.submit': 'Envoyer ma réponse',
   'rsvp.choose': 'Merci de choisir « Avec joie, oui » ou « Avec regret, non ».',
+  'rsvp.chooseBoth': 'Merci de choisir « Avec joie, oui » ou « Avec regret, non ».',
   'rsvp.thanksYes': 'Merci, {name}. Nous avons bien reçu votre oui !',
   'rsvp.thanksNo': 'Merci de nous avoir prévenus, {name}. Vous nous manquerez.',
+  'rsvp.thanksYesBoth':
+    'Merci, {name}. Nous avons bien reçu votre oui, à très bientôt tous les deux !',
+  'rsvp.thanksNoBoth': 'Merci de nous avoir prévenus, {name}. Vous nous manquerez tous les deux.',
+  'rsvp.tableLink': 'Table {n} · voir le plan',
   'rsvp.change': 'Modifier ma réponse',
   'rsvp.passKicker': 'Votre pass d’entrée',
   'rsvp.openPass': 'Ouvrir mon pass',
@@ -104,6 +119,14 @@ export const fr: Record<MessageKey, string> = {
   'wishes.prev': 'Messages précédents',
   'wishes.next': 'Messages suivants',
   'wishes.write': 'Écrire votre message',
+  'tables.eyebrow': 'Placement',
+  'tables.title': 'Votre Table',
+  'tables.seated': 'Vous êtes placé(e) à la table {n}.',
+  'tables.seatedBoth': 'Vous êtes tous les deux placés à la table {n}.',
+  'tables.pending': 'Votre table vous sera confirmée très bientôt.',
+  'tables.plan': 'Plan de table',
+  'tables.you': 'Vous',
+  'tables.yours': 'Table {n}, votre table',
   'gift.eyebrow': 'Cadeaux',
   'gift.title': 'Un Cadeau du Cœur',
   'gift.lede':
@@ -123,8 +146,12 @@ export const fr: Record<MessageKey, string> = {
   'pass.title': 'Gardez ce QR Code',
   'pass.body':
     'Enregistrez-le sur votre téléphone et présentez-le à l’entrée. Il confirme votre nom et votre réponse.',
+  'pass.bodyBoth':
+    'Enregistrez-le sur votre téléphone et présentez-le à l’entrée. Il confirme vos noms et votre réponse.',
   'pass.ticket': 'Pass d’Entrée',
   'pass.seat': '1 place',
+  'pass.seats': '{n} places',
+  'pass.table': 'Table {n}',
   'pass.download': 'Télécharger le QR code',
   'pass.back': 'Retour à l’invitation',
   'pass.qrAlt': 'QR code d’entrée pour {name}',
@@ -135,6 +162,8 @@ export const fr: Record<MessageKey, string> = {
   'door.checking': 'Vérification du pass…',
   'door.confirmed': 'Invité(e) confirmé(e)',
   'door.notAttending': 'Ne sera pas présent(e)',
+  'door.confirmedBoth': 'Invités confirmés',
+  'door.notAttendingBoth': 'Ne seront pas présents',
   'door.notFound': 'Ce pass est introuvable.',
 
   'error.invalid_token':
@@ -158,6 +187,9 @@ export const fr: Record<MessageKey, string> = {
 
   'door.noReply': 'Invité(e) · pas encore de réponse',
   'door.checkedIn': 'déjà enregistré(e)',
+  'door.noReplyBoth': 'Invités · pas encore de réponse',
+  'door.checkedInBoth': 'déjà enregistrés',
   'common.cancel': 'Annuler',
   'common.loading': 'Chargement…',
+  'common.and': 'et',
 }

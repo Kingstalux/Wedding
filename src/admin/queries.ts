@@ -52,6 +52,13 @@ export function studioErrorMessage(err: unknown): string {
     return 'No connection. Check your internet and try again.'
   if (/maps_url/.test(message)) return 'The Google Maps link must start with https://'
   if (/ends_at|events_check/.test(message)) return 'The end time must be after the start time.'
+  if (/table_full/.test(message)) return 'That table has no room left. Pick another table.'
+  if (/no_such_table/.test(message)) return 'That table doesn’t exist. Add more tables first.'
+  if (/tables_in_use/.test(message))
+    return 'Some of those tables or seats are in use. Move people off them first.'
+  if (/not_attending/.test(message)) return 'Only guests who accepted can be given a table.'
+  if (/partner_phone_needs_name|partner_phone_without_name/.test(message))
+    return 'A partner phone needs a partner name.'
   if (/JWT|not_authorized|permission denied/i.test(message))
     return 'Your session has expired. Please sign in again.'
   return message

@@ -6,12 +6,14 @@ import { useT } from '../../i18n/LanguageProvider'
 import { containsLink } from '../../lib/validation'
 import { errorMessageKey } from '../api'
 import { useInvitation } from '../InvitationProvider'
+import { useGuestNames } from '../useGuestNames'
 import styles from './GuestBook.module.css'
 
 /** "Leave us a wish": the form. The messages themselves are in the Wishes carousel. */
 export function GuestBook() {
   const { t } = useT()
-  const { content, invitation, actions } = useInvitation()
+  const { content, actions } = useInvitation()
+  const { greeting } = useGuestNames()
   const [draft, setDraft] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [posting, setPosting] = useState(false)
@@ -64,7 +66,7 @@ export function GuestBook() {
             error={error}
           />
           <div className={styles.footer}>
-            <p className={styles.as}>{t('book.postingAs', { name: invitation.first_name })}</p>
+            <p className={styles.as}>{t('book.postingAs', { name: greeting })}</p>
             <Button type="submit" loading={posting} disabled={!draft.trim()}>
               {t('book.post')}
             </Button>

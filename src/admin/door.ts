@@ -9,6 +9,9 @@ export type CheckInStatus = 'ok' | 'already' | 'declined' | 'not_found'
 export type CheckInResult = {
   status: CheckInStatus
   name?: string
+  /** 2 for a couple */
+  seats?: number
+  table_no?: number | null
   checked_in_at?: string
   replied?: boolean
 }

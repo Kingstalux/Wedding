@@ -40,6 +40,7 @@ const tables = [
   'checkins',
   'wishes',
   'admins',
+  'reservations',
   'guest_list',
 ] as const
 for (const table of tables) {
@@ -77,6 +78,24 @@ for (const table of tables) {
     p_event_id: '00000000-0000-4000-8000-000000000001',
   })
   report(Boolean(error), 'cannot check guests in', error?.message ?? 'RAN')
+}
+
+{
+  const { error } = await anon.rpc('move_guest', {
+    p_guest_id: '00000000-0000-4000-9000-000000000002',
+    p_table: 1,
+  })
+  report(Boolean(error), 'cannot move guests between tables', error?.message ?? 'RAN')
+}
+{
+  const { error } = await anon.rpc('seat_waiting')
+  report(Boolean(error), 'cannot run automatic seating', error?.message ?? 'RAN')
+}
+{
+  const { error } = await anon
+    .from('reservations')
+    .insert({ label: 'Intruder', seats: 1, table_no: 1 })
+  report(Boolean(error), 'cannot reserve seats', error?.message ?? 'INSERT SUCCEEDED')
 }
 
 // 4. A wrong link gets nothing.
@@ -121,14 +140,20 @@ if (testToken) {
   } else {
     report(Boolean(inv?.guest), `valid link "${testToken}" opens the invitation`, error?.message)
     const settings = (inv?.settings ?? {}) as Record<string, unknown>
-    report(!('wa_template_en' in settings), 'invitation hides the WhatsApp templates')
+    report(
+      !['wa_template_en', 'wa_template_fr', 'wa_template_couple_en', 'wa_template_couple_fr'].some(
+        (k) => k in settings,
+      ),
+      'invitation hides the WhatsApp templates',
+    )
 
     const code = String((inv?.guest as Record<string, unknown>)?.pass_code ?? '')
     const { data: pass } = await anon.rpc('read_pass', { p_code: code })
     const keys = Object.keys((pass ?? {}) as object).sort()
     report(
-      JSON.stringify(keys) === JSON.stringify(['attending', 'checked_in', 'first_name']),
-      'scanned pass shows only first name and status',
+      JSON.stringify(keys) ===
+        JSON.stringify(['attending', 'checked_in', 'first_name', 'seats', 'table_no']),
+      'scanned pass shows only first names, seats, table and status',
       keys.join(', '),
     )
   }

@@ -72,6 +72,17 @@
   font-size: 26px;
 }
 
+.table {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 14px;
+  border: 1px solid var(--gold);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
 .code {
   margin-top: 8px;
   font-size: 12px;
@@ -144,6 +155,13 @@
   margin: 20px 0 6px;
   font-family: var(--font-display);
   font-size: 30px;
+}
+.doorTable {
+  margin-bottom: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
 /* Check-in controls for the signed-in couple */
