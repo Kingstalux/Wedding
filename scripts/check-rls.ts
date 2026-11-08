@@ -42,6 +42,7 @@ const tables = [
   'admins',
   'reservations',
   'table_seats',
+  'gift_announcements',
   'guest_list',
 ] as const
 for (const table of tables) {
@@ -109,6 +110,17 @@ for (const table of tables) {
     p_wish: 'Congratulations!',
   })
   report(Boolean(error), 'cannot post a wish without a valid link', error?.message ?? 'ACCEPTED')
+}
+{
+  const { error } = await anon.rpc('announce_gift', {
+    p_token: 'not-a-real-token',
+    p_method: 'momo',
+  })
+  report(
+    Boolean(error),
+    'cannot announce a gift without a valid link',
+    error?.message ?? 'ACCEPTED',
+  )
 }
 
 // 4. A wrong link gets nothing.

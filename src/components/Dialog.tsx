@@ -13,6 +13,8 @@ export function Dialog({
   onClose,
   wide,
   locked,
+  closeLabel = 'Close',
+  className,
   children,
 }: {
   open: boolean
@@ -21,6 +23,9 @@ export function Dialog({
   wide?: boolean
   /** While true (e.g. during an upload), Escape and the close button do nothing. */
   locked?: boolean
+  /** The close button's label (translated on the guest pages). */
+  closeLabel?: string
+  className?: string
   children: ReactNode
 }) {
   const ref = useRef<HTMLDialogElement>(null)
@@ -35,7 +40,7 @@ export function Dialog({
   return (
     <dialog
       ref={ref}
-      className={cx(styles.dialog, wide && styles.wide)}
+      className={cx(styles.dialog, wide && styles.wide, className)}
       aria-label={title}
       onCancel={(e) => locked && e.preventDefault()}
       onClose={onClose}
@@ -44,7 +49,13 @@ export function Dialog({
         <>
           <div className={styles.head}>
             <h2>{title}</h2>
-            <IconButton icon="close" size="sm" label="Close" onClick={onClose} disabled={locked} />
+            <IconButton
+              icon="close"
+              size="sm"
+              label={closeLabel}
+              onClick={onClose}
+              disabled={locked}
+            />
           </div>
           <div className={styles.body}>{children}</div>
         </>

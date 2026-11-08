@@ -3,13 +3,14 @@ import { createContext, useContext, useEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
 import { useT } from '../i18n/LanguageProvider'
 import * as api from './api'
-import type { Invitation, PublicContent, Rsvp } from './types'
+import type { GiftAnnouncement, Invitation, PublicContent, Rsvp } from './types'
 
 /*
  * Gives every guest page access to:
  *  - content:    settings, programme and gallery
  *  - invitation: this guest's name, reply and the guest book
- *  - actions:    what a guest can do (reply with an optional wish, delete a wish)
+ *  - actions:    what a guest can do (reply with an optional wish, delete a
+ *                wish, tell the couple about a gift)
  *
  * Data comes from get_invitation(token) through React Query, which caches it
  * under the key ['invitation', token]. After each action the cache is updated
@@ -22,6 +23,7 @@ type Actions = {
   /** `wish`: the guest's note for the couple, posted to Words of love ('' for none). */
   submitRsvp: (rsvp: Rsvp, wish: string) => Promise<void>
   deleteWish: (id: string) => Promise<void>
+  announceGift: (gift: GiftAnnouncement) => Promise<void>
 }
 
 type InvitationState =
@@ -113,6 +115,7 @@ export function InvitationProvider({
         await api.deleteWish(token, id)
         update((inv) => ({ ...inv, wishes: inv.wishes.filter((w) => w.id !== id) }))
       },
+      announceGift: (gift) => api.announceGift(token, gift),
     }
   }, [queryClient, queryKey, token])
 

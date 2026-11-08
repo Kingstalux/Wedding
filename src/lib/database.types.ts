@@ -135,6 +135,51 @@ export type Database = {
         }
         Relationships: []
       }
+      gift_announcements: {
+        Row: {
+          amount_fcfa: number | null
+          created_at: string
+          guest_id: string
+          id: string
+          message: string
+          method: Database["public"]["Enums"]["gift_method"]
+          received: boolean
+        }
+        Insert: {
+          amount_fcfa?: number | null
+          created_at?: string
+          guest_id: string
+          id?: string
+          message?: string
+          method: Database["public"]["Enums"]["gift_method"]
+          received?: boolean
+        }
+        Update: {
+          amount_fcfa?: number | null
+          created_at?: string
+          guest_id?: string
+          id?: string
+          message?: string
+          method?: Database["public"]["Enums"]["gift_method"]
+          received?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_announcements_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guest_list"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_announcements_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guests: {
         Row: {
           created_at: string
@@ -458,6 +503,15 @@ export type Database = {
       }
     }
     Functions: {
+      announce_gift: {
+        Args: {
+          p_amount?: number
+          p_message?: string
+          p_method: Database["public"]["Enums"]["gift_method"]
+          p_token: string
+        }
+        Returns: undefined
+      }
       check_in: { Args: { p_code: string; p_event_id: string }; Returns: Json }
       dashboard_stats: { Args: never; Returns: Json }
       delete_own_wish: {
@@ -492,7 +546,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      gift_method: "momo" | "orange" | "cash"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -619,6 +673,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      gift_method: ["momo", "orange", "cash"],
+    },
   },
 } as const

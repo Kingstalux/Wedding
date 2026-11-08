@@ -4,6 +4,7 @@ import { AdminLayout } from './AdminLayout'
 import { AuthProvider } from './AuthProvider'
 import { DoorPage } from './pages/DoorPage'
 import { GalleryPage } from './pages/GalleryPage'
+import { GiftsPage } from './pages/GiftsPage'
 import { GuestsPage } from './pages/GuestsPage'
 import { LoginPage } from './pages/LoginPage'
 import { ProgrammePage } from './pages/ProgrammePage'
@@ -46,6 +47,7 @@ export function StudioApp() {
           <Route index element={<GuestsPage />} />
           <Route path="site" element={<SitePage />} />
           <Route path="tables" element={<TablesPage />} />
+          <Route path="gifts" element={<GiftsPage />} />
           <Route path="programme" element={<ProgrammePage />} />
           <Route path="gallery" element={<GalleryPage />} />
           <Route path="wishes" element={<WishesPage />} />

@@ -70,6 +70,15 @@ export type Rsvp = {
   attending: boolean
 }
 
+export type GiftMethod = 'momo' | 'orange' | 'cash'
+
+/** "Let us know": a guest telling the couple about a gift (no money moves here). */
+export type GiftAnnouncement = {
+  method: GiftMethod
+  amount_fcfa: number | null
+  message: string
+}
+
 export type Wish = {
   id: string
   author: string

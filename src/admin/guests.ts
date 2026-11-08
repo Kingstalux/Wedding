@@ -24,6 +24,7 @@ export type Stats = {
   attending_people: number
   checked_in_people: number
   wishes: number
+  gifts: number
 }
 
 export type ImportSummary = {

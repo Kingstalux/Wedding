@@ -122,11 +122,26 @@ export const en = {
     'Your presence is already our most beautiful gift. If you would like to bless us further, a cash gift can be sent in any of these ways.',
   'gift.momo': 'MTN Mobile Money',
   'gift.orange': 'Orange Money',
-  'gift.cash': 'Cash on the day',
-  'gift.accountName': 'Account name: {name}',
   'gift.copy': 'Copy number',
   'gift.copied': 'Copied',
   'gift.box': 'Gift box at the reception',
+  'gift.open': 'Send a gift',
+  'gift.dialogTitle': 'Send a cash gift',
+  'gift.sendTo': 'Send to this number',
+  'gift.copyNumber': 'Copy the {method} number',
+  'gift.cashOption': 'Cash at the reception',
+  'gift.tellTitle': 'Let us know once the transfer is completed',
+  'gift.tellLede':
+    'So we can thank you personally. This does not send money — it only tells the couple.',
+  'gift.via': 'Sent via',
+  'gift.amount': 'Amount in FCFA (optional)',
+  'gift.amountPlaceholder': 'e.g. 25 000',
+  'gift.message': 'A message for us (optional)',
+  'gift.sendingAs': 'Sending as {name}',
+  'gift.send': 'Tell the couple',
+  'gift.thanks': 'Thank you',
+  'gift.thanksBody': '{name}, your kindness means the world to us.',
+  'gift.another': 'Tell us about another gift',
   'personal.title': 'This Invitation Is Personal',
   'personal.body':
     'Please open the private link you received on WhatsApp. If it no longer works, ask the couple for a new one.',
@@ -162,6 +177,8 @@ export const en = {
   'error.message_length': 'Please write a message of up to 500 characters.',
   'error.rate_limited':
     'You have sent several messages in a short time. Please try again a little later.',
+  'error.invalid_amount': 'Please enter the amount in numbers only, or leave it empty.',
+  'error.method_required': 'Please choose how you sent your gift.',
   'error.network': 'No connection. Please check your internet and try again.',
   'error.generic': 'Something went wrong. Please try again in a moment.',
   'error.loadTitle': 'We Couldn’t Open Your Invitation',
@@ -178,6 +195,7 @@ export const en = {
   'common.cancel': 'Cancel',
   'common.loading': 'Loading…',
   'common.and': 'and',
+  'common.close': 'Close',
 }
 
 export type MessageKey = keyof typeof en

@@ -10,6 +10,7 @@ import type {
   Rsvp,
   Settings,
   WeddingEvent,
+  GiftAnnouncement,
   Wish,
 } from './types'
 
@@ -89,6 +90,8 @@ const KNOWN_ERRORS = [
   'links_not_allowed',
   'message_length',
   'rate_limited',
+  'invalid_amount',
+  'method_required',
 ] as const
 
 export class GuestError extends Error {
@@ -150,6 +153,16 @@ export async function submitRsvp(token: string, rsvp: Rsvp, wish: string): Promi
   })
   if (error) fail(error)
   return data as unknown as RsvpResult
+}
+
+export async function announceGift(token: string, gift: GiftAnnouncement): Promise<void> {
+  const { error } = await supabase.rpc('announce_gift', {
+    p_token: token,
+    p_method: gift.method,
+    p_amount: gift.amount_fcfa ?? undefined,
+    p_message: gift.message,
+  })
+  if (error) fail(error)
 }
 
 export async function deleteWish(token: string, wishId: string): Promise<void> {
