@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { Database } from '../lib/database.types'
 import { supabase } from '../lib/supabase'
-import { reservationsKey, useGuestChange, type GuestRow } from './guests'
+import { reservationsKey, tableSeatsKey, useGuestChange, type GuestRow } from './guests'
 
 /*
  * Seating for the studio: tables, who sits where, and reserved seats.
@@ -11,11 +11,17 @@ import { reservationsKey, useGuestChange, type GuestRow } from './guests'
 
 export type Reservation = Database['public']['Tables']['reservations']['Row']
 export type ReservationInput = Pick<Reservation, 'label' | 'seats' | 'table_no' | 'note'>
+/** A table with its own number of seats (the others use the default). */
+export type TableSeats = Database['public']['Tables']['table_seats']['Row']
 
 export type TableInfo = {
   number: number
   guests: GuestRow[]
   reservations: Reservation[]
+  /** This table's seats: its own number, or the default. */
+  capacity: number
+  /** True when the table has its own number of seats. */
+  custom: boolean
   used: number
   free: number
 }
@@ -26,17 +32,28 @@ const seatsOf = (g: GuestRow) => g.seats ?? 1
 /** Every table from 1 to `count`, with who is at it and how many seats are left. */
 export function buildTables(
   count: number,
-  capacity: number,
+  defaultCapacity: number,
   guests: GuestRow[],
   reservations: Reservation[],
+  tableSeats: TableSeats[] = [],
 ): TableInfo[] {
   return Array.from({ length: count }, (_, i) => {
     const number = i + 1
+    const own = tableSeats.find((t) => t.table_no === number)
+    const capacity = own?.seats ?? defaultCapacity
     const seated = guests.filter((g) => !g.deleted_at && g.table_no === number)
     const reserved = reservations.filter((r) => r.table_no === number)
     const used =
       seated.reduce((sum, g) => sum + seatsOf(g), 0) + reserved.reduce((sum, r) => sum + r.seats, 0)
-    return { number, guests: seated, reservations: reserved, used, free: capacity - used }
+    return {
+      number,
+      guests: seated,
+      reservations: reserved,
+      capacity,
+      custom: Boolean(own),
+      used,
+      free: capacity - used,
+    }
   })
 }
 
@@ -72,6 +89,17 @@ export function useReservations() {
   })
 }
 
+export function useTableSeats() {
+  return useQuery({
+    queryKey: tableSeatsKey,
+    queryFn: async () => {
+      const { data, error } = await supabase.from('table_seats').select('*').order('table_no')
+      if (error) throw error
+      return data
+    },
+  })
+}
+
 const check = <R extends { error: unknown }>(result: R) => {
   if (result.error) throw result.error
   return result
@@ -90,6 +118,20 @@ export function useSeatWaiting() {
     if (error) throw error
     return data as number
   })
+}
+
+/**
+ * Give one table its own number of seats; `seats: null` puts it back on the
+ * default. More room seats the waiting guests, so the guest list reloads too.
+ */
+export function useSetTableSeats() {
+  return useGuestChange(async ({ table, seats }: { table: number; seats: number | null }) =>
+    check(
+      seats === null
+        ? await supabase.from('table_seats').delete().eq('table_no', table)
+        : await supabase.from('table_seats').upsert({ table_no: table, seats }),
+    ),
+  )
 }
 
 function useReservationChange<T>(run: (input: T) => Promise<unknown>) {

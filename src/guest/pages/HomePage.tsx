@@ -3,7 +3,6 @@ import { DressCode } from '../sections/DressCode'
 import { Footer } from '../sections/Footer'
 import { Gallery } from '../sections/Gallery'
 import { Gifts } from '../sections/Gifts'
-import { GuestBook } from '../sections/GuestBook'
 import { Header } from '../sections/Header'
 import { Hero } from '../sections/Hero'
 import { Rsvp } from '../sections/Rsvp'
@@ -30,7 +29,6 @@ export function HomePage({ music }: { music: Music }) {
         <Rsvp />
         <Tables />
         <Wishes />
-        <GuestBook />
         <Gifts />
       </main>
       <Footer />

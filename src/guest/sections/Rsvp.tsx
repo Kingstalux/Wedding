@@ -1,12 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import { Button, ButtonLink } from '../../components/Button'
-import { Choice, TextAreaField, TextField } from '../../components/Form'
+import { Choice, TextAreaField } from '../../components/Form'
 import { QrCode } from '../../components/QrCode'
 import { passUrl } from '../../lib/qr'
 import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { formatDate } from '../../lib/time'
-import { errorMessageKey } from '../api'
+import { containsLink } from '../../lib/validation'
+import { errorMessageKey, isWishError } from '../api'
 import { useInvitation } from '../InvitationProvider'
 import { useGuestNames } from '../useGuestNames'
 import styles from './Rsvp.module.css'
@@ -24,9 +25,12 @@ export function Rsvp() {
   // Show the form when the guest hasn't replied yet, or chose "Change my answer".
   const [editing, setEditing] = useState(rsvp === null)
   const [answer, setAnswer] = useState<Answer>(rsvp ? (rsvp.attending ? 'yes' : 'no') : '')
-  const [diet, setDiet] = useState(rsvp?.diet ?? '')
-  const [note, setNote] = useState(rsvp?.note ?? '')
+  // The note for the couple is posted to Words of love, so it starts empty
+  // each time: earlier ones are already there.
+  const [note, setNote] = useState('')
+  const [noteError, setNoteError] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const wishesOn = content.settings.show_wishes
   const [saving, setSaving] = useState(false)
 
   async function onSubmit(e: FormEvent) {
@@ -35,17 +39,22 @@ export function Rsvp() {
       setError(tc('rsvp.choose'))
       return
     }
+    const wish = wishesOn ? note.trim() : ''
+    if (containsLink(wish)) {
+      setNoteError(t('book.noLinks'))
+      return
+    }
     setError(null)
+    setNoteError(null)
     setSaving(true)
     try {
-      await actions.submitRsvp({
-        attending: answer === 'yes',
-        diet: diet.trim(),
-        note: note.trim(),
-      })
+      await actions.submitRsvp({ attending: answer === 'yes' }, wish)
+      setNote('')
       setEditing(false)
     } catch (err) {
-      setError(t(errorMessageKey(err)))
+      const message = t(errorMessageKey(err))
+      if (wish && isWishError(err)) setNoteError(message)
+      else setError(message)
     } finally {
       setSaving(false)
     }
@@ -91,22 +100,20 @@ export function Rsvp() {
                 onChange={() => setAnswer('no')}
               />
             </fieldset>
-            {answer !== 'no' && (
-              <TextField
-                label={t('rsvp.diet')}
-                placeholder={t('rsvp.dietPlaceholder')}
-                value={diet}
-                maxLength={200}
-                onChange={(e) => setDiet(e.target.value)}
+            {wishesOn && (
+              <TextAreaField
+                label={t('rsvp.note')}
+                hint={t('rsvp.noteHint', { name: greeting })}
+                rows={3}
+                value={note}
+                maxLength={500}
+                error={noteError}
+                onChange={(e) => {
+                  setNote(e.target.value)
+                  setNoteError(null)
+                }}
               />
             )}
-            <TextAreaField
-              label={t('rsvp.note')}
-              rows={3}
-              value={note}
-              maxLength={500}
-              onChange={(e) => setNote(e.target.value)}
-            />
             {error && (
               <p className={styles.error} role="alert">
                 {error}

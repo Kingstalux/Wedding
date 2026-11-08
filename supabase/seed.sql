@@ -64,12 +64,16 @@ insert into public.guests (id, name, phone, partner_name, partner_phone, token, 
    'Vanessa Test', '237600000005', 'demo-couple', 'DEMODD')
 on conflict (id) do nothing;
 
-insert into public.rsvps (guest_id, attending, diet, note) values
-  ('00000000-0000-4000-9000-000000000002', true,  'Vegetarian', 'Can’t wait!'),
-  ('00000000-0000-4000-9000-000000000003', false, '',           'So sorry to miss it.'),
-  ('00000000-0000-4000-9000-000000000004', true,  '',           'We’ll be there together!')
+insert into public.rsvps (guest_id, attending) values
+  ('00000000-0000-4000-9000-000000000002', true),
+  ('00000000-0000-4000-9000-000000000003', false),
+  ('00000000-0000-4000-9000-000000000004', true)
 on conflict (guest_id) do nothing;
 -- (Accepting seats them automatically, couples together.)
+
+-- Table 1 has its own number of seats (the others use the default)
+insert into public.table_seats (table_no, seats) values (1, 12)
+on conflict (table_no) do nothing;
 
 -- Seats held for people without an invitation
 insert into public.reservations (id, label, seats, table_no, note) values

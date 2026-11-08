@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { Button } from '../../components/Button'
 import { useConfirm } from '../../components/Confirm'
@@ -20,6 +21,8 @@ import {
   useReservations,
   useSaveReservation,
   useSeatWaiting,
+  useSetTableSeats,
+  useTableSeats,
   waitingGuests,
   type Reservation,
   type TableInfo,
@@ -38,24 +41,32 @@ export function TablesPage() {
   const settings = useSettings()
   const guests = useGuests()
   const reservations = useReservations()
+  const tableSeats = useTableSeats()
   const move = useMoveGuest()
   const seatWaiting = useSeatWaiting()
   const removeReservation = useDeleteReservation()
   const [editing, setEditing] = useState<Reservation | 'new' | null>(null)
 
-  if (settings.isPending || guests.isPending || reservations.isPending) {
+  if (settings.isPending || guests.isPending || reservations.isPending || tableSeats.isPending) {
     return <p className={studio.loading}>Loading tables…</p>
   }
-  const loadError = settings.error ?? guests.error ?? reservations.error
+  const loadError = settings.error ?? guests.error ?? reservations.error ?? tableSeats.error
   if (loadError || !settings.data) {
     return <p className={studio.error}>{studioErrorMessage(loadError)}</p>
   }
 
   const { table_count: count, table_capacity: capacity } = settings.data
   const allGuests = guests.data ?? []
-  const tables = buildTables(count, capacity, allGuests, reservations.data ?? [])
+  const tables = buildTables(
+    count,
+    capacity,
+    allGuests,
+    reservations.data ?? [],
+    tableSeats.data ?? [],
+  )
   const waiting = waitingGuests(allGuests)
   const used = tables.reduce((sum, t) => sum + t.used, 0)
+  const totalSeats = tables.reduce((sum, t) => sum + t.capacity, 0)
   const full = tables.filter((t) => t.free <= 0).length
 
   async function moveTo(g: GuestRow, table: number | null) {
@@ -135,7 +146,7 @@ export function TablesPage() {
       <section className={styles.summary} aria-label="Seating figures">
         <div>
           <strong>
-            {used} / {count * capacity}
+            {used} / {totalSeats}
           </strong>
           <span>Seats taken</span>
         </div>
@@ -180,7 +191,7 @@ export function TablesPage() {
           <TableCard
             key={t.number}
             table={t}
-            capacity={capacity}
+            defaultCapacity={capacity}
             moveSelect={moveSelect}
             onUnseat={(g) => moveTo(g, null)}
             onEditReservation={setEditing}
@@ -219,31 +230,48 @@ function Person({ guest }: { guest: GuestRow }) {
 
 function TableCard({
   table,
-  capacity,
+  defaultCapacity,
   moveSelect,
   onUnseat,
   onEditReservation,
   onDeleteReservation,
 }: {
   table: TableInfo
-  capacity: number
+  defaultCapacity: number
   moveSelect: (g: GuestRow) => ReactNode
   onUnseat: (g: GuestRow) => void
   onEditReservation: (r: Reservation) => void
   onDeleteReservation: (r: Reservation) => void
 }) {
+  const [editingSeats, setEditingSeats] = useState(false)
   const empty = !table.guests.length && !table.reservations.length
+  const { capacity } = table
   return (
     <article className={cx(styles.table, table.free <= 0 && styles.full)}>
       <header>
         <h2>Table {table.number}</h2>
         <span className={styles.count}>
           {table.used}/{capacity}
+          {table.custom && <span className={styles.own}> · own seats</span>}
         </span>
+        <IconButton
+          icon="edit"
+          size="sm"
+          label={`Change the seats at Table ${table.number}`}
+          aria-expanded={editingSeats}
+          onClick={() => setEditingSeats((v) => !v)}
+        />
       </header>
       <div className={styles.bar} aria-hidden="true">
         <i style={{ width: `${Math.min(100, (table.used / capacity) * 100)}%` }} />
       </div>
+      {editingSeats && (
+        <SeatsForm
+          table={table}
+          defaultCapacity={defaultCapacity}
+          onDone={() => setEditingSeats(false)}
+        />
+      )}
       {empty ? (
         <p className={styles.empty}>Empty</p>
       ) : (
@@ -293,9 +321,86 @@ function TableCard({
   )
 }
 
-/** Number of tables, seats per table, and whether guests see their table. */
+/** One table's own number of seats, or back to the default. */
+function SeatsForm({
+  table,
+  defaultCapacity,
+  onDone,
+}: {
+  table: TableInfo
+  defaultCapacity: number
+  onDone: () => void
+}) {
+  const toast = useToast()
+  const setSeats = useSetTableSeats()
+  const [value, setValue] = useState(String(table.capacity))
+  const [error, setError] = useState<string | null>(null)
+
+  async function save(seats: number | null) {
+    if (seats !== null && (!Number.isInteger(seats) || seats < 1 || seats > 30)) {
+      return setError('A number from 1 to 30.')
+    }
+    if (seats !== null && seats < table.used) {
+      return setError(`${table.used} seats are already taken here. Move someone first.`)
+    }
+    setError(null)
+    try {
+      // The default number needs no row of its own.
+      await setSeats.mutateAsync({
+        table: table.number,
+        seats: seats === defaultCapacity ? null : seats,
+      })
+      toast(`Table ${table.number}: ${seatsLabel(seats ?? defaultCapacity)}`)
+      onDone()
+    } catch (err) {
+      setError(studioErrorMessage(err))
+    }
+  }
+
+  return (
+    <form
+      className={styles.seatsForm}
+      noValidate
+      onSubmit={(e) => {
+        e.preventDefault()
+        save(Number(value))
+      }}
+    >
+      <TextField
+        look="box"
+        label={`Seats at Table ${table.number}`}
+        type="number"
+        inputMode="numeric"
+        min={1}
+        max={30}
+        value={value}
+        error={error}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <div className={styles.seatsActions}>
+        <Button type="submit" size="sm" loading={setSeats.isPending}>
+          Save
+        </Button>
+        {table.custom && (
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            disabled={setSeats.isPending}
+            onClick={() => save(null)}
+          >
+            Use default ({defaultCapacity})
+          </Button>
+        )}
+      </div>
+    </form>
+  )
+}
+
+/** Number of tables, default seats per table, and whether guests see their table. */
 function TableSettings() {
   const toast = useToast()
+  const queryClient = useQueryClient()
   const settings = useSettings().data!
   const update = useUpdateSettings()
   const [count, setCount] = useState(String(settings.table_count))
@@ -308,10 +413,12 @@ function TableSettings() {
     const cap = Number(capacity)
     if (!Number.isInteger(c) || c < 1 || c > 100) return setError('Tables: a number from 1 to 100.')
     if (!Number.isInteger(cap) || cap < 1 || cap > 30)
-      return setError('Seats per table: a number from 1 to 30.')
+      return setError('Default seats per table: a number from 1 to 30.')
     setError(null)
     try {
       await update.mutateAsync({ table_count: c, table_capacity: cap })
+      // More room seats the waiting guests; fewer tables forget their own seats.
+      queryClient.invalidateQueries({ queryKey: ['admin'] })
       toast('Tables saved')
     } catch (err) {
       setError(studioErrorMessage(err))
@@ -354,7 +461,8 @@ function TableSettings() {
         />
         <TextField
           look="box"
-          label="Seats per table"
+          label="Default seats per table"
+          hint="Tables with their own number keep it."
           type="number"
           inputMode="numeric"
           min={1}

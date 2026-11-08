@@ -29,6 +29,16 @@ describe('seating helpers', () => {
     expect(tablesWithRoom(tables, 1, 1).map((t) => t.number)).toEqual([2, 3])
   })
 
+  it('uses a table’s own number of seats over the default', () => {
+    const custom = buildTables(3, 4, guests, [reservation(2, 3)], [{ table_no: 1, seats: 6 }])
+    expect(custom.map((t) => [t.number, t.capacity, t.free, t.custom])).toEqual([
+      [1, 6, 3, true],
+      [2, 4, 1, false],
+      [3, 4, 4, false],
+    ])
+    expect(tablesWithRoom(custom, 2).map((t) => t.number)).toEqual([1, 3])
+  })
+
   it('lists accepted guests without a table', () => {
     expect(waitingGuests(guests).map((g) => g.id)).toEqual(['d'])
   })

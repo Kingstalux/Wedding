@@ -51,6 +51,7 @@ export type ImportSummary = {
 const guestsKey = ['admin', 'guests'] as const
 const statsKey = ['admin', 'stats'] as const
 export const reservationsKey = ['admin', 'reservations'] as const
+export const tableSeatsKey = ['admin', 'table-seats'] as const
 
 export function useGuests() {
   return useQuery({
@@ -86,6 +87,7 @@ export function useGuestChange<T>(run: (input: T) => Promise<unknown>) {
       queryClient.invalidateQueries({ queryKey: guestsKey })
       queryClient.invalidateQueries({ queryKey: statsKey })
       queryClient.invalidateQueries({ queryKey: reservationsKey })
+      queryClient.invalidateQueries({ queryKey: tableSeatsKey })
       queryClient.invalidateQueries({ queryKey: ['admin', 'preview-token'] })
     },
   })

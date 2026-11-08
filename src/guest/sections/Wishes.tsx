@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useConfirm } from '../../components/Confirm'
 import { IconButton } from '../../components/IconButton'
-import { Eyebrow } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { dayKey, formatDate } from '../../lib/time'
 import { useInvitation } from '../InvitationProvider'
 import styles from './Wishes.module.css'
 
 /**
- * The guest book's messages, as a carousel. Swipe on phones, use the arrows
- * (or scroll the focused list with the keyboard) on computers.
- * The form to write one is its own section (GuestBook).
+ * Words of love: the guests' wishes, as a carousel. Swipe on phones, use the
+ * arrows (or scroll the focused list with the keyboard) on computers.
+ * Guests write one with their RSVP. Hidden until there is at least one.
  */
 export function Wishes() {
   const { t, lang } = useT()
@@ -42,7 +41,7 @@ export function Wishes() {
     trackRef.current?.scrollTo({ left: 0 })
   }, [newest])
 
-  if (!content.settings.show_wishes) return null
+  if (!content.settings.show_wishes || wishes.length === 0) return null
 
   const scrollByCard = (direction: 1 | -1) => {
     const track = trackRef.current
@@ -70,12 +69,9 @@ export function Wishes() {
     >
       <div className="container">
         <div className={styles.head}>
-          <div>
-            <Eyebrow light>{t('book.eyebrow')}</Eyebrow>
-            <h2 id="wishes-title" className="display h2">
-              {t('wishes.title')}
-            </h2>
-          </div>
+          <h2 id="wishes-title" className="display h2">
+            {t('wishes.title')}
+          </h2>
           {wishes.length > 1 && (
             <div className={styles.arrows}>
               <IconButton
@@ -96,45 +92,41 @@ export function Wishes() {
           )}
         </div>
 
-        {wishes.length === 0 ? (
-          <p className={styles.empty}>{t('book.empty')}</p>
-        ) : (
-          <ul
-            ref={trackRef}
-            className={styles.track}
-            onScroll={measure}
-            tabIndex={0}
-            aria-label={t('wishes.label')}
-            aria-roledescription="carousel"
-          >
-            {wishes.map((wish, i) => (
-              <li
-                key={wish.id}
-                className={`paper ${styles.card}`}
-                aria-roledescription="slide"
-                aria-label={t('wishes.count', { n: i + 1, total: wishes.length })}
-              >
-                <span className={styles.quote} aria-hidden="true">
-                  “
+        <ul
+          ref={trackRef}
+          className={styles.track}
+          onScroll={measure}
+          tabIndex={0}
+          aria-label={t('wishes.label')}
+          aria-roledescription="carousel"
+        >
+          {wishes.map((wish, i) => (
+            <li
+              key={wish.id}
+              className={`paper ${styles.card}`}
+              aria-roledescription="slide"
+              aria-label={t('wishes.count', { n: i + 1, total: wishes.length })}
+            >
+              <span className={styles.quote} aria-hidden="true">
+                “
+              </span>
+              <p className={styles.message}>{wish.message}</p>
+              <div className={styles.meta}>
+                <span className={styles.who}>
+                  {wish.author} · {formatDate(dayKey(wish.created_at), lang)}
                 </span>
-                <p className={styles.message}>{wish.message}</p>
-                <div className={styles.meta}>
-                  <span className={styles.who}>
-                    {wish.author} · {formatDate(dayKey(wish.created_at), lang)}
-                  </span>
-                  {wish.mine && (
-                    <button type="button" className={styles.delete} onClick={() => remove(wish.id)}>
-                      {t('book.delete')}
-                    </button>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+                {wish.mine && (
+                  <button type="button" className={styles.delete} onClick={() => remove(wish.id)}>
+                    {t('book.delete')}
+                  </button>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
 
         <p className={styles.write}>
-          <a href="#guestbook">{t('wishes.write')} →</a>
+          <a href="#rsvp">{t('wishes.write')} →</a>
         </p>
       </div>
     </section>

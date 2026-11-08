@@ -104,6 +104,14 @@ function fail(error: { message: string } | null): never {
   throw new GuestError(code)
 }
 
+/** A problem with the guest's wish rather than their reply (shown under the note). */
+export function isWishError(err: unknown): boolean {
+  return (
+    err instanceof GuestError &&
+    ['links_not_allowed', 'message_length', 'rate_limited'].includes(err.code)
+  )
+}
+
 /** The translation key for any error thrown by these calls. */
 export function errorMessageKey(err: unknown): MessageKey {
   if (err instanceof GuestError && err.code !== 'generic') return `error.${err.code}` as MessageKey
@@ -126,25 +134,22 @@ export async function loadInvitation(
   return data ? fromRaw(data as unknown as RawInvitation) : null
 }
 
-/** The saved reply, plus the table the guest was given (null if none). */
-export async function submitRsvp(
-  token: string,
-  rsvp: Rsvp,
-): Promise<Rsvp & { table_no: number | null }> {
+export type RsvpResult = Rsvp & {
+  /** The table the guest was given (null if none). */
+  table_no: number | null
+  /** Their note for the couple, posted to Words of love (null if none). */
+  wish: Wish | null
+}
+
+/** Save the reply and, if the guest wrote one, their wish, in one step. */
+export async function submitRsvp(token: string, rsvp: Rsvp, wish: string): Promise<RsvpResult> {
   const { data, error } = await supabase.rpc('submit_rsvp', {
     p_token: token,
     p_attending: rsvp.attending,
-    p_diet: rsvp.diet,
-    p_note: rsvp.note,
+    p_wish: wish,
   })
   if (error) fail(error)
-  return data as unknown as Rsvp & { table_no: number | null }
-}
-
-export async function postWish(token: string, message: string): Promise<Wish> {
-  const { data, error } = await supabase.rpc('post_wish', { p_token: token, p_message: message })
-  if (error) fail(error)
-  return data as unknown as Wish
+  return data as unknown as RsvpResult
 }
 
 export async function deleteWish(token: string, wishId: string): Promise<void> {

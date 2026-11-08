@@ -68,8 +68,6 @@ export type PublicContent = {
 
 export type Rsvp = {
   attending: boolean
-  diet: string
-  note: string
 }
 
 export type Wish = {

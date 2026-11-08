@@ -95,8 +95,6 @@ export function ImportPanel({ guests, origin }: { guests: GuestRow[]; origin: st
         'First opened': formatShortDateTime(g.first_opened_at),
         'Times opened': g.open_count ?? 0,
         Reply: reply(g),
-        'Dietary notes': g.diet ?? '',
-        'Note to the couple': g.note ?? '',
         'Replied on': formatShortDateTime(g.responded_at),
         'Checked in': formatShortDateTime(g.last_checked_in_at),
         'Pass code': g.pass_code ?? '',

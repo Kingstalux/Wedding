@@ -9,7 +9,7 @@ import type { Invitation, PublicContent, Rsvp } from './types'
  * Gives every guest page access to:
  *  - content:    settings, programme and gallery
  *  - invitation: this guest's name, reply and the guest book
- *  - actions:    what a guest can do (reply, post or delete a wish)
+ *  - actions:    what a guest can do (reply with an optional wish, delete a wish)
  *
  * Data comes from get_invitation(token) through React Query, which caches it
  * under the key ['invitation', token]. After each action the cache is updated
@@ -19,8 +19,8 @@ import type { Invitation, PublicContent, Rsvp } from './types'
 export const TOKEN_STORAGE_KEY = 'wedding-token'
 
 type Actions = {
-  submitRsvp: (rsvp: Rsvp) => Promise<void>
-  postWish: (message: string) => Promise<void>
+  /** `wish`: the guest's note for the couple, posted to Words of love ('' for none). */
+  submitRsvp: (rsvp: Rsvp, wish: string) => Promise<void>
   deleteWish: (id: string) => Promise<void>
 }
 
@@ -100,13 +100,14 @@ export function InvitationProvider({
       )
 
     return {
-      submitRsvp: async (rsvp) => {
-        const { table_no, ...saved } = await api.submitRsvp(token, rsvp)
-        update((inv) => ({ ...inv, rsvp: saved, table_no }))
-      },
-      postWish: async (message) => {
-        const wish = await api.postWish(token, message)
-        update((inv) => ({ ...inv, wishes: [wish, ...inv.wishes] }))
+      submitRsvp: async (rsvp, wish) => {
+        const saved = await api.submitRsvp(token, rsvp, wish)
+        update((inv) => ({
+          ...inv,
+          rsvp: { attending: saved.attending },
+          table_no: saved.table_no,
+          wishes: saved.wish ? [saved.wish, ...inv.wishes] : inv.wishes,
+        }))
       },
       deleteWish: async (id) => {
         await api.deleteWish(token, id)

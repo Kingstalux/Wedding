@@ -49,7 +49,7 @@ export function Header({ music }: Props) {
     ['#gallery', 'nav.gallery', settings.show_gallery && content.gallery.length > 0],
     ['#rsvp', 'nav.rsvp', true],
     ['#tables', 'nav.table', settings.show_tables && invitation.rsvp?.attending === true],
-    ['#wishes', 'nav.book', settings.show_wishes],
+    ['#wishes', 'nav.book', settings.show_wishes && invitation.wishes.length > 0],
     ['#gifts', 'nav.gifts', settings.show_gifts],
   ]
 

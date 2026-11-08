@@ -40,8 +40,30 @@
 }
 .table header {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  gap: 8px;
+}
+.table header h2 {
+  margin-right: auto;
+}
+.own {
+  font-weight: 400;
+}
+
+.seatsForm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 12px;
+  background: var(--ivory);
+}
+.seatsForm > :first-child {
+  flex: 1 1 140px;
+}
+.seatsActions {
+  display: flex;
+  gap: 8px;
 }
 .table h2 {
   font-family: var(--font-display);

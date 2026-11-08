@@ -90,12 +90,6 @@
   cursor: pointer;
 }
 
-.empty {
-  font-family: var(--font-display);
-  font-size: 20px;
-  color: var(--on-dark);
-}
-
 .write {
   margin-top: 28px;
 }

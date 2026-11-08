@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import momoLogo from '../../assets/logos/mtn-momo.svg'
+import orangeLogo from '../../assets/logos/orange-money.svg'
 import { Button } from '../../components/Button'
 import { Icon } from '../../components/Icon'
 import { Eyebrow, Rule } from '../../components/Typography'
@@ -43,11 +45,18 @@ export function Gifts() {
   if (!settings.show_gifts) return null
 
   // Only the options the couple filled in are shown.
-  const ways: Array<{ key: string; label: string; number?: string; name?: string | null }> = []
+  const ways: Array<{
+    key: string
+    label: string
+    logo?: string
+    number?: string
+    name?: string | null
+  }> = []
   if (settings.momo_number)
     ways.push({
       key: 'momo',
       label: t('gift.momo'),
+      logo: momoLogo,
       number: settings.momo_number,
       name: settings.momo_name,
     })
@@ -55,6 +64,7 @@ export function Gifts() {
     ways.push({
       key: 'orange',
       label: t('gift.orange'),
+      logo: orangeLogo,
       number: settings.om_number,
       name: settings.om_name,
     })
@@ -81,7 +91,11 @@ export function Gifts() {
         <ul className={styles.ways}>
           {ways.map((way) => (
             <li key={way.key} className={styles.way}>
-              <p className={styles.label}>{way.label}</p>
+              <div className={styles.brand}>
+                {/* The label already names the service, so the logo is decorative. */}
+                {way.logo && <img className={styles.logo} src={way.logo} alt="" />}
+                <p className={styles.label}>{way.label}</p>
+              </div>
               {way.number ? (
                 <>
                   <p className={styles.number}>{way.number}</p>

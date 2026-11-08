@@ -225,25 +225,19 @@ export type Database = {
       rsvps: {
         Row: {
           attending: boolean
-          diet: string
           guest_id: string
-          note: string
           responded_at: string
           updated_at: string
         }
         Insert: {
           attending: boolean
-          diet?: string
           guest_id: string
-          note?: string
           responded_at?: string
           updated_at?: string
         }
         Update: {
           attending?: boolean
-          diet?: string
           guest_id?: string
-          note?: string
           responded_at?: string
           updated_at?: string
         }
@@ -381,6 +375,21 @@ export type Database = {
         }
         Relationships: []
       }
+      table_seats: {
+        Row: {
+          seats: number
+          table_no: number
+        }
+        Insert: {
+          seats: number
+          table_no: number
+        }
+        Update: {
+          seats?: number
+          table_no?: number
+        }
+        Relationships: []
+      }
       wishes: {
         Row: {
           created_at: string
@@ -427,7 +436,6 @@ export type Database = {
           attending: boolean | null
           created_at: string | null
           deleted_at: string | null
-          diet: string | null
           first_opened_at: string | null
           id: string | null
           invite_sent_at: string | null
@@ -435,7 +443,6 @@ export type Database = {
           last_checked_in_at: string | null
           last_opened_at: string | null
           name: string | null
-          note: string | null
           open_count: number | null
           partner_name: string | null
           partner_phone: string | null
@@ -471,7 +478,6 @@ export type Database = {
         Args: { p_guest_id: string; p_table: number }
         Returns: undefined
       }
-      post_wish: { Args: { p_message: string; p_token: string }; Returns: Json }
       read_pass: { Args: { p_code: string }; Returns: Json }
       regenerate_token: { Args: { p_guest_id: string }; Returns: string }
       restore_guest: { Args: { p_guest_id: string }; Returns: boolean }
@@ -481,12 +487,7 @@ export type Database = {
         Returns: undefined
       }
       submit_rsvp: {
-        Args: {
-          p_attending: boolean
-          p_diet?: string
-          p_note?: string
-          p_token: string
-        }
+        Args: { p_attending: boolean; p_token: string; p_wish?: string }
         Returns: Json
       }
     }

@@ -41,6 +41,7 @@ const tables = [
   'wishes',
   'admins',
   'reservations',
+  'table_seats',
   'guest_list',
 ] as const
 for (const table of tables) {
@@ -96,6 +97,18 @@ for (const table of tables) {
     .from('reservations')
     .insert({ label: 'Intruder', seats: 1, table_no: 1 })
   report(Boolean(error), 'cannot reserve seats', error?.message ?? 'INSERT SUCCEEDED')
+}
+{
+  const { error } = await anon.from('table_seats').insert({ table_no: 1, seats: 30 })
+  report(Boolean(error), 'cannot change the seats at a table', error?.message ?? 'INSERT SUCCEEDED')
+}
+{
+  const { error } = await anon.rpc('submit_rsvp', {
+    p_token: 'not-a-real-token',
+    p_attending: true,
+    p_wish: 'Congratulations!',
+  })
+  report(Boolean(error), 'cannot post a wish without a valid link', error?.message ?? 'ACCEPTED')
 }
 
 // 4. A wrong link gets nothing.

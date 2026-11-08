@@ -293,7 +293,6 @@ export function GuestsPage() {
                           {g.table_no ? `Table ${g.table_no}` : 'Waiting for a table'}
                         </span>
                       )}
-                      {g.diet && <span className={styles.sub}>Diet: {g.diet}</span>}
                     </td>
                     <td>
                       {g.last_checked_in_at ? (
