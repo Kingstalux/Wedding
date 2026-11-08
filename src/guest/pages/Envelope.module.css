@@ -15,6 +15,7 @@
   border: 1px solid var(--line-dark);
   text-align: center;
   animation: appear 0.6s ease-out;
+  border-radius: var(--radius-card);
 }
 /* Inner gold frame */
 .card::before {
@@ -23,6 +24,7 @@
   inset: 10px;
   border: 1px solid rgba(184, 145, 47, 0.55);
   pointer-events: none;
+  border-radius: calc(var(--radius-card) - 6px);
 }
 
 .dear {
@@ -70,6 +72,8 @@
   right: 20px;
   display: inline-flex;
   border: 1px solid var(--line-dark);
+  border-radius: var(--radius-control);
+  overflow: hidden; /* the selected language follows the rounded corners */
 }
 .lang button {
   min-width: 44px;

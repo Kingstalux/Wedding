@@ -51,4 +51,18 @@
   --gutter: 24px;
   --section-y: clamp(72px, 9vw, 112px);
   --shadow: 0 6px 24px rgba(10, 14, 82, 0.14);
+
+  /* Corners on the guest pages: softly rounded cards, slightly rounded
+     buttons and fields. Shared components (buttons, fields, dialogs) read
+     --control-radius / --panel-radius, which the studio switches off below. */
+  --radius-card: 14px;
+  --radius-control: 6px;
+  --control-radius: var(--radius-control);
+  --panel-radius: var(--radius-card);
+}
+
+/* The studio keeps its square look (set by StudioApp while it is open). */
+:root[data-area='studio'] {
+  --control-radius: initial;
+  --panel-radius: initial;
 }

@@ -36,7 +36,7 @@
 .box {
   padding: 11px 14px;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--control-radius, 2px);
   background: var(--white);
   font-size: 15px;
 }
@@ -83,6 +83,7 @@
   background: var(--white);
   box-shadow: var(--shadow);
   animation: drop 0.14s ease-out;
+  border-radius: var(--control-radius, 0);
 }
 .up {
   top: auto;

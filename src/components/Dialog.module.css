@@ -6,6 +6,7 @@
   background: var(--white);
   color: var(--ink);
   box-shadow: var(--shadow);
+  border-radius: var(--panel-radius, 0);
 }
 .wide {
   width: min(820px, calc(100vw - 32px));

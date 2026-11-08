@@ -28,6 +28,7 @@
   border: 1px solid var(--gold-line);
   border-top: 3px solid var(--gold);
   background: var(--card-dark);
+  border-radius: var(--radius-card);
 }
 
 .brand {

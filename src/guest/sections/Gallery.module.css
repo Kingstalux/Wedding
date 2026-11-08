@@ -24,6 +24,8 @@
   padding: 0;
   border: 0;
   cursor: zoom-in;
+  border-radius: var(--radius-card);
+  overflow: hidden;
 }
 .tile > div {
   width: 100%;

@@ -44,7 +44,7 @@
   width: 100%;
   color: var(--ink);
   outline: none;
-  border-radius: 0;
+  border-radius: var(--control-radius, 0);
 }
 
 /* "line": the guest site's underlined inputs */
@@ -54,6 +54,7 @@
   background: transparent;
   padding: 10px 0;
   font-size: 16px;
+  border-radius: 0; /* an underline, not a box */
 }
 .line:focus {
   border-bottom-color: var(--ink);
@@ -65,7 +66,7 @@
   background: var(--white);
   padding: 11px 14px;
   font-size: 15px;
-  border-radius: 2px;
+  border-radius: var(--control-radius, 2px);
 }
 .box:focus {
   border-color: var(--ink);

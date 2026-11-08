@@ -45,6 +45,7 @@
   min-height: 240px;
   padding: 32px 30px 26px;
   box-shadow: none;
+  border-radius: var(--radius-card);
 }
 
 .quote {
@@ -90,17 +91,7 @@
   cursor: pointer;
 }
 
-.write {
-  margin-top: 28px;
-}
-.write a {
-  color: var(--ivory);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  text-underline-offset: 6px;
-}
-.write a:hover {
-  color: var(--white);
+/* No shadow: the scrolling strip would clip it into a square edge. */
+.track .card {
+  box-shadow: none;
 }

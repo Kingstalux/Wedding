@@ -17,6 +17,7 @@
 .ticket {
   position: relative;
   border-top: 3px solid var(--gold);
+  border-radius: var(--radius-card);
 }
 
 .top {
@@ -55,6 +56,7 @@
   padding: 18px;
   border: 1px solid var(--line);
   background: var(--white);
+  border-radius: calc(var(--radius-card) - 6px);
 }
 .qr svg {
   display: block;
@@ -81,6 +83,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+  border-radius: var(--radius-control);
 }
 
 .code {
@@ -125,6 +128,7 @@
   border: 1px solid var(--line);
   background: var(--white);
   text-align: center;
+  border-radius: var(--radius-card);
 }
 
 .status {
@@ -136,6 +140,7 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  border-radius: var(--radius-control);
 }
 .ok {
   background: var(--emerald);

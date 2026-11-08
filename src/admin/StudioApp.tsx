@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import { AdminLayout } from './AdminLayout'
 import { AuthProvider } from './AuthProvider'
@@ -20,6 +20,14 @@ import { RequireAdmin } from './RequireAdmin'
 export function StudioApp() {
   useEffect(() => {
     document.title = 'Couple’s studio'
+  }, [])
+
+  // The studio keeps square corners (see tokens.css); set before the first paint.
+  useLayoutEffect(() => {
+    document.documentElement.dataset.area = 'studio'
+    return () => {
+      delete document.documentElement.dataset.area
+    }
   }, [])
 
   return (

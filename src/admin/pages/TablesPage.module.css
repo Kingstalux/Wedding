@@ -29,6 +29,16 @@
   gap: 16px;
 }
 
+.goTo {
+  width: 220px;
+}
+
+/* The table chosen in "Go to table" */
+.spotlight {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
 .table {
   display: flex;
   flex-direction: column;

@@ -12,6 +12,7 @@
   margin: 8px auto 0;
   padding: clamp(28px, 5vw, 48px);
   border-top: 3px solid var(--gold);
+  border-radius: var(--radius-card);
 }
 
 .form {
@@ -49,6 +50,7 @@
   padding: 20px;
   border: 1px solid var(--line);
   background: var(--white);
+  border-radius: var(--radius-card);
 }
 
 /* Narrow phones: code on top, names underneath, so long names have room */

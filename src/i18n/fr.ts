@@ -110,7 +110,6 @@ export const fr: Record<MessageKey, string> = {
   'wishes.count': '{n} sur {total}',
   'wishes.prev': 'Messages précédents',
   'wishes.next': 'Messages suivants',
-  'wishes.write': 'Écrire votre message',
   'tables.eyebrow': 'Placement',
   'tables.title': 'Votre Table',
   'tables.seated': 'Vous êtes placé(e) à la table {n}.',

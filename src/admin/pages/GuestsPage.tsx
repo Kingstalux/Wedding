@@ -13,7 +13,9 @@ import { formatShortDateTime } from '../../lib/time'
 import { invitationUrl, inviteMessage, whatsappUrl } from '../../lib/whatsapp'
 import { GuestDialog } from '../components/GuestDialog'
 import { ImportPanel } from '../components/ImportPanel'
+import { Pager } from '../components/Pager'
 import { useGuests, useMarkSent, useRestoreGuest, useStats, type GuestRow } from '../guests'
+import { paginate } from '../paging'
 import { studioErrorMessage, useSettings } from '../queries'
 import studio from '../studio.module.css'
 import styles from './GuestsPage.module.css'
@@ -22,6 +24,8 @@ type Filter = 'all' | 'unsent' | 'unopened' | 'attending' | 'declined' | 'pendin
 
 const SIXTY_DAYS = 60 * 24 * 60 * 60 * 1000
 const LANG_KEY = 'studio-default-lang'
+
+const GUESTS_PER_PAGE = 10
 
 const filters: Array<[Filter, string, (g: GuestRow) => boolean]> = [
   ['all', 'All', () => true],
@@ -50,6 +54,7 @@ export function GuestsPage() {
 
   const [filter, setFilter] = useState<Filter>('all')
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
   const [editing, setEditing] = useState<GuestRow | 'new' | null>(null)
   const [defaultLang, setDefaultLang] = useState<'en' | 'fr'>(readDefaultLang)
   const origin = window.location.origin
@@ -74,6 +79,13 @@ export function GuestsPage() {
           (digits.length >= 3 && (g.phone?.includes(digits) || g.partner_phone?.includes(digits))),
       )
     : base
+  const paged = paginate(shown, page, GUESTS_PER_PAGE)
+
+  // A new filter or search starts again from the first page.
+  function chooseFilter(next: Filter) {
+    setFilter(next)
+    setPage(1)
+  }
 
   function messageFor(g: GuestRow) {
     const lang = (g.lang as 'en' | 'fr' | null) ?? defaultLang
@@ -202,7 +214,7 @@ export function GuestsPage() {
                 type="button"
                 className={styles.chip}
                 aria-pressed={filter === key}
-                onClick={() => setFilter(key)}
+                onClick={() => chooseFilter(key)}
               >
                 {label} <b>{active.filter(test).length}</b>
               </button>
@@ -212,7 +224,7 @@ export function GuestsPage() {
                 type="button"
                 className={styles.chip}
                 aria-pressed={filter === 'removed'}
-                onClick={() => setFilter('removed')}
+                onClick={() => chooseFilter('removed')}
               >
                 Recently removed <b>{removed.length}</b>
               </button>
@@ -224,7 +236,10 @@ export function GuestsPage() {
             placeholder="Search by name or phone"
             aria-label="Search guests"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value)
+              setPage(1)
+            }}
           />
         </div>
 
@@ -247,7 +262,7 @@ export function GuestsPage() {
                 </tr>
               </thead>
               <tbody>
-                {shown.map((g) => (
+                {paged.items.map((g) => (
                   <tr key={g.id}>
                     <td>
                       <span className={styles.name}>{fullNames(g.name ?? '', g.partner_name)}</span>
@@ -366,6 +381,14 @@ export function GuestsPage() {
               </tbody>
             </table>
           </div>
+        )}
+        {guests.isSuccess && (
+          <Pager
+            page={paged.page}
+            pageCount={paged.pageCount}
+            onPage={setPage}
+            label={`Guests ${paged.from}–${paged.to} of ${paged.total}`}
+          />
         )}
       </section>
 

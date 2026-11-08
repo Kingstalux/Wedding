@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { Button } from '../../components/Button'
 import { useConfirm } from '../../components/Confirm'
 import { Dialog, DialogActions } from '../../components/Dialog'
@@ -10,7 +10,9 @@ import { Select } from '../../components/Select'
 import { useToast } from '../../components/Toast'
 import { cx } from '../../lib/cx'
 import { fullNames } from '../../lib/guestNames'
+import { Pager } from '../components/Pager'
 import { useGuests, type GuestRow } from '../guests'
+import { paginate } from '../paging'
 import { studioErrorMessage, useSettings, useUpdateSettings } from '../queries'
 import {
   buildTables,
@@ -35,6 +37,8 @@ import styles from './TablesPage.module.css'
  * automatically (couples together); here the couple can move anyone and
  * reserve seats for people without an invitation.
  */
+const TABLES_PER_PAGE = 4
+
 export function TablesPage() {
   const toast = useToast()
   const confirm = useConfirm()
@@ -46,6 +50,15 @@ export function TablesPage() {
   const seatWaiting = useSeatWaiting()
   const removeReservation = useDeleteReservation()
   const [editing, setEditing] = useState<Reservation | 'new' | null>(null)
+  const [page, setPage] = useState(1)
+  // The table picked in "Go to table", outlined for a moment.
+  const [spotlight, setSpotlight] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (spotlight === null) return
+    const timer = setTimeout(() => setSpotlight(null), 2400)
+    return () => clearTimeout(timer)
+  }, [spotlight])
 
   if (settings.isPending || guests.isPending || reservations.isPending || tableSeats.isPending) {
     return <p className={studio.loading}>Loading tables…</p>
@@ -68,6 +81,12 @@ export function TablesPage() {
   const used = tables.reduce((sum, t) => sum + t.used, 0)
   const totalSeats = tables.reduce((sum, t) => sum + t.capacity, 0)
   const full = tables.filter((t) => t.free <= 0).length
+  const paged = paginate(tables, page, TABLES_PER_PAGE)
+
+  function goTo(table: number) {
+    setPage(Math.ceil(table / TABLES_PER_PAGE))
+    setSpotlight(table)
+  }
 
   async function moveTo(g: GuestRow, table: number | null) {
     const who = fullNames(g.name ?? '', g.partner_name)
@@ -186,10 +205,30 @@ export function TablesPage() {
         </section>
       )}
 
+      <Pager
+        page={paged.page}
+        pageCount={paged.pageCount}
+        onPage={setPage}
+        label={`Tables ${paged.from}–${paged.to} of ${paged.total}`}
+      >
+        <Select
+          className={styles.goTo}
+          value=""
+          placeholder="Go to table…"
+          aria-label="Go to table"
+          options={tables.map((t) => ({
+            value: String(t.number),
+            label: `Table ${t.number} · ${t.used}/${t.capacity}`,
+          }))}
+          onChange={(v) => goTo(Number(v))}
+        />
+      </Pager>
+
       <section className={styles.grid} aria-label="Tables">
-        {tables.map((t) => (
+        {paged.items.map((t) => (
           <TableCard
             key={t.number}
+            spotlight={spotlight === t.number}
             table={t}
             defaultCapacity={capacity}
             moveSelect={moveSelect}
@@ -229,6 +268,7 @@ function Person({ guest }: { guest: GuestRow }) {
 }
 
 function TableCard({
+  spotlight,
   table,
   defaultCapacity,
   moveSelect,
@@ -236,6 +276,7 @@ function TableCard({
   onEditReservation,
   onDeleteReservation,
 }: {
+  spotlight: boolean
   table: TableInfo
   defaultCapacity: number
   moveSelect: (g: GuestRow) => ReactNode
@@ -247,7 +288,9 @@ function TableCard({
   const empty = !table.guests.length && !table.reservations.length
   const { capacity } = table
   return (
-    <article className={cx(styles.table, table.free <= 0 && styles.full)}>
+    <article
+      className={cx(styles.table, table.free <= 0 && styles.full, spotlight && styles.spotlight)}
+    >
       <header>
         <h2>Table {table.number}</h2>
         <span className={styles.count}>
@@ -462,7 +505,6 @@ function TableSettings() {
         <TextField
           look="box"
           label="Default seats per table"
-          hint="Tables with their own number keep it."
           type="number"
           inputMode="numeric"
           min={1}

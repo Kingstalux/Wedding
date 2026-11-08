@@ -13,6 +13,7 @@
     border-color 0.2s,
     color 0.2s,
     background-color 0.2s;
+  border-radius: var(--control-radius, 0);
 }
 .iconButton:hover:not(:disabled) {
   border-color: var(--ink);

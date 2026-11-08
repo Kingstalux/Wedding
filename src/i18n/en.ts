@@ -108,7 +108,6 @@ export const en = {
   'wishes.count': '{n} of {total}',
   'wishes.prev': 'Previous wishes',
   'wishes.next': 'Next wishes',
-  'wishes.write': 'Write your wish',
   'tables.eyebrow': 'Seating',
   'tables.title': 'Your Table',
   'tables.seated': 'You are seated at Table {n}.',

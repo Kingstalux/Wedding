@@ -124,10 +124,6 @@ export function Wishes() {
             </li>
           ))}
         </ul>
-
-        <p className={styles.write}>
-          <a href="#rsvp">{t('wishes.write')} →</a>
-        </p>
       </div>
     </section>
   )

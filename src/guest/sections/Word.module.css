@@ -13,6 +13,7 @@
   outline-offset: 8px;
   background: var(--card-dark);
   text-align: center;
+  border-radius: var(--radius-card);
 }
 
 /* A large gold opening quote at the top of the letter */

@@ -16,6 +16,7 @@
   outline: 1px solid var(--gold-line);
   outline-offset: 6px;
   background: var(--card-dark);
+  border-radius: var(--radius-card);
 }
 
 .planLabel {

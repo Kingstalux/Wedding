@@ -13,6 +13,7 @@
   padding: clamp(56px, 9vw, 88px) clamp(24px, 6vw, 64px);
   border: 1px solid var(--line-dark);
   text-align: center;
+  border-radius: var(--radius-card);
 }
 .card::before {
   content: '';
@@ -20,6 +21,7 @@
   inset: 10px;
   border: 1px solid var(--gold-line);
   pointer-events: none;
+  border-radius: calc(var(--radius-card) - 6px);
 }
 
 /* A small gold diamond between two hairlines */
@@ -56,6 +58,8 @@
   z-index: 10;
   display: inline-flex;
   border: 1px solid var(--line-dark);
+  border-radius: var(--radius-control);
+  overflow: hidden; /* the selected language follows the rounded corners */
 }
 .lang button {
   min-width: 44px;

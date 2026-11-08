@@ -57,6 +57,8 @@
 .lang {
   display: inline-flex;
   border: 1px solid var(--line-dark);
+  border-radius: var(--radius-control);
+  overflow: hidden; /* the selected language follows the rounded corners */
 }
 .lang button {
   min-width: 40px;
@@ -84,6 +86,7 @@
   background: none;
   color: var(--ivory);
   cursor: pointer;
+  border-radius: var(--radius-control);
 }
 .musicButton:hover {
   border-color: var(--gold);
