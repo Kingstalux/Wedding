@@ -15,7 +15,7 @@
  * the small texts never go below a readable size.
  */
 .card {
-  --card-width: 100px;
+  --card-width: 150px;
 
   position: relative;
   display: flex;

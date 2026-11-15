@@ -11,6 +11,7 @@ import { useT } from '../../i18n/LanguageProvider'
 import { cx } from '../../lib/cx'
 import * as api from '../api'
 import { GiftDialog, useGiftWays } from '../GiftDialog'
+import { Footer } from '../sections/Footer'
 import { useInvitation } from '../InvitationProvider'
 import type { RegistryGift } from '../types'
 import styles from './GiftListPage.module.css'
@@ -79,7 +80,7 @@ export function GiftListPage() {
 
   return (
     <div className={`on-dark ${styles.page}`}>
-      <main className={styles.wrap}>
+      <main id="top" className={styles.wrap}>
         <Link className={styles.back} to={`/i/${token}#gifts`}>
           <Icon name="chevronLeft" size={14} /> {t('registry.back')}
         </Link>
@@ -173,6 +174,7 @@ export function GiftListPage() {
           })}
         </ul>
       </main>
+      <Footer />
       <GiftDialog open={moneyOpen} onClose={() => setMoneyOpen(false)} />
     </div>
   )
