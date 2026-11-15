@@ -9,18 +9,26 @@
 }
 
 /* ---------- The guest's table, as a place card ---------- */
+/*
+ * The whole card follows --card-width: change that one number to resize it.
+ * Everything inside (frame, laurels, TABLE, number, names) scales with it;
+ * the small texts never go below a readable size.
+ */
 .card {
+  --card-width: 100px;
+
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(200px, 100%);
-  margin: 40px auto 0;
-  padding: 18px 15px 16px;
-  border-radius: var(--radius-card);
+  width: min(var(--card-width), 100%);
+  margin: 36px auto 0;
+  padding: calc(var(--card-width) * 0.09) calc(var(--card-width) * 0.075)
+    calc(var(--card-width) * 0.08);
+  border-radius: calc(var(--card-width) * 0.07);
   background: var(--navy);
   box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.35),
+    0 12px 30px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(184, 145, 47, 0.35);
   color: var(--gold);
   animation: settle 0.9s ease-out both;
@@ -29,9 +37,9 @@
 .card::before {
   content: '';
   position: absolute;
-  inset: 7px;
+  inset: max(4px, calc(var(--card-width) * 0.035));
   border: 1px solid var(--gold-line);
-  border-radius: calc(var(--radius-card) - 6px);
+  border-radius: calc(var(--card-width) * 0.04);
   pointer-events: none;
 }
 
@@ -42,29 +50,30 @@
 }
 
 .cardLabel {
-  margin-top: 10px;
-  font-size: 10px;
+  margin-top: calc(var(--card-width) * 0.05);
+  font-size: max(8px, calc(var(--card-width) * 0.05));
   font-weight: 500;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--ivory);
 }
 
 .cardNumber {
-  margin-top: 2px;
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(68px, 18vw, 88px);
+  font-size: calc(var(--card-width) * 0.44);
   line-height: 0.95;
   color: var(--gold);
 }
 
 .cardNames {
-  margin: 4px 0 10px;
+  margin: calc(var(--card-width) * 0.02) 0 calc(var(--card-width) * 0.05);
   font-family: var(--font-script);
-  font-size: 21px;
-  line-height: 1.25;
+  font-size: max(13px, calc(var(--card-width) * 0.105));
+  line-height: 1.15;
+  text-align: center;
+  overflow-wrap: anywhere; /* long couple names wrap inside the card */
   color: var(--gold);
 }
 
