@@ -130,7 +130,6 @@ export const en = {
   'gift.ledeMoney':
     'Your presence is already our most beautiful gift. If you would like to bless us further, a cash gift can be sent in any of these ways.',
   'gift.browse': 'Browse the gift collection',
-  'gift.orSendMoney': 'Or send money instead',
   'registry.back': 'Back to the invitation',
   'registry.eyebrow': 'If you wish',
   'registry.title': 'A Few Things We Would Love',

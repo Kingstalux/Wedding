@@ -41,11 +41,6 @@ export function Gifts() {
             <ButtonLink variant="gold" to={`/i/${token}/gifts`}>
               {t('gift.browse')}
             </ButtonLink>
-            {ways.length > 0 && (
-              <button type="button" className={styles.alt} onClick={() => setOpen(true)}>
-                {t('gift.orSendMoney')}
-              </button>
-            )}
           </>
         ) : (
           <Button variant="gold" onClick={() => setOpen(true)}>

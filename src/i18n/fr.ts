@@ -132,7 +132,6 @@ export const fr: Record<MessageKey, string> = {
   'gift.ledeMoney':
     'Votre présence est déjà notre plus beau cadeau. Si vous souhaitez nous bénir davantage, vous pouvez nous offrir un don de l’une de ces façons.',
   'gift.browse': 'Découvrir la liste de cadeaux',
-  'gift.orSendMoney': 'Ou envoyer de l’argent',
   'registry.back': 'Retour à l’invitation',
   'registry.eyebrow': 'Si vous le souhaitez',
   'registry.title': 'Quelques Présents Qui Nous Feraient Plaisir',
