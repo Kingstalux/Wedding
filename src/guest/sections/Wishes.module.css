@@ -44,8 +44,11 @@
   gap: 18px;
   min-height: 240px;
   padding: 32px 30px 26px;
-  box-shadow: none;
+  /* Outlined only, on the navy: no filled card */
+  border: 1px solid var(--gold-line);
   border-radius: var(--radius-card);
+  background: transparent;
+  color: var(--on-dark);
 }
 
 .quote {
@@ -57,8 +60,7 @@
 
 .message {
   flex: 1;
-  font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.6;
   white-space: pre-line;
   overflow-wrap: anywhere;
@@ -69,21 +71,19 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
 }
+/* The guest's name, like a signature */
 .who {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--slate);
+  font-family: var(--font-signature);
+  font-size: 28px;
+  line-height: 1.2;
+  color: var(--gold);
 }
 .delete {
   min-height: 32px;
   border: 0;
   background: none;
-  color: var(--muted);
+  color: var(--on-dark);
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;

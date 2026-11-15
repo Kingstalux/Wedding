@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useConfirm } from '../../components/Confirm'
 import { IconButton } from '../../components/IconButton'
 import { useT } from '../../i18n/LanguageProvider'
-import { dayKey, formatDate } from '../../lib/time'
 import { useInvitation } from '../InvitationProvider'
 import styles from './Wishes.module.css'
 
@@ -12,7 +11,7 @@ import styles from './Wishes.module.css'
  * Guests write one with their RSVP. Hidden until there is at least one.
  */
 export function Wishes() {
-  const { t, lang } = useT()
+  const { t } = useT()
   const confirm = useConfirm()
   const { content, invitation, actions } = useInvitation()
   const trackRef = useRef<HTMLUListElement>(null)
@@ -103,7 +102,7 @@ export function Wishes() {
           {wishes.map((wish, i) => (
             <li
               key={wish.id}
-              className={`paper ${styles.card}`}
+              className={styles.card}
               aria-roledescription="slide"
               aria-label={t('wishes.count', { n: i + 1, total: wishes.length })}
             >
@@ -112,9 +111,7 @@ export function Wishes() {
               </span>
               <p className={styles.message}>{wish.message}</p>
               <div className={styles.meta}>
-                <span className={styles.who}>
-                  {wish.author} · {formatDate(dayKey(wish.created_at), lang)}
-                </span>
+                <span className={styles.who}>{wish.author}</span>
                 {wish.mine && (
                   <button type="button" className={styles.delete} onClick={() => remove(wish.id)}>
                     {t('book.delete')}

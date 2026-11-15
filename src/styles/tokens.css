@@ -45,6 +45,8 @@
   --font-display: 'Cormorant Garamond', 'Garamond', Georgia, serif;
   --font-sans: 'Outfit', 'Helvetica Neue', sans-serif;
   --font-script: 'Pinyon Script', cursive;
+  /* Guests' names under their wishes, like a handwritten signature */
+  --font-signature: 'Great Vibes', cursive;
 
   /* Layout */
   --max: 1180px;
