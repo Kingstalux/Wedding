@@ -8,9 +8,77 @@
   margin: 0 auto;
 }
 
+/* ---------- The guest's table, as a place card ---------- */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(300px, 100%);
+  margin: 44px auto 0;
+  padding: 26px 22px 24px;
+  border-radius: var(--radius-card);
+  background: var(--navy);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(184, 145, 47, 0.35);
+  color: var(--gold);
+  animation: settle 0.9s ease-out both;
+}
+/* Fine gold inner frame */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 9px;
+  border: 1px solid var(--gold-line);
+  border-radius: calc(var(--radius-card) - 6px);
+  pointer-events: none;
+}
+
+.garland {
+  width: 90%;
+  height: auto;
+  color: var(--gold);
+}
+
+.cardLabel {
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--ivory);
+}
+
+.cardNumber {
+  margin-top: 2px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(104px, 26vw, 132px);
+  line-height: 0.95;
+  color: var(--gold);
+}
+
+.cardNames {
+  margin: 6px 0 14px;
+  font-family: var(--font-script);
+  font-size: 30px;
+  line-height: 1.25;
+  color: var(--gold);
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(14px) rotate(-1.5deg);
+  }
+}
+
+/* ---------- Plan of all tables ---------- */
 .plan {
   max-width: 720px;
-  margin: 44px auto 0;
+  margin: 48px auto 0;
   padding: clamp(24px, 4vw, 40px) clamp(16px, 4vw, 40px);
   border: 1px solid var(--gold-line);
   outline: 1px solid var(--gold-line);
@@ -19,21 +87,32 @@
   border-radius: var(--radius-card);
 }
 
+/* "— SEATING PLAN —" */
 .planLabel {
-  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 30px;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--muted);
 }
+.planLabel::before,
+.planLabel::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gold-line);
+}
 
 .grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 36px clamp(8px, 2vw, 18px);
+  gap: 38px clamp(8px, 2vw, 18px);
   margin: 0;
-  padding: 0 0 12px;
+  padding: 0 0 14px;
   list-style: none;
 }
 @media (max-width: 560px) {
@@ -48,36 +127,52 @@
   justify-content: center;
 }
 
-/* A round table; the dotted ring suggests the chairs around it. */
+/* A round table top; the dotted gold ring suggests the chairs around it. */
 .table {
+  position: relative;
   display: grid;
   place-items: center;
-  width: clamp(38px, 9vw, 52px);
+  width: clamp(40px, 9vw, 54px);
   aspect-ratio: 1;
-  border: 1px solid rgba(247, 244, 236, 0.32);
+  border: 1px solid rgba(184, 145, 47, 0.7);
   border-radius: 50%;
-  outline: 2px dotted rgba(247, 244, 236, 0.22);
+  outline: 2px dotted rgba(184, 145, 47, 0.38);
   outline-offset: 4px;
-  font-size: clamp(12px, 2.6vw, 14px);
-  color: rgba(247, 244, 236, 0.75);
+  background: var(--navy);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(19px, 4.4vw, 24px);
+  line-height: 1;
+  color: var(--ivory);
 }
 
+/* The guest's table: gold, in a small laurel wreath, softly glowing */
 .mine .table {
   border-color: var(--gold);
-  outline-color: var(--gold);
+  outline: none;
   background: var(--gold);
   color: var(--navy);
   font-weight: 600;
-  box-shadow:
-    0 0 0 10px rgba(184, 145, 47, 0.16),
-    0 0 28px rgba(184, 145, 47, 0.45);
+  box-shadow: 0 0 26px rgba(184, 145, 47, 0.5);
   animation: glow 2.4s ease-in-out infinite;
 }
 
-.you {
-  /* Under the table, without making its row taller than the others */
+.wreath {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 50%;
+  left: 50%;
+  width: clamp(70px, 16vw, 92px);
+  height: auto;
+  transform: translate(-50%, -50%);
+  color: var(--gold);
+  pointer-events: none;
+}
+
+.you {
+  /* Under the wreath, without making its row taller than the others */
+  position: absolute;
+  top: calc(100% + 12px);
   left: 50%;
   transform: translateX(-50%);
   font-size: 10.5px;
@@ -89,12 +184,11 @@
 
 @keyframes glow {
   50% {
-    box-shadow:
-      0 0 0 14px rgba(184, 145, 47, 0.08),
-      0 0 36px rgba(184, 145, 47, 0.55);
+    box-shadow: 0 0 40px rgba(184, 145, 47, 0.7);
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .card,
   .mine .table {
     animation: none;
   }

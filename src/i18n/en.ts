@@ -115,6 +115,8 @@ export const en = {
   'tables.pending': 'Your table will be confirmed soon.',
   'tables.plan': 'Seating plan',
   'tables.you': 'You',
+  'tables.card': 'Table',
+  'tables.cardLabel': 'Your table: {n}, {names}',
   'tables.yours': 'Table {n}, your table',
   'gift.eyebrow': 'Gifts',
   'gift.title': 'A Gift From the Heart',

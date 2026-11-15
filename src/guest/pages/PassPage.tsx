@@ -51,7 +51,11 @@ export function PassPage() {
           <QrCode className={styles.qr} value={url} label={t('pass.qrAlt', { name: full })} />
           <div className={styles.bottom}>
             <p className={styles.name}>{full}</p>
-            {table && <p className={styles.table}>{t('pass.table', { n: table })}</p>}
+            {table && (
+              <p className={styles.table}>
+                <span>{t('tables.card')}</span> <em>{table}</em>
+              </p>
+            )}
             <p className={styles.code}>
               {invitation.pass_code} ·{' '}
               {invitation.seats > 1 ? t('pass.seats', { n: invitation.seats }) : t('pass.seat')}

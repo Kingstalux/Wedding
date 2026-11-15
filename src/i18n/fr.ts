@@ -117,6 +117,8 @@ export const fr: Record<MessageKey, string> = {
   'tables.pending': 'Votre table vous sera confirmée très bientôt.',
   'tables.plan': 'Plan de table',
   'tables.you': 'Vous',
+  'tables.card': 'Table',
+  'tables.cardLabel': 'Votre table : {n}, {names}',
   'tables.yours': 'Table {n}, votre table',
   'gift.eyebrow': 'Cadeaux',
   'gift.title': 'Un Cadeau du Cœur',
