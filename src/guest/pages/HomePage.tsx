@@ -28,8 +28,8 @@ export function HomePage({ music }: { music: Music }) {
         <Gallery />
         <Rsvp />
         <Tables />
-        <Wishes />
         <Gifts />
+        <Wishes />
       </main>
       <Footer />
     </>

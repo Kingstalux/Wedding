@@ -26,6 +26,7 @@ type Way = {
  * The ways to send a cash gift that the couple filled in and switched on:
  * MTN MoMo, Orange Money and/or the gift box at the reception.
  */
+// eslint-disable-next-line react/only-export-components -- the hook belongs with its popup
 export function useGiftWays(settings: Settings): Way[] {
   const { t } = useT()
   const ways: Way[] = []

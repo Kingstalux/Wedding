@@ -14,13 +14,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(300px, 100%);
-  margin: 44px auto 0;
-  padding: 26px 22px 24px;
+  width: min(200px, 100%);
+  margin: 40px auto 0;
+  padding: 18px 15px 16px;
   border-radius: var(--radius-card);
   background: var(--navy);
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.35),
+    0 16px 40px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(184, 145, 47, 0.35);
   color: var(--gold);
   animation: settle 0.9s ease-out both;
@@ -29,7 +29,7 @@
 .card::before {
   content: '';
   position: absolute;
-  inset: 9px;
+  inset: 7px;
   border: 1px solid var(--gold-line);
   border-radius: calc(var(--radius-card) - 6px);
   pointer-events: none;
@@ -42,8 +42,8 @@
 }
 
 .cardLabel {
-  margin-top: 14px;
-  font-size: 13px;
+  margin-top: 10px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.34em;
   text-transform: uppercase;
@@ -55,15 +55,15 @@
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(104px, 26vw, 132px);
+  font-size: clamp(68px, 18vw, 88px);
   line-height: 0.95;
   color: var(--gold);
 }
 
 .cardNames {
-  margin: 6px 0 14px;
+  margin: 4px 0 10px;
   font-family: var(--font-script);
-  font-size: 30px;
+  font-size: 21px;
   line-height: 1.25;
   color: var(--gold);
 }

@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Button } from '../../components/Button'
 import { useConfirm } from '../../components/Confirm'
 import { Dialog, DialogActions } from '../../components/Dialog'
@@ -10,7 +10,8 @@ import { useToast } from '../../components/Toast'
 import { fullNames } from '../../lib/guestNames'
 import { mediaUrl } from '../../lib/media'
 import { formatShortDateTime } from '../../lib/time'
-import { MediaField } from '../components/MediaField'
+import { removeMedia, uploadPhotoBlob } from '../../lib/upload'
+import { PhotoEditorDialog } from '../components/photo/PhotoEditorDialog'
 import { Pager } from '../components/Pager'
 import { paginate } from '../paging'
 import { studioErrorMessage } from '../queries'
@@ -19,7 +20,6 @@ import {
   useFreeGift,
   useRegistry,
   useSaveGift,
-  useSetGiftPhoto,
   useSwapGifts,
   type GiftInput,
   type RegistryGift,
@@ -203,7 +203,6 @@ export function RegistryPage() {
         <GiftDialog
           gift={current}
           nextSort={list.reduce((max, g) => Math.max(max, g.sort), 0) + 1}
-          onCreated={(gift) => setEditing({ ...gift, gift_reservations: null })}
           onClose={() => setEditing(null)}
         />
       )}
@@ -220,21 +219,30 @@ const EMPTY: GiftInput = {
   category_fr: '',
 }
 
-/** Add or edit a gift. A new gift gets its photo once its words are saved. */
+type CroppedPhoto = { blob: Blob; width: number; height: number; url: string }
+
+/**
+ * Add or edit a gift, photo included: the chosen photo is cropped first and
+ * uploaded only when the couple presses Add / Save.
+ */
 function GiftDialog({
   gift,
   nextSort,
-  onCreated,
   onClose,
 }: {
   gift: RegistryGift | null
   nextSort: number
-  onCreated: (gift: RegistryGift) => void
   onClose: () => void
 }) {
   const toast = useToast()
   const save = useSaveGift()
-  const setPhoto = useSetGiftPhoto()
+  const fileRef = useRef<HTMLInputElement>(null)
+  // The file being cropped, then the cropped photo waiting to be uploaded.
+  const [cropping, setCropping] = useState<File | null>(null)
+  const [photo, setPhoto] = useState<CroppedPhoto | null>(null)
+  // true when the couple removed the current photo
+  const [photoRemoved, setPhotoRemoved] = useState(false)
+  const [saving, setSaving] = useState(false)
   const [draft, setDraft] = useState<GiftInput>(() =>
     gift
       ? {
@@ -249,6 +257,22 @@ function GiftDialog({
   )
   const [error, setError] = useState<string | null>(null)
 
+  // The cropped photo is shown from memory until it's uploaded; free that copy
+  // when it's replaced or the dialog closes.
+  useEffect(
+    () => () => {
+      if (photo) URL.revokeObjectURL(photo.url)
+    },
+    [photo],
+  )
+
+  const shownPhoto = photo?.url ?? (photoRemoved ? null : mediaUrl(gift?.photo_path))
+
+  function chooseFile(file: File | undefined) {
+    if (fileRef.current) fileRef.current.value = ''
+    if (file) setCropping(file)
+  }
+
   const field = (key: keyof GiftInput) => ({
     value: draft[key],
     onChange: (e: { target: { value: string } }) =>
@@ -262,38 +286,70 @@ function GiftDialog({
     const input = Object.fromEntries(
       Object.entries(draft).map(([k, v]) => [k, v.trim()]),
     ) as GiftInput
+    setSaving(true)
+    let uploaded: string | null = null
     try {
-      const saved = await save.mutateAsync(
-        gift ? { ...input, id: gift.id } : { ...input, sort: nextSort },
+      if (photo) uploaded = (await uploadPhotoBlob('gifts', photo)).path
+      const oldPath = gift?.photo_path ?? null
+      const photoChanged = Boolean(photo) || photoRemoved
+      const photoField = photoChanged ? { photo_path: uploaded } : {}
+      await save.mutateAsync(
+        gift
+          ? { ...input, ...photoField, id: gift.id }
+          : { ...input, ...photoField, sort: nextSort },
       )
-      if (gift) {
-        toast('Gift saved')
-        onClose()
-      } else {
-        toast('Gift added. Now add a photo if you like.')
-        onCreated(saved as RegistryGift)
-      }
+      // The previous photo is no longer used.
+      if (photoChanged) await removeMedia(oldPath)
+      toast(gift ? 'Gift saved' : 'Gift added')
+      onClose()
     } catch (err) {
+      // Don't leave an unused upload behind.
+      await removeMedia(uploaded)
       setError(studioErrorMessage(err))
+    } finally {
+      setSaving(false)
     }
   }
 
   return (
     <Dialog open title={gift ? 'Edit gift' : 'Add a gift'} onClose={onClose} wide>
       <form className={styles.form} onSubmit={submit} noValidate>
-        {gift && (
-          <div>
+        <div className={styles.photoField}>
+          <Photo className={styles.photoPreview} src={shownPhoto} label="No photo yet" />
+          <div className={styles.photoButtons}>
             <p className={styles.formLabel}>Photo</p>
-            <MediaField
-              kind="photo"
-              folder="gifts"
-              shape="gift"
-              path={gift.photo_path}
-              onSave={(path) => setPhoto.mutateAsync({ id: gift.id, path })}
-              placeholder="No photo yet"
+            {/* A real file input, visually hidden, opened by the button below */}
+            <input
+              ref={fileRef}
+              className="sr-only"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              aria-label="Choose a photo of the gift"
+              onChange={(e) => chooseFile(e.target.files?.[0])}
             />
+            <div className={styles.photoActions}>
+              <Button type="button" size="sm" onClick={() => fileRef.current?.click()}>
+                {shownPhoto ? 'Replace photo' : 'Choose a photo'}
+              </Button>
+              {shownPhoto && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    setPhoto(null)
+                    setPhotoRemoved(true)
+                  }}
+                >
+                  Remove
+                </Button>
+              )}
+            </div>
+            <p className={studio.hint}>
+              JPG, PNG or WebP. You can crop it next; it&rsquo;s saved with the gift.
+            </p>
           </div>
-        )}
+        </div>
         <div className={studio.grid2}>
           <TextField look="box" label="Name (English)" maxLength={120} {...field('title_en')} />
           <TextField
@@ -339,13 +395,25 @@ function GiftDialog({
         )}
         <DialogActions>
           <Button type="button" variant="ghost" onClick={onClose}>
-            {gift ? 'Close' : 'Cancel'}
+            Cancel
           </Button>
-          <Button type="submit" loading={save.isPending}>
+          <Button type="submit" loading={saving}>
             {gift ? 'Save' : 'Add gift'}
           </Button>
         </DialogActions>
       </form>
+      {cropping && (
+        <PhotoEditorDialog
+          file={cropping}
+          shape="gift"
+          onCancel={() => setCropping(null)}
+          onSave={async (cropped) => {
+            setPhoto({ ...cropped, url: URL.createObjectURL(cropped.blob) })
+            setPhotoRemoved(false)
+            setCropping(null)
+          }}
+        />
+      )}
     </Dialog>
   )
 }

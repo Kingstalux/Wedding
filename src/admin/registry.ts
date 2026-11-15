@@ -54,19 +54,17 @@ function useRegistryChange<T, R = unknown>(run: (input: T) => Promise<R>) {
 /** Add a gift (at the end of the list) or change one. Returns the saved row. */
 export function useSaveGift() {
   return useRegistryChange(
-    async ({ id, sort, ...input }: GiftInput & { id?: string; sort?: number }) => {
+    async ({
+      id,
+      sort,
+      ...input
+    }: GiftInput & { photo_path?: string | null; id?: string; sort?: number }) => {
       const query = id
         ? supabase.from('registry_gifts').update(input).eq('id', id)
         : supabase.from('registry_gifts').insert({ ...input, sort: sort ?? 0 })
       const { data } = check(await query.select().single())
       return data as GiftRow
     },
-  )
-}
-
-export function useSetGiftPhoto() {
-  return useRegistryChange(async ({ id, path }: { id: string; path: string | null }) =>
-    check(await supabase.from('registry_gifts').update({ photo_path: path }).eq('id', id)),
   )
 }
 

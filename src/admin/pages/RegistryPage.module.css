@@ -82,6 +82,28 @@
   flex-direction: column;
   gap: 18px;
 }
+.photoField {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 20px;
+}
+.photoPreview {
+  width: 200px;
+  aspect-ratio: 4 / 3;
+}
+.photoButtons {
+  display: flex;
+  flex: 1 1 220px;
+  flex-direction: column;
+  gap: 8px;
+}
+.photoActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .formLabel {
   margin-bottom: 8px;
   font-size: 13px;
