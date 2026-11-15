@@ -42,8 +42,8 @@
   --gold-line: rgba(184, 145, 47, 0.45); /* gold hairlines on navy */
 
   /* Typography */
-  --font-display: 'Bodoni Moda', 'Didot', Georgia, serif;
-  --font-sans: 'Jost', 'Helvetica Neue', sans-serif;
+  --font-display: 'Cormorant Garamond', 'Garamond', Georgia, serif;
+  --font-sans: 'Outfit', 'Helvetica Neue', sans-serif;
   --font-script: 'Pinyon Script', cursive;
 
   /* Layout */

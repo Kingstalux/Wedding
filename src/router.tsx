@@ -1,6 +1,7 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
 import { ErrorPage } from './app/ErrorPage'
 import { RootLayout } from './app/RootLayout'
+import { GiftListPage } from './guest/pages/GiftListPage'
 import { HomeRedirect } from './guest/pages/HomeRedirect'
 import { InvitationLayout, InvitationPage } from './guest/pages/InvitationPage'
 import { PassPage } from './guest/pages/PassPage'
@@ -11,6 +12,7 @@ import { PersonalPage } from './guest/pages/PersonalPage'
  *
  *   /i/:token          a guest's invitation (opening screen, then the page)
  *   /i/:token/pass     their entrance pass
+ *   /i/:token/gifts    the couple's gift list
  *   /pass/:code        what the door team sees when scanning a pass
  *   /admin/...         the couple's studio (loaded on demand, see admin/StudioApp)
  *   /                  back to this device's invitation, else "personal" page
@@ -23,6 +25,7 @@ const routes: RouteObject[] = [
     children: [
       { index: true, element: <InvitationPage /> },
       { path: 'pass', element: <PassPage /> },
+      { path: 'gifts', element: <GiftListPage /> },
     ],
   },
   { path: '/', element: <HomeRedirect /> },

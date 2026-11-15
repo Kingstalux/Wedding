@@ -65,7 +65,7 @@ export function GiftsPage() {
     <>
       <div className={studio.pageHead}>
         <div>
-          <h1 className="display">Gifts</h1>
+          <h1 className="display">Money gifts</h1>
           <p>
             Guests only announce gifts here. Check your MoMo / Orange Money account, then tick
             “Received”.

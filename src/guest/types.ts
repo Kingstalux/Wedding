@@ -31,6 +31,9 @@ export type Settings = {
   momo_name: string | null
   om_number: string | null
   om_name: string | null
+  /** Whether each payment option is shown (when its number is filled in). */
+  show_momo: boolean
+  show_om: boolean
   show_gift_box: boolean
   gift_box_note_en: string
   gift_box_note_fr: string
@@ -64,10 +67,28 @@ export type PublicContent = {
   settings: Settings
   events: WeddingEvent[]
   gallery: GalleryPhoto[]
+  /** How many gifts are on the gift list. */
+  registryCount: number
 }
 
 export type Rsvp = {
   attending: boolean
+}
+
+/** One gift on the list, as this guest sees it. */
+export type RegistryGift = {
+  id: string
+  title_en: string
+  title_fr: string
+  description_en: string
+  description_fr: string
+  category_en: string
+  category_fr: string
+  photo_url: string | null
+  /** Taken by someone (maybe this guest). */
+  reserved: boolean
+  /** Taken by this guest. */
+  mine: boolean
 }
 
 export type GiftMethod = 'momo' | 'orange' | 'cash'

@@ -124,7 +124,13 @@ export function MediaField({
         <Photo
           className={cx(
             styles.preview,
-            shape === 'hero' ? styles.wide : shape === 'heroMobile' ? styles.phone : styles.tall,
+            shape === 'hero'
+              ? styles.wide
+              : shape === 'heroMobile'
+                ? styles.phone
+                : shape === 'gift'
+                  ? styles.landscape
+                  : styles.tall,
           )}
           src={url}
           label={placeholder}

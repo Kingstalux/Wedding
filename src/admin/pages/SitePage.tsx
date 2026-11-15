@@ -35,6 +35,8 @@ type Draft = {
   momo_name: string
   om_number: string
   om_name: string
+  show_momo: boolean
+  show_om: boolean
   show_gift_box: boolean
   gift_box_note_en: string
   gift_box_note_fr: string
@@ -64,6 +66,8 @@ function toDraft(s: SettingsRow): Draft {
     momo_name: s.momo_name ?? '',
     om_number: s.om_number ?? '',
     om_name: s.om_name ?? '',
+    show_momo: s.show_momo,
+    show_om: s.show_om,
     show_gift_box: s.show_gift_box,
     gift_box_note_en: s.gift_box_note_en,
     gift_box_note_fr: s.gift_box_note_fr,
@@ -95,6 +99,8 @@ function toPatch(d: Draft): SettingsPatch {
     momo_name: orNull(d.momo_name),
     om_number: orNull(d.om_number),
     om_name: orNull(d.om_name),
+    show_momo: d.show_momo,
+    show_om: d.show_om,
     show_gift_box: d.show_gift_box,
     gift_box_note_en: d.gift_box_note_en.trim(),
     gift_box_note_fr: d.gift_box_note_fr.trim(),
@@ -366,6 +372,10 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
             placeholder="Name guests see when sending"
             {...text('om_name')}
           />
+        </div>
+        <div className={styles.grid2} style={{ marginTop: 16 }}>
+          <Switch label="Show MTN Mobile Money" {...toggle('show_momo')} />
+          <Switch label="Show Orange Money" {...toggle('show_om')} />
         </div>
         <div style={{ marginTop: 16 }}>
           <Switch label="Show “Gift box at the reception”" {...toggle('show_gift_box')} />

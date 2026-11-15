@@ -97,7 +97,9 @@ export function DevUi() {
           want you beside us as we say yes before the law, our families, and the Lord.
         </p>
         <p className="script">Bride + Groom</p>
-        <p className="muted">Muted body text in Jost, used for hints and secondary information.</p>
+        <p className="muted">
+          Muted body text in Outfit, used for hints and secondary information.
+        </p>
         <div className={styles.row} style={{ marginTop: 20 }}>
           <Monogram bride="Bride" groom="Groom" />
           <Monogram bride="Bride" groom="Groom" size={40} gold />

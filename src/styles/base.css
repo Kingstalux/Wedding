@@ -22,9 +22,12 @@ body {
   background: var(--ivory);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 16px;
   line-height: 1.65;
+  /* Full-height numbers: Cormorant's default old-style figures look tiny in
+     dates, times and phone numbers. */
+  font-variant-numeric: lining-nums;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -88,21 +91,23 @@ p {
 
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
+  /* Cormorant is fine-stroked: 500 keeps titles readable, on navy too */
+  font-weight: 500;
   line-height: 1.08;
-  letter-spacing: -0.01em;
 }
 
 .h2 {
-  font-size: clamp(34px, 4.6vw, 52px);
+  font-size: clamp(38px, 5vw, 58px);
 }
 
 .h3 {
-  font-size: 26px;
+  font-size: 28px;
 }
 
+/* Longer passages (ledes, the word from the couple): the clean sans, as in
+   the couple's reference. (The name is kept from the earlier serif look.) */
 .serif-body {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 17px;
   line-height: 1.75;
 }
@@ -145,7 +150,7 @@ p {
 }
 .on-dark .serif-body {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* An ivory card on navy (forms, the pass): back to the light colours,

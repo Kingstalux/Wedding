@@ -8,7 +8,7 @@ import { supabase } from './supabase'
  * 400 KB, so guests on mobile data load the page quickly.
  */
 
-export type MediaFolder = 'hero' | 'word' | 'gallery' | 'music'
+export type MediaFolder = 'hero' | 'word' | 'gallery' | 'music' | 'gifts'
 
 const MAX_AUDIO_BYTES = 15 * 1024 * 1024
 

@@ -22,6 +22,10 @@
   width: 120px;
   aspect-ratio: 4 / 5;
 }
+.landscape {
+  width: 200px;
+  aspect-ratio: 4 / 3;
+}
 
 .body {
   display: flex;

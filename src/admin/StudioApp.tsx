@@ -8,6 +8,7 @@ import { GiftsPage } from './pages/GiftsPage'
 import { GuestsPage } from './pages/GuestsPage'
 import { LoginPage } from './pages/LoginPage'
 import { ProgrammePage } from './pages/ProgrammePage'
+import { RegistryPage } from './pages/RegistryPage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
 import { SitePage } from './pages/SitePage'
 import { TablesPage } from './pages/TablesPage'
@@ -47,6 +48,7 @@ export function StudioApp() {
           <Route index element={<GuestsPage />} />
           <Route path="site" element={<SitePage />} />
           <Route path="tables" element={<TablesPage />} />
+          <Route path="registry" element={<RegistryPage />} />
           <Route path="gifts" element={<GiftsPage />} />
           <Route path="programme" element={<ProgrammePage />} />
           <Route path="gallery" element={<GalleryPage />} />

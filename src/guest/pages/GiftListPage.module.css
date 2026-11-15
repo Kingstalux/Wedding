@@ -1,0 +1,187 @@
+.page {
+  min-height: 100dvh;
+  background: var(--surface);
+  padding: 32px 0 96px;
+}
+
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  color: var(--ivory);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.back:hover {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.head {
+  margin-top: 28px;
+  text-align: center;
+}
+.lede {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* "Prefer to give money instead?" */
+.money {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px 24px;
+  max-width: 760px;
+  margin: 40px auto 0;
+  padding: 20px 24px;
+  border: 1px solid var(--gold-line);
+  border-radius: var(--radius-card);
+  background: var(--card-dark);
+  text-align: center;
+}
+.money p {
+  flex: 1 1 260px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.moneyIcon {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold);
+}
+
+/* Category filter */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 32px;
+}
+.chip {
+  min-height: 44px;
+  padding: 0 22px;
+  border: 1px solid var(--gold-line);
+  border-radius: 999px;
+  background: none;
+  color: var(--ivory);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.chip:hover {
+  border-color: var(--gold);
+}
+.chip[aria-pressed='true'] {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.status {
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* Gift cards: 3 / 2 / 1 per row */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  gap: 24px;
+  margin: 36px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--gold-line);
+  border-radius: var(--radius-card);
+  background: var(--card-dark);
+}
+
+.photo {
+  aspect-ratio: 4 / 3;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 24px 26px;
+}
+
+.category {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted); /* small gold text on the tinted card falls short of 4.5:1 */
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.description {
+  color: var(--on-dark-soft);
+}
+
+.action {
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.mine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  color: var(--gold);
+  font-weight: 500;
+}
+.cancel {
+  padding: 6px 2px;
+  border: 0;
+  background: none;
+  color: var(--ivory);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+/* Someone else's: still visible, but quieter */
+.taken .photo {
+  opacity: 0.55;
+}
+.takenText {
+  color: var(--muted);
+}

@@ -11,6 +11,7 @@ import type {
   Settings,
   WeddingEvent,
   GiftAnnouncement,
+  RegistryGift,
   Wish,
 } from './types'
 
@@ -40,6 +41,7 @@ type RawInvitation = {
   settings: RawSettings
   events: WeddingEvent[]
   gallery: Array<{ id: string; path: string; width: number | null; height: number | null }>
+  registry_count: number
 }
 
 export type LoadedInvitation = { content: PublicContent; invitation: Invitation }
@@ -66,6 +68,7 @@ function fromRaw(raw: RawInvitation): LoadedInvitation {
       },
       events: raw.events,
       gallery,
+      registryCount: raw.registry_count ?? 0,
     },
     invitation: {
       name: raw.guest.name,
@@ -92,6 +95,9 @@ const KNOWN_ERRORS = [
   'rate_limited',
   'invalid_amount',
   'method_required',
+  'already_reserved',
+  'too_many_gifts',
+  'gift_not_found',
 ] as const
 
 export class GuestError extends Error {
@@ -161,6 +167,29 @@ export async function announceGift(token: string, gift: GiftAnnouncement): Promi
     p_method: gift.method,
     p_amount: gift.amount_fcfa ?? undefined,
     p_message: gift.message,
+  })
+  if (error) fail(error)
+}
+
+/** The gift list, as this guest sees it (taken or not, and whether by them). */
+export async function loadRegistry(token: string): Promise<RegistryGift[]> {
+  const { data, error } = await supabase.rpc('get_registry', { p_token: token })
+  if (error) fail(error)
+  const rows = (data ?? []) as unknown as Array<
+    Omit<RegistryGift, 'photo_url'> & { photo_path: string | null }
+  >
+  return rows.map(({ photo_path, ...gift }) => ({ ...gift, photo_url: mediaUrl(photo_path) }))
+}
+
+export async function reserveGift(token: string, giftId: string): Promise<void> {
+  const { error } = await supabase.rpc('reserve_gift', { p_token: token, p_gift_id: giftId })
+  if (error) fail(error)
+}
+
+export async function cancelGiftReservation(token: string, giftId: string): Promise<void> {
+  const { error } = await supabase.rpc('cancel_gift_reservation', {
+    p_token: token,
+    p_gift_id: giftId,
   })
   if (error) fail(error)
 }

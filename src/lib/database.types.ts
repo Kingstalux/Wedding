@@ -180,6 +180,46 @@ export type Database = {
           },
         ]
       }
+      gift_reservations: {
+        Row: {
+          created_at: string
+          gift_id: string
+          guest_id: string
+        }
+        Insert: {
+          created_at?: string
+          gift_id: string
+          guest_id: string
+        }
+        Update: {
+          created_at?: string
+          gift_id?: string
+          guest_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gift_reservations_gift_id_fkey"
+            columns: ["gift_id"]
+            isOneToOne: true
+            referencedRelation: "registry_gifts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_reservations_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guest_list"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_reservations_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       guests: {
         Row: {
           created_at: string
@@ -237,6 +277,45 @@ export type Database = {
           table_no?: number | null
           token?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      registry_gifts: {
+        Row: {
+          category_en: string
+          category_fr: string
+          created_at: string
+          description_en: string
+          description_fr: string
+          id: string
+          photo_path: string | null
+          sort: number
+          title_en: string
+          title_fr: string
+        }
+        Insert: {
+          category_en?: string
+          category_fr?: string
+          created_at?: string
+          description_en?: string
+          description_fr?: string
+          id?: string
+          photo_path?: string | null
+          sort?: number
+          title_en: string
+          title_fr?: string
+        }
+        Update: {
+          category_en?: string
+          category_fr?: string
+          created_at?: string
+          description_en?: string
+          description_fr?: string
+          id?: string
+          photo_path?: string | null
+          sort?: number
+          title_en?: string
+          title_fr?: string
         }
         Relationships: []
       }
@@ -328,6 +407,8 @@ export type Database = {
           show_gallery: boolean
           show_gift_box: boolean
           show_gifts: boolean
+          show_momo: boolean
+          show_om: boolean
           show_tables: boolean
           show_wishes: boolean
           show_word: boolean
@@ -366,6 +447,8 @@ export type Database = {
           show_gallery?: boolean
           show_gift_box?: boolean
           show_gifts?: boolean
+          show_momo?: boolean
+          show_om?: boolean
           show_tables?: boolean
           show_wishes?: boolean
           show_word?: boolean
@@ -404,6 +487,8 @@ export type Database = {
           show_gallery?: boolean
           show_gift_box?: boolean
           show_gifts?: boolean
+          show_momo?: boolean
+          show_om?: boolean
           show_tables?: boolean
           show_wishes?: boolean
           show_word?: boolean
@@ -512,6 +597,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      cancel_gift_reservation: {
+        Args: { p_gift_id: string; p_token: string }
+        Returns: undefined
+      }
       check_in: { Args: { p_code: string; p_event_id: string }; Returns: Json }
       dashboard_stats: { Args: never; Returns: Json }
       delete_own_wish: {
@@ -522,6 +611,7 @@ export type Database = {
         Args: { p_preview?: boolean; p_token: string }
         Returns: Json
       }
+      get_registry: { Args: { p_token: string }; Returns: Json }
       import_guests: {
         Args: { p_apply?: boolean; p_remove_missing?: boolean; p_rows: Json }
         Returns: Json
@@ -534,6 +624,10 @@ export type Database = {
       }
       read_pass: { Args: { p_code: string }; Returns: Json }
       regenerate_token: { Args: { p_guest_id: string }; Returns: string }
+      reserve_gift: {
+        Args: { p_gift_id: string; p_token: string }
+        Returns: undefined
+      }
       restore_guest: { Args: { p_guest_id: string }; Returns: boolean }
       seat_waiting: { Args: never; Returns: number }
       set_language: {
