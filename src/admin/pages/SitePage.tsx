@@ -447,7 +447,7 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
         <h3>For couples</h3>
         <p className={styles.hint} style={{ marginBottom: 16 }}>
           Used when an invitation is for two people. {'{name}'} becomes both first names, e.g.
-          “Kingsley and Vanessa”. Leave empty to use the text above.
+          “Kingsley Ngu and Vanessa Ngu”. Leave empty to use the text above.
         </p>
         <div className={styles.grid2}>
           <TextAreaField

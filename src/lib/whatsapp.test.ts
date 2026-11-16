@@ -8,7 +8,7 @@ describe('WhatsApp invitations', () => {
     expect(link).toBe('https://example.com/i/Ab12Cd34Ef56Gh78')
   })
 
-  it('fills the template with the first name and link', () => {
+  it('fills the template with the full name and link', () => {
     const message = inviteMessage('Dear {name}, {bride} & {groom} invite you: {link}', {
       guestName: 'Ama Ngono',
       bride: 'Bride',
@@ -16,11 +16,11 @@ describe('WhatsApp invitations', () => {
       link,
     })
     expect(message).toBe(
-      'Dear Ama, Bride & Groom invite you: https://example.com/i/Ab12Cd34Ef56Gh78',
+      'Dear Ama Ngono, Bride & Groom invite you: https://example.com/i/Ab12Cd34Ef56Gh78',
     )
   })
 
-  it('greets both first names for a couple', () => {
+  it('greets both full names for a couple', () => {
     const message = inviteMessage('Dear {name}, you are both invited: {link}', {
       guestName: 'Kingsley Ngu',
       partnerName: 'Vanessa Ngu',
@@ -29,7 +29,7 @@ describe('WhatsApp invitations', () => {
       groom: 'Groom',
       link,
     })
-    expect(message).toBe('Dear Kingsley et Vanessa, you are both invited: ' + link)
+    expect(message).toBe('Dear Kingsley Ngu et Vanessa Ngu, you are both invited: ' + link)
   })
 
   it('makes a wa.me link, with or without a phone', () => {

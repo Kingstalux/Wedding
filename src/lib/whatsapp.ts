@@ -1,4 +1,3 @@
-import { shortNames } from './guestNames'
 import { fill } from './template'
 
 /*
@@ -17,7 +16,7 @@ export function inviteMessage(
   template: string,
   values: {
     guestName: string
-    /** A couple's second name; {name} then becomes "Kingsley and Vanessa". */
+    /** A couple's second name; {name} then becomes "Kingsley Ngu and Vanessa Ngu". */
     partnerName?: string | null
     /** "and" in the guest's language. */
     and?: string
@@ -27,7 +26,10 @@ export function inviteMessage(
   },
 ): string {
   return fill(template, {
-    name: shortNames(values.guestName, values.partnerName, values.and ?? 'and'),
+    // Full names, as written in the guest list.
+    name: values.partnerName?.trim()
+      ? `${values.guestName.trim()} ${values.and ?? 'and'} ${values.partnerName.trim()}`
+      : values.guestName.trim(),
     bride: values.bride,
     groom: values.groom,
     link: values.link,
