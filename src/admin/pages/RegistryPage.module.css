@@ -65,9 +65,49 @@
   cursor: pointer;
 }
 
+.holders {
+  display: grid;
+  gap: 2px;
+}
+
 .actions {
   display: flex;
   gap: 6px;
+}
+
+/* All reservations: who · gift · when · Remove */
+.resList {
+  display: grid;
+}
+.resRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto auto;
+  gap: 4px 16px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+.resRow:first-child {
+  border-top: 0;
+}
+.resWho {
+  font-weight: 500;
+}
+.resGift {
+  font-family: var(--font-display);
+  font-size: 17px;
+}
+.resWhen {
+  color: var(--muted);
+}
+@media (max-width: 640px) {
+  .resRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .resGift {
+    grid-column: 1;
+  }
 }
 /* Chevrons turned to point up / down */
 .up svg {

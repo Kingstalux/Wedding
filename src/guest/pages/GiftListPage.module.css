@@ -162,8 +162,11 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 14px;
-  color: var(--gold);
+  color: var(--ivory); /* gold text on the tinted card falls short of 4.5:1 */
   font-weight: 500;
+}
+.mine svg {
+  color: var(--gold);
 }
 .cancel {
   padding: 6px 2px;
@@ -178,10 +181,9 @@
   cursor: pointer;
 }
 
-/* Someone else's: still visible, but quieter */
-.taken .photo {
-  opacity: 0.55;
-}
-.takenText {
+/* How many guests have already chosen it */
+.count {
+  font-size: 14px;
+  font-style: italic;
   color: var(--muted);
 }

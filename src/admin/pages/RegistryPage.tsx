@@ -17,36 +17,46 @@ import { paginate } from '../paging'
 import { studioErrorMessage } from '../queries'
 import {
   useDeleteGift,
-  useFreeGift,
+  useRemoveReservation,
   useRegistry,
   useSaveGift,
   useSwapGifts,
   type GiftInput,
   type RegistryGift,
+  type Reservation,
 } from '../registry'
 import studio from '../studio.module.css'
 import styles from './RegistryPage.module.css'
 
 const GIFTS_PER_PAGE = 10
+const RESERVATIONS_PER_PAGE = 10
+
+const guestLabel = (res: Reservation) =>
+  res.guests ? fullNames(res.guests.name, res.guests.partner_name) : 'A removed guest'
 
 /*
- * "Gift list": the things the couple would love. Guests reserve a gift on
- * their invitation; here the couple adds, edits and orders the gifts, and
- * sees who reserved what.
+ * "Gift list": the things the couple would love. Guests reserve gifts on
+ * their invitation (several may choose the same one); here the couple adds,
+ * edits and orders the gifts, and sees every reservation.
  */
 export function RegistryPage() {
   const toast = useToast()
   const confirm = useConfirm()
   const registry = useRegistry()
   const removeGift = useDeleteGift()
-  const freeGift = useFreeGift()
+  const removeReservation = useRemoveReservation()
   const swap = useSwapGifts()
   const [page, setPage] = useState(1)
+  const [resPage, setResPage] = useState(1)
   const [editing, setEditing] = useState<RegistryGift | 'new' | null>(null)
 
   const list = registry.data ?? []
-  const reserved = list.filter((g) => g.gift_reservations).length
+  // Every reservation, newest first, whichever gift it is for.
+  const reservations = list
+    .flatMap((gift) => gift.gift_reservations.map((res) => ({ gift, res })))
+    .sort((a, b) => b.res.created_at.localeCompare(a.res.created_at))
   const paged = paginate(list, page, GIFTS_PER_PAGE)
+  const pagedRes = paginate(reservations, resPage, RESERVATIONS_PER_PAGE)
   // The gift being edited, kept up to date after saves (e.g. a new photo).
   const current =
     editing && editing !== 'new' ? (list.find((g) => g.id === editing.id) ?? editing) : null
@@ -54,9 +64,12 @@ export function RegistryPage() {
   async function remove(gift: RegistryGift) {
     const ok = await confirm({
       title: `Delete “${gift.title_en}”?`,
-      message: gift.gift_reservations
-        ? 'A guest has reserved this gift. It disappears from their list too.'
-        : 'It disappears from the gift list straight away.',
+      message:
+        gift.gift_reservations.length === 0
+          ? 'It disappears from the gift list straight away.'
+          : gift.gift_reservations.length === 1
+            ? '1 guest has reserved this gift. Their reservation is removed too.'
+            : `${gift.gift_reservations.length} guests have reserved this gift. Their reservations are removed too.`,
       confirmLabel: 'Delete',
       danger: true,
     })
@@ -69,16 +82,17 @@ export function RegistryPage() {
     }
   }
 
-  async function free(gift: RegistryGift) {
+  async function unreserve(gift: RegistryGift, res: Reservation) {
     const ok = await confirm({
-      title: `Free “${gift.title_en}”?`,
-      message: 'The guest’s reservation is removed and other guests can choose it again.',
-      confirmLabel: 'Free this gift',
+      title: `Remove ${guestLabel(res)}’s reservation?`,
+      message: `They will no longer be down as bringing “${gift.title_en}”.`,
+      confirmLabel: 'Remove reservation',
+      danger: true,
     })
     if (!ok) return
     try {
-      await freeGift.mutateAsync(gift.id)
-      toast('The gift is available again')
+      await removeReservation.mutateAsync({ giftId: gift.id, guestId: res.guest_id })
+      toast('Reservation removed')
     } catch (err) {
       toast(studioErrorMessage(err), 'error')
     }
@@ -100,8 +114,8 @@ export function RegistryPage() {
         <div>
           <h1 className="display">Gift list</h1>
           <p>
-            Things you would love. Guests reserve a gift on their invitation; others then see it as
-            taken, never by whom.
+            Things you would love. Guests reserve the gifts they plan to bring, and several guests
+            can choose the same gift. Guests see only how many have reserved it, never who.
           </p>
         </div>
         <Button onClick={() => setEditing('new')}>
@@ -116,7 +130,8 @@ export function RegistryPage() {
         <section className={studio.card} aria-labelledby="registry-title">
           <div className={studio.cardHead}>
             <h2 id="registry-title">
-              {list.length === 1 ? '1 gift' : `${list.length} gifts`} · {reserved} reserved
+              {list.length === 1 ? '1 gift' : `${list.length} gifts`} ·{' '}
+              {reservations.length === 1 ? '1 reservation' : `${reservations.length} reservations`}
             </h2>
           </div>
           {list.length === 0 ? (
@@ -127,7 +142,7 @@ export function RegistryPage() {
             <ul className={styles.list}>
               {paged.items.map((gift) => {
                 const index = list.indexOf(gift)
-                const res = gift.gift_reservations
+                const held = gift.gift_reservations
                 return (
                   <li key={gift.id} className={styles.row}>
                     <Photo
@@ -138,21 +153,30 @@ export function RegistryPage() {
                     <div className={styles.info}>
                       {gift.category_en && <p className={styles.category}>{gift.category_en}</p>}
                       <p className={styles.title}>{gift.title_en}</p>
-                      {res ? (
-                        <p className={styles.reserved}>
-                          Reserved by{' '}
-                          <strong>
-                            {res.guests
-                              ? fullNames(res.guests.name, res.guests.partner_name)
-                              : 'a removed guest'}
-                          </strong>{' '}
-                          · {formatShortDateTime(res.created_at)}
-                          <button type="button" className={styles.free} onClick={() => free(gift)}>
-                            Free this gift
-                          </button>
-                        </p>
+                      {held.length > 0 ? (
+                        <>
+                          <p className={styles.reserved}>
+                            Reserved by {held.length === 1 ? '1 guest' : `${held.length} guests`}
+                          </p>
+                          <ul className={styles.holders}>
+                            {held.map((res) => (
+                              <li key={res.guest_id} className={styles.reserved}>
+                                <strong>{guestLabel(res)}</strong> ·{' '}
+                                {formatShortDateTime(res.created_at)}
+                                <button
+                                  type="button"
+                                  className={styles.free}
+                                  onClick={() => unreserve(gift, res)}
+                                >
+                                  Remove
+                                  <span className="sr-only"> {guestLabel(res)}’s reservation</span>
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
                       ) : (
-                        <p className={styles.available}>Available</p>
+                        <p className={styles.available}>Not reserved yet</p>
                       )}
                     </div>
                     <div className={styles.actions}>
@@ -195,6 +219,39 @@ export function RegistryPage() {
             pageCount={paged.pageCount}
             onPage={setPage}
             label={`Gifts ${paged.from}–${paged.to} of ${paged.total}`}
+          />
+        </section>
+      )}
+
+      {registry.isSuccess && reservations.length > 0 && (
+        <section className={studio.card} aria-labelledby="reservations-title">
+          <div className={studio.cardHead}>
+            <h2 id="reservations-title">All reservations</h2>
+          </div>
+          <p className="muted" style={{ marginBottom: 12 }}>
+            Every gift a guest has said they will bring, newest first.
+          </p>
+          <ul className={styles.resList}>
+            {pagedRes.items.map(({ gift, res }) => (
+              <li key={`${gift.id}:${res.guest_id}`} className={styles.resRow}>
+                <span className={styles.resWho}>{guestLabel(res)}</span>
+                <span className={styles.resGift}>{gift.title_en}</span>
+                <span className={styles.resWhen}>{formatShortDateTime(res.created_at)}</span>
+                <button type="button" className={styles.free} onClick={() => unreserve(gift, res)}>
+                  Remove
+                  <span className="sr-only">
+                    {' '}
+                    {guestLabel(res)}’s reservation of {gift.title_en}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          <Pager
+            page={pagedRes.page}
+            pageCount={pagedRes.pageCount}
+            onPage={setResPage}
+            label={`Reservations ${pagedRes.from}–${pagedRes.to} of ${pagedRes.total}`}
           />
         </section>
       )}

@@ -85,9 +85,9 @@ export type RegistryGift = {
   category_en: string
   category_fr: string
   photo_url: string | null
-  /** Taken by someone (maybe this guest). */
-  reserved: boolean
-  /** Taken by this guest. */
+  /** How many guests reserved it (maybe including this one). Never who. */
+  count: number
+  /** Reserved by this guest. */
   mine: boolean
 }
 

@@ -200,7 +200,7 @@ export type Database = {
           {
             foreignKeyName: "gift_reservations_gift_id_fkey"
             columns: ["gift_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "registry_gifts"
             referencedColumns: ["id"]
           },

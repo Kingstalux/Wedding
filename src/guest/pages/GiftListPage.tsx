@@ -8,7 +8,6 @@ import { Photo } from '../../components/Photo'
 import { useToast } from '../../components/Toast'
 import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
-import { cx } from '../../lib/cx'
 import * as api from '../api'
 import { GiftDialog, useGiftWays } from '../GiftDialog'
 import { Footer } from '../sections/Footer'
@@ -18,7 +17,8 @@ import styles from './GiftListPage.module.css'
 
 /**
  * Route: /i/:token/gifts. The couple's gift list: guests reserve what they
- * plan to bring (others only see that it's taken), or send money instead.
+ * plan to bring (several may choose the same one; others see only how many
+ * did), or send money instead.
  */
 export function GiftListPage() {
   const { t, pick } = useT()
@@ -128,9 +128,9 @@ export function GiftListPage() {
 
         <ul className={styles.grid}>
           {shown.map((gift) => {
-            const taken = gift.reserved && !gift.mine
+            const others = gift.count - (gift.mine ? 1 : 0)
             return (
-              <li key={gift.id} className={cx(styles.card, taken && styles.taken)}>
+              <li key={gift.id} className={styles.card}>
                 <Photo className={styles.photo} src={gift.photo_url} tone="slate" />
                 <div className={styles.body}>
                   {categoryOf(gift) && <p className={styles.category}>{categoryOf(gift)}</p>}
@@ -140,10 +140,19 @@ export function GiftListPage() {
                       {pick(gift.description_en, gift.description_fr)}
                     </p>
                   )}
+                  {!gift.mine && gift.count > 0 && (
+                    <p className={styles.count}>
+                      {gift.count === 1
+                        ? t('registry.countOne')
+                        : t('registry.countMany', { n: gift.count })}
+                    </p>
+                  )}
                   <div className={styles.action}>
                     {gift.mine ? (
                       <p className={styles.mine}>
                         <Icon name="check" size={16} /> {t('registry.mine')}
+                        {others > 0 &&
+                          ` ${others === 1 ? t('registry.othersOne') : t('registry.othersMany', { n: others })}`}
                         <button
                           type="button"
                           className={styles.cancel}
@@ -154,8 +163,6 @@ export function GiftListPage() {
                           <span className="sr-only"> · {title(gift)}</span>
                         </button>
                       </p>
-                    ) : taken ? (
-                      <p className={styles.takenText}>{t('registry.taken')}</p>
                     ) : (
                       <Button
                         variant="gold"

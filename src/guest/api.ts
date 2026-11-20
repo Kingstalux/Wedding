@@ -95,7 +95,6 @@ const KNOWN_ERRORS = [
   'rate_limited',
   'invalid_amount',
   'method_required',
-  'already_reserved',
   'too_many_gifts',
   'gift_not_found',
 ] as const

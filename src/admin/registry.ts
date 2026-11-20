@@ -4,8 +4,9 @@ import { supabase } from '../lib/supabase'
 import { removeMedia } from '../lib/upload'
 
 /*
- * The gift list for the studio: the gifts the couple would love, and who
- * reserved each one (guests only see that a gift is taken, never by whom).
+ * The gift list for the studio: the gifts the couple would love, and every
+ * guest who reserved each one (several guests may choose the same gift;
+ * guests only see how many did, never who).
  */
 
 type GiftRow = Database['public']['Tables']['registry_gifts']['Row']
@@ -14,12 +15,13 @@ export type GiftInput = Pick<
   'title_en' | 'title_fr' | 'description_en' | 'description_fr' | 'category_en' | 'category_fr'
 >
 
-export type RegistryGift = GiftRow & {
-  gift_reservations: {
-    created_at: string
-    guests: { name: string; partner_name: string | null } | null
-  } | null
+export type Reservation = {
+  guest_id: string
+  created_at: string
+  guests: { name: string; partner_name: string | null } | null
 }
+
+export type RegistryGift = GiftRow & { gift_reservations: Reservation[] }
 
 export const registryKey = ['admin', 'registry'] as const
 
@@ -29,7 +31,7 @@ export function useRegistry() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('registry_gifts')
-        .select('*, gift_reservations(created_at, guests(name, partner_name))')
+        .select('*, gift_reservations(guest_id, created_at, guests(name, partner_name))')
         .order('sort')
         .order('created_at')
       if (error) throw error
@@ -68,7 +70,7 @@ export function useSaveGift() {
   )
 }
 
-/** Deletes the gift, its reservation, and its photo. */
+/** Deletes the gift, its reservations, and its photo. */
 export function useDeleteGift() {
   return useRegistryChange(async (gift: RegistryGift) => {
     check(await supabase.from('registry_gifts').delete().eq('id', gift.id))
@@ -76,10 +78,16 @@ export function useDeleteGift() {
   })
 }
 
-/** Makes a reserved gift available again. */
-export function useFreeGift() {
-  return useRegistryChange(async (giftId: string) =>
-    check(await supabase.from('gift_reservations').delete().eq('gift_id', giftId)),
+/** Removes one guest's reservation of a gift. */
+export function useRemoveReservation() {
+  return useRegistryChange(async ({ giftId, guestId }: { giftId: string; guestId: string }) =>
+    check(
+      await supabase
+        .from('gift_reservations')
+        .delete()
+        .eq('gift_id', giftId)
+        .eq('guest_id', guestId),
+    ),
   )
 }
 
