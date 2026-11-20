@@ -1,0 +1,59 @@
+/*
+ * Design tokens: colours, fonts, sizes. Everything else reads these
+ * variables, so re-theming a new project means editing this file only.
+ *
+ * The palette is the wedding site's. For a portfolio, change the five
+ * brand colours and keep the roles below pointing at them.
+ */
+:root {
+  /* Brand colours */
+  --navy: #0a0e52;
+  --slate: #3a4575;
+  --forest: #0c3b2e;
+  --emerald: #17705a;
+  --gold: #b8912f;
+
+  /* Neutrals */
+  --ivory: #f7f4ec;
+  --white: #ffffff;
+
+  /* Roles: swap these to re-theme everything */
+  --primary: var(--navy); /* buttons, header band */
+  --primary-deep: var(--slate); /* hover / pressed */
+  --ink: var(--navy); /* body text on light backgrounds */
+  --muted: var(--slate); /* secondary text, labels */
+  --accent: var(--gold); /* rules, focus rings, highlights */
+
+  /* Text and lines on dark backgrounds */
+  --on-dark: var(--ivory);
+  --on-dark-soft: rgba(247, 244, 236, 0.92);
+  --line: rgba(10, 14, 82, 0.16);
+  --line-dark: rgba(247, 244, 236, 0.28);
+
+  /* Large dark backgrounds: a softer navy (navy blended with slate),
+     easier on the eyes and still 4.7:1 for gold, 12:1 for ivory text. */
+  --navy-soft: #202762;
+
+  /* Scroll reveal: each section arrives in --reveal-from and fills to --surface */
+  --reveal-from: var(--ivory);
+  --surface: var(--navy-soft);
+  --card-dark: rgba(58, 69, 117, 0.28); /* tinted cards on the dark surface */
+  --accent-line: rgba(184, 145, 47, 0.45); /* gold hairlines on dark */
+
+  /* Typography (load the fonts with the <link> in README.md) */
+  --font-display: 'Cormorant Garamond', 'Garamond', Georgia, serif; /* titles */
+  --font-sans: 'Outfit', 'Helvetica Neue', sans-serif; /* body text, buttons, labels */
+  --font-script: 'Pinyon Script', cursive; /* decorative headings */
+  --font-signature: 'Great Vibes', cursive; /* names, signatures */
+
+  /* Layout */
+  --max: 1180px;
+  --gutter: 24px;
+  --section-y: clamp(72px, 9vw, 112px);
+  --header-h: 80px; /* anchor links stop below the fixed header */
+  --shadow: 0 6px 24px rgba(10, 14, 82, 0.14);
+
+  /* Corners: softly rounded cards, slightly rounded buttons and fields */
+  --radius-card: 14px;
+  --radius-control: 6px;
+}

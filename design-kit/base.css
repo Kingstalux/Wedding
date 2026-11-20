@@ -1,0 +1,254 @@
+/*
+ * Global styles, text classes and the scroll effects.
+ * Needs tokens.css first. Add reveal.js (or the React hook) for the
+ * section fill-in effect; without it, sections simply show their final look.
+ */
+
+/* ---------- Reset and page ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth; /* menu links glide to their section */
+}
+
+/* Anchor links stop below the fixed header instead of under it */
+[id] {
+  scroll-margin-top: var(--header-h);
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--on-dark);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.65;
+  /* Full-height numbers: Cormorant's default old-style figures look small */
+  font-variant-numeric: lining-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Text styles ---------- */
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 500; /* Cormorant is fine-stroked: 500 stays readable on dark */
+  line-height: 1.08;
+}
+.h1 {
+  font-size: clamp(56px, 9vw, 118px);
+  line-height: 0.98;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.h2 {
+  font-size: clamp(38px, 5vw, 58px);
+}
+.h3 {
+  font-size: 28px;
+}
+
+/* Longer passages: the clean sans, a little larger and airier */
+.lede {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.script {
+  font-family: var(--font-script);
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.signature {
+  font-family: var(--font-signature);
+  font-size: 28px;
+  color: var(--accent);
+}
+
+/* Small uppercase label above a title */
+.eyebrow {
+  margin: 0 0 16px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Short gold rule under a title */
+.rule {
+  width: 48px;
+  height: 1px;
+  margin: 28px 0;
+  border: 0;
+  background: var(--accent);
+}
+.rule.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.muted {
+  color: var(--muted);
+}
+.center {
+  text-align: center;
+}
+
+/* Visually hidden but read by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Light-on-dark and the ivory "paper" card ---------- */
+
+/* Inside a dark area, anything using --ink / --muted / --line reads light */
+.on-dark {
+  --ink: var(--ivory);
+  --muted: rgba(247, 244, 236, 0.88);
+  --line: var(--line-dark);
+  color: var(--ink);
+}
+.on-dark .lede {
+  font-size: 18px;
+}
+
+/* An ivory card on the dark surface (forms, highlights): light colours again */
+.paper {
+  --ink: var(--navy);
+  --muted: var(--slate);
+  --line: rgba(10, 14, 82, 0.16);
+  color: var(--ink);
+  background: var(--ivory);
+  border-radius: var(--radius-card);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+
+/* An outlined card on the dark surface */
+.card-outline {
+  padding: 32px 30px 26px;
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-card);
+  background: transparent;
+}
+
+/* ---------- Scroll effect: sections "fill in" as they arrive ----------
+ * Each <section data-reveal> below the screen waits as "pending": ivory,
+ * content hidden. When it scrolls into view (reveal.js sets "in"), the
+ * background fills to the dark surface over 0.9s and the content rises
+ * 16px and fades in, 0.3s later. It plays once per section.
+ */
+section[data-reveal] {
+  position: relative;
+  padding: var(--section-y) 0;
+  background-color: var(--surface);
+  transition: background-color 0.9s ease;
+}
+section[data-reveal] > * {
+  transition:
+    opacity 0.7s ease 0.3s,
+    transform 0.7s ease 0.3s;
+}
+section[data-reveal='pending'] {
+  background-color: var(--reveal-from);
+}
+section[data-reveal='pending'] > * {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* Between two sections: a fading gold hairline with a small diamond */
+section[data-reveal] + section[data-reveal]::before,
+section[data-reveal] + section[data-reveal]::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  pointer-events: none;
+}
+section[data-reveal] + section[data-reveal]::before {
+  top: 0;
+  width: min(280px, 50%);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--accent-line), transparent);
+}
+section[data-reveal] + section[data-reveal]::after {
+  top: -4px;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  transform: rotate(45deg);
+  background: var(--accent);
+}
+
+/* ---------- Motion off for people who ask for it, and for print ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  section[data-reveal='pending'] {
+    background-color: var(--surface);
+  }
+  section[data-reveal='pending'] > * {
+    opacity: 1;
+    transform: none;
+  }
+}
