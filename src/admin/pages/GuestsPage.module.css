@@ -163,6 +163,19 @@
   border-color: var(--line);
   color: var(--ink);
 }
+/* Coming on one wedding day only */
+.oneDay {
+  margin-left: 6px;
+  border-color: var(--emerald);
+  color: var(--ink);
+}
+
+/* People expected on each day, under "People attending" */
+.stat .dayCounts {
+  display: block;
+  margin-top: 4px;
+  letter-spacing: 0.08em;
+}
 
 .actions {
   display: flex;

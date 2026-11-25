@@ -113,3 +113,37 @@
   padding-left: 12px;
   border-left: 3px solid var(--gold);
 }
+
+/* Which days: shown once "accepts" is chosen */
+.days {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.daysLegend {
+  margin-bottom: 4px;
+  padding: 0;
+  font-size: 15px;
+  color: var(--muted);
+}
+.dayTitle {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.dayEvents {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted);
+}
+.seeYou {
+  margin-top: 6px;
+  color: var(--muted);
+}

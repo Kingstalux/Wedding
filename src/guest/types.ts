@@ -71,8 +71,13 @@ export type PublicContent = {
   registryCount: number
 }
 
+/** Which wedding day(s): both, only the first (no table), or only the last. */
+export type RsvpDays = 'both' | 'first' | 'second'
+
 export type Rsvp = {
   attending: boolean
+  /** Replies given before the question existed count as both days. */
+  days: RsvpDays
 }
 
 /** One gift on the list, as this guest sees it. */

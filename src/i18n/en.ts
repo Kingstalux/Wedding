@@ -89,6 +89,12 @@ export const en = {
   'rsvp.no': 'Regretfully declines',
   'rsvp.yesBoth': 'Joyfully accept',
   'rsvp.noBoth': 'Regretfully decline',
+  'rsvp.daysLegend': 'Which days will you join us?',
+  'rsvp.daysLegendBoth': 'Which days will you both join us?',
+  'rsvp.daysAll': 'Both days',
+  'rsvp.daysOnly': 'Only {day}',
+  'rsvp.seeYouOn': 'We’ll see you on {day}.',
+  'rsvp.seeYouOnBoth': 'We’ll see you both on {day}.',
   'rsvp.note': 'A note for the couple (optional)',
   'rsvp.noteHint': 'It will appear in Words of love · Posting as {name}',
   'rsvp.submit': 'Submit response',
@@ -201,6 +207,7 @@ export const en = {
 
   'door.eyebrow': 'Entrance pass',
   'door.checking': 'Checking this pass…',
+  'door.onlyDay': 'Coming on {day} only',
   'door.confirmed': 'Confirmed guest',
   'door.notAttending': 'Not attending',
   'door.confirmedBoth': 'Confirmed guests',
@@ -210,6 +217,7 @@ export const en = {
   'error.invalid_token':
     'This invitation link is no longer valid. Please ask the couple for a new one.',
   'error.rsvp_closed': 'Replies are closed now that the celebration has begun.',
+  'error.days_invalid': 'Please choose which days you will attend.',
   'error.answer_required': 'Please choose “Joyfully accepts” or “Regretfully declines”.',
   'error.links_not_allowed': 'Links are not allowed in messages. Please remove them and try again.',
   'error.message_length': 'Please write a message of up to 500 characters.',

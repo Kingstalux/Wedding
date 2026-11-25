@@ -22,6 +22,9 @@ export type Stats = {
   /** People, not invitations: a couple counts as two. */
   invited_people: number
   attending_people: number
+  /** People expected on the first and on the last wedding day. */
+  people_first: number
+  people_second: number
   checked_in_people: number
   wishes: number
   gifts: number

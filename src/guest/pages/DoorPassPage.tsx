@@ -10,7 +10,7 @@ import type { MessageKey } from '../../i18n/en'
 import { useT } from '../../i18n/LanguageProvider'
 import { cx } from '../../lib/cx'
 import { supabase } from '../../lib/supabase'
-import { formatDayShort, formatTime } from '../../lib/time'
+import { formatDayLong, formatDayShort, formatTime } from '../../lib/time'
 import { errorMessageKey, readPass } from '../api'
 import styles from './PassPage.module.css'
 
@@ -21,7 +21,7 @@ import styles from './PassPage.module.css'
  * a "Check in" button appears too.
  */
 export function DoorPassPage() {
-  const { t } = useT()
+  const { t, lang } = useT()
   const { code = '' } = useParams()
   const pass = useQuery({ queryKey: ['pass', code], queryFn: () => readPass(code) })
   /** The couple's version of a message ("door.confirmedBoth") for a two-person pass. */
@@ -64,6 +64,11 @@ export function DoorPassPage() {
                   : t(both('door.noReply'))}
             </span>
             <p className={styles.doorName}>{pass.data.first_name}</p>
+            {pass.data.attending && pass.data.only_day && (
+              <p className={styles.doorTable}>
+                {t('door.onlyDay', { day: formatDayLong(pass.data.only_day, lang) })}
+              </p>
+            )}
             {pass.data.attending && pass.data.table_no && (
               <p className={styles.doorTable}>{t('pass.table', { n: pass.data.table_no })}</p>
             )}

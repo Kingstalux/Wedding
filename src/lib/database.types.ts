@@ -349,18 +349,21 @@ export type Database = {
       rsvps: {
         Row: {
           attending: boolean
+          days: string
           guest_id: string
           responded_at: string
           updated_at: string
         }
         Insert: {
           attending: boolean
+          days?: string
           guest_id: string
           responded_at?: string
           updated_at?: string
         }
         Update: {
           attending?: boolean
+          days?: string
           guest_id?: string
           responded_at?: string
           updated_at?: string
@@ -565,6 +568,7 @@ export type Database = {
         Row: {
           attending: boolean | null
           created_at: string | null
+          days: string | null
           deleted_at: string | null
           first_opened_at: string | null
           id: string | null
@@ -635,7 +639,12 @@ export type Database = {
         Returns: undefined
       }
       submit_rsvp: {
-        Args: { p_attending: boolean; p_token: string; p_wish?: string }
+        Args: {
+          p_attending: boolean
+          p_days?: string
+          p_token: string
+          p_wish?: string
+        }
         Returns: Json
       }
     }

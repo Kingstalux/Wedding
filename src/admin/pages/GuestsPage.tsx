@@ -17,21 +17,34 @@ import { Pager } from '../components/Pager'
 import { useGuests, useMarkSent, useRestoreGuest, useStats, type GuestRow } from '../guests'
 import { paginate } from '../paging'
 import { studioErrorMessage, useSettings } from '../queries'
+import { useDayLabels, type DayLabels } from '../days'
 import studio from '../studio.module.css'
 import styles from './GuestsPage.module.css'
 
-type Filter = 'all' | 'unsent' | 'unopened' | 'attending' | 'declined' | 'pending' | 'removed'
+type Filter =
+  | 'all'
+  | 'unsent'
+  | 'unopened'
+  | 'attending'
+  | 'first'
+  | 'second'
+  | 'declined'
+  | 'pending'
+  | 'removed'
 
 const SIXTY_DAYS = 60 * 24 * 60 * 60 * 1000
 const LANG_KEY = 'studio-default-lang'
 
 const GUESTS_PER_PAGE = 10
 
-const filters: Array<[Filter, string, (g: GuestRow) => boolean]> = [
+/** The filter chips; the two day chips are named after the programme's dates. */
+const makeFilters = (days: DayLabels): Array<[Filter, string, (g: GuestRow) => boolean]> => [
   ['all', 'All', () => true],
   ['unsent', 'Not sent', (g) => !g.invite_sent_at],
   ['unopened', 'Not opened', (g) => !g.first_opened_at],
   ['attending', 'Attending', (g) => g.attending === true],
+  ['first', `On ${days.first}`, (g) => g.attending === true && g.days !== 'second'],
+  ['second', `On ${days.second}`, (g) => g.attending === true && g.days !== 'first'],
   ['declined', 'Declined', (g) => g.attending === false],
   ['pending', 'Awaiting reply', (g) => g.attending === null],
 ]
@@ -52,6 +65,8 @@ export function GuestsPage() {
   const markSent = useMarkSent()
   const restore = useRestoreGuest()
 
+  const dayLabels = useDayLabels()
+  const filters = makeFilters(dayLabels)
   const [filter, setFilter] = useState<Filter>('all')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
@@ -161,6 +176,11 @@ export function GuestsPage() {
             {stats &&
               stats.attending_people !== stats.attending &&
               ` · ${stats.attending} invitations`}
+            {stats && (
+              <span className={styles.dayCounts}>
+                {dayLabels.first}: {stats.people_first} · {dayLabels.second}: {stats.people_second}
+              </span>
+            )}
           </span>
         </div>
         <div className={styles.stat}>
@@ -303,9 +323,18 @@ export function GuestsPage() {
                       {g.attending === null && (
                         <span className={cx(styles.badge, styles.waiting)}>Awaiting</span>
                       )}
+                      {g.attending === true && g.days !== 'both' && g.days && (
+                        <span className={cx(styles.badge, styles.oneDay)}>
+                          {g.days === 'first' ? dayLabels.first : dayLabels.second} only
+                        </span>
+                      )}
                       {g.attending === true && (
                         <span className={styles.sub}>
-                          {g.table_no ? `Table ${g.table_no}` : 'Waiting for a table'}
+                          {g.days === 'first'
+                            ? 'No table needed'
+                            : g.table_no
+                              ? `Table ${g.table_no}`
+                              : 'Waiting for a table'}
                         </span>
                       )}
                     </td>

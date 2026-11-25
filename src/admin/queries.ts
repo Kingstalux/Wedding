@@ -57,6 +57,8 @@ export function studioErrorMessage(err: unknown): string {
   if (/tables_in_use/.test(message))
     return 'Some of those tables or seats are in use. Move people off them first.'
   if (/not_attending/.test(message)) return 'Only guests who accepted can be given a table.'
+  if (/not_at_reception/.test(message))
+    return 'This guest is only coming on the first day, so they don’t need a table.'
   if (/partner_phone_needs_name|partner_phone_without_name/.test(message))
     return 'A partner phone needs a partner name.'
   if (/JWT|not_authorized|permission denied/i.test(message))

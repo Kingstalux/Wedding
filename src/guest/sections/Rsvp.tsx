@@ -5,10 +5,12 @@ import { QrCode } from '../../components/QrCode'
 import { passUrl } from '../../lib/qr'
 import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
-import { formatDate } from '../../lib/time'
+import { formatDate, formatDayLong } from '../../lib/time'
 import { containsLink } from '../../lib/validation'
 import { errorMessageKey, isWishError } from '../api'
+import { onlyDay, weddingDays, type WeddingDay } from '../eventDays'
 import { useInvitation } from '../InvitationProvider'
+import type { RsvpDays } from '../types'
 import { useGuestNames } from '../useGuestNames'
 import styles from './Rsvp.module.css'
 
@@ -25,6 +27,10 @@ export function Rsvp() {
   // Show the form when the guest hasn't replied yet, or chose "Change my answer".
   const [editing, setEditing] = useState(rsvp === null)
   const [answer, setAnswer] = useState<Answer>(rsvp ? (rsvp.attending ? 'yes' : 'no') : '')
+  // Which wedding day(s), asked when accepting. Nothing chosen means both.
+  const days = weddingDays(content.events)
+  const [dayChoice, setDayChoice] = useState<RsvpDays>(rsvp?.attending ? rsvp.days : 'both')
+  const seeYouOn = rsvp?.attending ? onlyDay(days, rsvp.days) : null
   // The note for the couple is posted to Words of love, so it starts empty
   // each time: earlier ones are already there.
   const [note, setNote] = useState('')
@@ -48,7 +54,10 @@ export function Rsvp() {
     setNoteError(null)
     setSaving(true)
     try {
-      await actions.submitRsvp({ attending: answer === 'yes' }, wish)
+      await actions.submitRsvp(
+        { attending: answer === 'yes', days: answer === 'yes' && days ? dayChoice : 'both' },
+        wish,
+      )
       setNote('')
       setEditing(false)
     } catch (err) {
@@ -100,6 +109,28 @@ export function Rsvp() {
                 onChange={() => setAnswer('no')}
               />
             </fieldset>
+            {answer === 'yes' && days && (
+              <fieldset className={styles.days}>
+                <legend className={styles.daysLegend}>{tc('rsvp.daysLegend')}</legend>
+                <Choice
+                  name="days"
+                  value="both"
+                  label={<span className={styles.dayTitle}>{t('rsvp.daysAll')}</span>}
+                  checked={dayChoice === 'both'}
+                  onChange={() => setDayChoice('both')}
+                />
+                {(['first', 'second'] as const).map((key) => (
+                  <Choice
+                    key={key}
+                    name="days"
+                    value={key}
+                    label={<DayLabel day={days[key]} />}
+                    checked={dayChoice === key}
+                    onChange={() => setDayChoice(key)}
+                  />
+                ))}
+              </fieldset>
+            )}
             {wishesOn && (
               <TextAreaField
                 label={t('rsvp.note')}
@@ -128,6 +159,11 @@ export function Rsvp() {
         ) : rsvp.attending ? (
           <div aria-live="polite">
             <p className={styles.thanks}>{tc('rsvp.thanksYes', { name: greeting })}</p>
+            {seeYouOn && (
+              <p className={styles.seeYou}>
+                {tc('rsvp.seeYouOn', { day: formatDayLong(seeYouOn.iso, lang) })}
+              </p>
+            )}
             <div className={styles.passCard}>
               <QrCode
                 className={styles.qr}
@@ -167,5 +203,20 @@ export function Rsvp() {
         )}
       </div>
     </section>
+  )
+}
+
+/** "Only Wednesday 23 December", with that day's events underneath. */
+function DayLabel({ day }: { day: WeddingDay }) {
+  const { t, lang, pick } = useT()
+  return (
+    <span>
+      <span className={styles.dayTitle}>
+        {t('rsvp.daysOnly', { day: formatDayLong(day.iso, lang) })}
+      </span>
+      <span className={styles.dayEvents}>
+        {day.events.map((e) => pick(e.title_en, e.title_fr)).join(' · ')}
+      </span>
+    </span>
   )
 }

@@ -106,7 +106,7 @@ export function InvitationProvider({
         const saved = await api.submitRsvp(token, rsvp, wish)
         update((inv) => ({
           ...inv,
-          rsvp: { attending: saved.attending },
+          rsvp: { attending: saved.attending, days: saved.days ?? 'both' },
           table_no: saved.table_no,
           wishes: saved.wish ? [saved.wish, ...inv.wishes] : inv.wishes,
         }))

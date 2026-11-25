@@ -18,7 +18,8 @@ export function Tables() {
   const { content, invitation } = useInvitation()
   const { tc, greeting } = useGuestNames()
   const { show_tables, table_count } = content.settings
-  if (!show_tables || !invitation.rsvp?.attending) return null
+  // Tables are for the reception: guests coming on the first day only have none.
+  if (!show_tables || !invitation.rsvp?.attending || invitation.rsvp.days === 'first') return null
 
   const mine = invitation.table_no
   const numbers = Array.from({ length: table_count }, (_, i) => i + 1)

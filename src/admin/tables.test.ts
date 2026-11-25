@@ -12,6 +12,8 @@ describe('seating helpers', () => {
     guest({ id: 'c', table_no: 2, attending: true, deleted_at: '2026-01-01' }), // removed
     guest({ id: 'd', table_no: null, attending: true }),
     guest({ id: 'e', table_no: null, attending: null }),
+    guest({ id: 'f', table_no: null, attending: true, days: 'first' }), // no table needed
+    guest({ id: 'g', table_no: null, attending: true, days: 'second' }),
   ]
   const tables = buildTables(3, 4, guests, [reservation(2, 3)])
 
@@ -40,7 +42,7 @@ describe('seating helpers', () => {
   })
 
   it('lists accepted guests without a table', () => {
-    expect(waitingGuests(guests).map((g) => g.id)).toEqual(['d'])
+    expect(waitingGuests(guests).map((g) => g.id)).toEqual(['d', 'g'])
   })
 
   it('writes seat counts', () => {

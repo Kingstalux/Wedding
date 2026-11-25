@@ -48,7 +48,14 @@ export function Header({ music }: Props) {
     ['#dresscode', 'nav.dress', settings.show_dress],
     ['#gallery', 'nav.gallery', settings.show_gallery && content.gallery.length > 0],
     ['#rsvp', 'nav.rsvp', true],
-    ['#tables', 'nav.table', settings.show_tables && invitation.rsvp?.attending === true],
+    [
+      '#tables',
+      'nav.table',
+      // Tables are for the reception: not shown to guests coming on the first day only.
+      settings.show_tables &&
+        invitation.rsvp?.attending === true &&
+        invitation.rsvp.days !== 'first',
+    ],
     ['#gifts', 'nav.gifts', settings.show_gifts],
     ['#wishes', 'nav.book', settings.show_wishes && invitation.wishes.length > 0],
   ]

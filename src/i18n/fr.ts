@@ -90,6 +90,12 @@ export const fr: Record<MessageKey, string> = {
   'rsvp.no': 'Avec regret, non',
   'rsvp.yesBoth': 'Avec joie, oui',
   'rsvp.noBoth': 'Avec regret, non',
+  'rsvp.daysLegend': 'Quels jours serez-vous parmi nous ?',
+  'rsvp.daysLegendBoth': 'Quels jours serez-vous tous les deux parmi nous ?',
+  'rsvp.daysAll': 'Les deux jours',
+  'rsvp.daysOnly': 'Uniquement le {day}',
+  'rsvp.seeYouOn': 'Nous vous verrons le {day}.',
+  'rsvp.seeYouOnBoth': 'Nous vous verrons tous les deux le {day}.',
   'rsvp.note': 'Un mot pour les mariés (facultatif)',
   'rsvp.noteHint': 'Il apparaîtra dans « Mots d’amour » · Publié au nom de {name}',
   'rsvp.submit': 'Envoyer ma réponse',
@@ -204,6 +210,7 @@ export const fr: Record<MessageKey, string> = {
 
   'door.eyebrow': 'Pass d’entrée',
   'door.checking': 'Vérification du pass…',
+  'door.onlyDay': 'Présent uniquement le {day}',
   'door.confirmed': 'Invité(e) confirmé(e)',
   'door.notAttending': 'Ne sera pas présent(e)',
   'door.confirmedBoth': 'Invités confirmés',
@@ -213,6 +220,7 @@ export const fr: Record<MessageKey, string> = {
   'error.invalid_token':
     'Ce lien d’invitation n’est plus valide. Merci d’en demander un nouveau aux mariés.',
   'error.rsvp_closed': 'Les réponses sont closes : la fête a commencé.',
+  'error.days_invalid': 'Merci de choisir les jours où vous serez présents.',
   'error.answer_required': 'Merci de choisir « Avec joie, oui » ou « Avec regret, non ».',
   'error.links_not_allowed':
     'Les liens ne sont pas autorisés dans les messages. Merci de les retirer.',

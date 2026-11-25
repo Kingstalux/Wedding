@@ -65,9 +65,12 @@ export function tablesWithRoom(tables: TableInfo[], seats: number, current?: num
   return tables.filter((t) => t.number !== current && t.free >= seats)
 }
 
-/** Accepted guests who have no table yet. */
+/** Accepted guests who need a table but have none yet. Guests coming on the
+ *  first day only need none: the tables are for the reception. */
 export function waitingGuests(guests: GuestRow[]) {
-  return guests.filter((g) => !g.deleted_at && g.attending === true && !g.table_no)
+  return guests.filter(
+    (g) => !g.deleted_at && g.attending === true && g.days !== 'first' && !g.table_no,
+  )
 }
 
 export function seatsLabel(n: number) {

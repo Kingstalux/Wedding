@@ -77,7 +77,7 @@ function fromRaw(raw: RawInvitation): LoadedInvitation {
       table_no: raw.guest.table_no,
       lang: raw.guest.lang,
       pass_code: raw.guest.pass_code,
-      rsvp: raw.rsvp,
+      rsvp: raw.rsvp ? { ...raw.rsvp, days: raw.rsvp.days ?? 'both' } : null,
       wishes: raw.wishes,
     },
   }
@@ -90,6 +90,7 @@ const KNOWN_ERRORS = [
   'invalid_token',
   'rsvp_closed',
   'answer_required',
+  'days_invalid',
   'links_not_allowed',
   'message_length',
   'rate_limited',
@@ -155,6 +156,7 @@ export async function submitRsvp(token: string, rsvp: Rsvp, wish: string): Promi
     p_token: token,
     p_attending: rsvp.attending,
     p_wish: wish,
+    p_days: rsvp.attending ? rsvp.days : 'both',
   })
   if (error) fail(error)
   return data as unknown as RsvpResult
@@ -208,6 +210,8 @@ export type PassStatus = {
   first_name: string
   seats: number
   attending: boolean | null
+  /** Coming on one wedding day only: a time on that day; null for both days. */
+  only_day: string | null
   table_no: number | null
   checked_in: boolean
 }
