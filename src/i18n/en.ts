@@ -71,6 +71,10 @@ export const en = {
   'gallery.close': 'Close',
   'gallery.prev': 'Previous photo',
   'gallery.next': 'Next photo',
+  'gallery.label': 'Photos',
+  'gallery.slide': 'Photo {n} of {total}',
+  'gallery.prevSlide': 'Previous photos',
+  'gallery.nextSlide': 'Next photos',
 
   'rsvp.title': 'Kindly Respond',
   'rsvp.lede': 'Dear {name}, one seat is reserved in your name. Please respond by {date}.',
@@ -108,6 +112,7 @@ export const en = {
   'wishes.count': '{n} of {total}',
   'wishes.prev': 'Previous wishes',
   'wishes.next': 'Next wishes',
+  'wishes.message': 'Message from {name}',
   'tables.eyebrow': 'Seating',
   'tables.title': 'Your Table',
   'tables.seated': 'You are seated at Table {n}.',

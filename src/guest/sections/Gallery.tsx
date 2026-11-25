@@ -4,6 +4,7 @@ import { Photo, type PhotoTone } from '../../components/Photo'
 import { Eyebrow, Rule } from '../../components/Typography'
 import { useT } from '../../i18n/LanguageProvider'
 import { useInvitation } from '../InvitationProvider'
+import { useCarousel } from '../useCarousel'
 import styles from './Gallery.module.css'
 
 const tones: PhotoTone[] = ['navy', 'emerald', 'slate', 'forest']
@@ -14,6 +15,7 @@ export function Gallery() {
   const photos = content.gallery
   const [current, setCurrent] = useState<number | null>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const { ref: stripRef, edges, measure, step, show } = useCarousel(photos.length, 14)
 
   // Open/close the native <dialog>: it traps focus and closes on Escape for us.
   useEffect(() => {
@@ -25,8 +27,14 @@ export function Gallery() {
 
   if (!content.settings.show_gallery || photos.length === 0) return null
 
-  const go = (step: number) =>
-    setCurrent((i) => (i === null ? i : (i + step + photos.length) % photos.length))
+  // Closing the viewer: leave the strip on the photo that was showing.
+  const close = () => {
+    if (current !== null) show(current)
+    setCurrent(null)
+  }
+
+  const go = (by: number) =>
+    setCurrent((i) => (i === null ? i : (i + by + photos.length) % photos.length))
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft') go(-1)
@@ -49,9 +57,21 @@ export function Gallery() {
           <Rule center />
         </div>
 
-        <ul className={styles.grid}>
+        <ul
+          ref={stripRef}
+          className={styles.track}
+          onScroll={measure}
+          tabIndex={0}
+          aria-label={t('gallery.label')}
+          aria-roledescription="carousel"
+        >
           {photos.map((photo, i) => (
-            <li key={photo.id}>
+            <li
+              key={photo.id}
+              className={styles.slide}
+              aria-roledescription="slide"
+              aria-label={t('gallery.slide', { n: i + 1, total: photos.length })}
+            >
               <button
                 type="button"
                 className={styles.tile}
@@ -67,15 +87,34 @@ export function Gallery() {
             </li>
           ))}
         </ul>
+
+        {photos.length > 1 && (
+          <div className={styles.arrows}>
+            <IconButton
+              icon="chevronLeft"
+              tone="light"
+              label={t('gallery.prevSlide')}
+              disabled={edges.start}
+              onClick={() => step(-1)}
+            />
+            <IconButton
+              icon="chevronRight"
+              tone="light"
+              label={t('gallery.nextSlide')}
+              disabled={edges.end}
+              onClick={() => step(1)}
+            />
+          </div>
+        )}
       </div>
 
       <dialog
         ref={dialogRef}
         className={styles.viewer}
         aria-label={t('gallery.viewer')}
-        onClose={() => setCurrent(null)}
+        onClose={close}
         onKeyDown={onKeyDown}
-        onClick={(e) => e.target === e.currentTarget && setCurrent(null)}
+        onClick={(e) => e.target === e.currentTarget && close()}
       >
         {current !== null && (
           <>
@@ -84,7 +123,7 @@ export function Gallery() {
               icon="close"
               label={t('gallery.close')}
               tone="light"
-              onClick={() => setCurrent(null)}
+              onClick={close}
               autoFocus
             />
             {photos.length > 1 && (

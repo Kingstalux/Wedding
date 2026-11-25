@@ -7,13 +7,49 @@
   margin-bottom: 8px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+/* Swipe on phones, arrows on computers; each photo snaps into place */
+.track {
+  position: relative; /* photo positions are measured from the strip */
+  display: flex;
   gap: 14px;
   margin: 0;
-  padding: 0;
+  padding: 4px 0 8px;
   list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+.track:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+/* Four photos on computers, two and a half on tablets; on phones the
+   next photo peeks in, inviting a swipe. */
+.slide {
+  flex: 0 0 calc((100% - 3 * 14px) / 4);
+  scroll-snap-align: start;
+}
+@media (max-width: 900px) {
+  .slide {
+    flex-basis: calc((100% - 2 * 14px) / 2.5);
+  }
+}
+@media (max-width: 560px) {
+  .slide {
+    flex-basis: min(300px, 78%);
+  }
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
 }
 
 .tile {

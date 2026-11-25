@@ -18,6 +18,7 @@
 
 /* Swipe on phones, arrows on computers; each card snaps into place */
 .track {
+  position: relative; /* card positions are measured from the strip */
   display: flex;
   gap: 16px;
   margin: 0;
@@ -43,6 +44,8 @@
   flex-direction: column;
   gap: 18px;
   min-height: 240px;
+  /* A long wish stops here; its text scrolls inside the card */
+  max-height: 380px;
   padding: 32px 30px 26px;
   /* Outlined only, on the navy: no filled card */
   border: 1px solid var(--gold-line);
@@ -60,6 +63,12 @@
 
 .message {
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-line) transparent;
   font-size: 17px;
   line-height: 1.6;
   white-space: pre-line;
@@ -94,4 +103,9 @@
 /* No shadow: the scrolling strip would clip it into a square edge. */
 .track .card {
   box-shadow: none;
+}
+.message:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 2px;
 }

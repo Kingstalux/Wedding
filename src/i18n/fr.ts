@@ -70,6 +70,10 @@ export const fr: Record<MessageKey, string> = {
   'gallery.close': 'Fermer',
   'gallery.prev': 'Photo précédente',
   'gallery.next': 'Photo suivante',
+  'gallery.label': 'Photos',
+  'gallery.slide': 'Photo {n} sur {total}',
+  'gallery.prevSlide': 'Photos précédentes',
+  'gallery.nextSlide': 'Photos suivantes',
 
   'rsvp.title': 'Merci de Répondre',
   'rsvp.lede':
@@ -110,6 +114,7 @@ export const fr: Record<MessageKey, string> = {
   'wishes.count': '{n} sur {total}',
   'wishes.prev': 'Messages précédents',
   'wishes.next': 'Messages suivants',
+  'wishes.message': 'Message de {name}',
   'tables.eyebrow': 'Placement',
   'tables.title': 'Votre Table',
   'tables.seated': 'Vous êtes placé(e) à la table {n}.',
