@@ -108,6 +108,12 @@ export const en = {
   'rsvp.change': 'Change my answer',
   'rsvp.passKicker': 'Your entrance pass',
   'rsvp.openPass': 'Open my pass',
+  'rsvp.closedOn': 'Dear {name}, replies to this invitation closed on {date}.',
+  'rsvp.closedNoDate': 'Dear {name}, replies to this invitation are now closed.',
+  'rsvp.closedOnBoth': 'Dear {name}, replies to this invitation closed on {date}.',
+  'rsvp.closedNoDateBoth': 'Dear {name}, replies to this invitation are now closed.',
+  'rsvp.expired': 'Invitation expired',
+  'rsvp.closedNote': 'Replies are now closed. If anything changes, please contact the couple.',
 
   'book.delete': 'Delete',
   'book.deleteConfirm': 'Delete your message from the guest book?',
@@ -217,6 +223,7 @@ export const en = {
   'error.invalid_token':
     'This invitation link is no longer valid. Please ask the couple for a new one.',
   'error.rsvp_closed': 'Replies are closed now that the celebration has begun.',
+  'error.rsvp_expired': 'Sorry, replies to this invitation have closed.',
   'error.days_invalid': 'Please choose which days you will attend.',
   'error.answer_required': 'Please choose “Joyfully accepts” or “Regretfully declines”.',
   'error.links_not_allowed': 'Links are not allowed in messages. Please remove them and try again.',

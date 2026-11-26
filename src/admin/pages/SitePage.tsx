@@ -24,6 +24,7 @@ type Draft = {
   hero_text_side: 'left' | 'right'
   countdown: string // datetime-local, Douala time
   rsvp_deadline: string // YYYY-MM-DD or ''
+  close_replies: boolean
   word_en: string
   word_fr: string
   show_word: boolean
@@ -55,6 +56,7 @@ function toDraft(s: SettingsRow): Draft {
     hero_text_side: s.hero_text_side === 'right' ? 'right' : 'left',
     countdown: toLocalInput(s.countdown_at),
     rsvp_deadline: s.rsvp_deadline ?? '',
+    close_replies: s.close_replies,
     word_en: s.word_en,
     word_fr: s.word_fr,
     show_word: s.show_word,
@@ -88,6 +90,7 @@ function toPatch(d: Draft): SettingsPatch {
     hero_text_side: d.hero_text_side,
     countdown_at: fromLocalInput(d.countdown) ?? undefined,
     rsvp_deadline: d.rsvp_deadline || null,
+    close_replies: d.close_replies,
     word_en: d.word_en.trim(),
     word_fr: d.word_fr.trim(),
     show_word: d.show_word,
@@ -144,6 +147,8 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
 
   async function save() {
     if (!draft.countdown) return setError('Please set the date and time the countdown leads to.')
+    if (draft.close_replies && !draft.rsvp_deadline)
+      return setError('Set the “Please reply by” date before closing replies after it.')
     setError(null)
     try {
       const row = await update.mutateAsync(toPatch(draft))
@@ -246,10 +251,19 @@ function SiteForm({ settings }: { settings: SettingsRow }) {
             look="box"
             label="Please reply by"
             type="date"
-            hint="Shown in the RSVP section. Guests can still reply until the day."
+            hint={
+              draft.close_replies
+                ? 'After this day, guests can no longer reply or change their answer.'
+                : 'Shown in the RSVP section. Guests can still reply until the day.'
+            }
             {...text('rsvp_deadline')}
           />
         </div>
+        <Switch
+          className={styles.closeSwitch}
+          label="Close replies after this date"
+          {...toggle('close_replies')}
+        />
       </section>
 
       <section className={styles.card} aria-labelledby="word-title">

@@ -37,6 +37,7 @@ type RawInvitation = {
     table_no: number | null
   }
   rsvp: Rsvp | null
+  rsvp_open?: boolean
   wishes: Wish[]
   settings: RawSettings
   events: WeddingEvent[]
@@ -78,6 +79,7 @@ function fromRaw(raw: RawInvitation): LoadedInvitation {
       lang: raw.guest.lang,
       pass_code: raw.guest.pass_code,
       rsvp: raw.rsvp ? { ...raw.rsvp, days: raw.rsvp.days ?? 'both' } : null,
+      rsvp_open: raw.rsvp_open ?? true,
       wishes: raw.wishes,
     },
   }
@@ -89,6 +91,7 @@ function fromRaw(raw: RawInvitation): LoadedInvitation {
 const KNOWN_ERRORS = [
   'invalid_token',
   'rsvp_closed',
+  'rsvp_expired',
   'answer_required',
   'days_invalid',
   'links_not_allowed',

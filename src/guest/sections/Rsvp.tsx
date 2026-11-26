@@ -23,6 +23,9 @@ export function Rsvp() {
   const { greeting, dear, full, tc } = useGuestNames()
   const showTable = content.settings.show_tables && rsvp?.attending && invitation.table_no
   const deadline = content.settings.rsvp_deadline
+  // After the closing date the reply is frozen (the couple can let one guest
+  // reply late from the studio; the server decides).
+  const open = invitation.rsvp_open
 
   // Show the form when the guest hasn't replied yet, or chose "Change my answer".
   const [editing, setEditing] = useState(rsvp === null)
@@ -85,7 +88,18 @@ export function Rsvp() {
       </div>
       {/* The reply card: ivory, like printed stationery */}
       <div className={`paper ${styles.card}`}>
-        {editing || !rsvp ? (
+        {!open && !rsvp ? (
+          <div className={styles.form}>
+            <p className={styles.lede}>
+              {deadline && content.settings.close_replies
+                ? tc('rsvp.closedOn', { name: dear, date: formatDate(deadline, lang) })
+                : tc('rsvp.closedNoDate', { name: dear })}
+            </p>
+            <div>
+              <Button disabled>{t('rsvp.expired')}</Button>
+            </div>
+          </div>
+        ) : !rsvp || (open && editing) ? (
           <form className={styles.form} onSubmit={onSubmit} noValidate>
             <p className={styles.lede}>
               {deadline
@@ -184,21 +198,28 @@ export function Rsvp() {
                 )}
               </div>
             </div>
+            {!open && <p className={styles.closedNote}>{t('rsvp.closedNote')}</p>}
             <div className={styles.actions}>
               <ButtonLink to={`/i/${token}/pass`}>{t('rsvp.openPass')}</ButtonLink>
-              <Button variant="ghost" onClick={() => setEditing(true)}>
-                {t('rsvp.change')}
-              </Button>
+              {open && (
+                <Button variant="ghost" onClick={() => setEditing(true)}>
+                  {t('rsvp.change')}
+                </Button>
+              )}
             </div>
           </div>
         ) : (
           <div aria-live="polite">
             <p className={styles.thanks}>{tc('rsvp.thanksNo', { name: greeting })}</p>
-            <div className={styles.actions}>
-              <Button variant="ghost" onClick={() => setEditing(true)}>
-                {t('rsvp.change')}
-              </Button>
-            </div>
+            {open ? (
+              <div className={styles.actions}>
+                <Button variant="ghost" onClick={() => setEditing(true)}>
+                  {t('rsvp.change')}
+                </Button>
+              </div>
+            ) : (
+              <p className={styles.closedNote}>{t('rsvp.closedNote')}</p>
+            )}
           </div>
         )}
       </div>

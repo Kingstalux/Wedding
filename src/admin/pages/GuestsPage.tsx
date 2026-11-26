@@ -323,6 +323,9 @@ export function GuestsPage() {
                       {g.attending === null && (
                         <span className={cx(styles.badge, styles.waiting)}>Awaiting</span>
                       )}
+                      {g.late_reply && settings?.close_replies && (
+                        <span className={cx(styles.badge, styles.oneDay)}>Late reply allowed</span>
+                      )}
                       {g.attending === true && g.days !== 'both' && g.days && (
                         <span className={cx(styles.badge, styles.oneDay)}>
                           {g.days === 'first' ? dayLabels.first : dayLabels.second} only

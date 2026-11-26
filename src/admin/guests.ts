@@ -109,6 +109,8 @@ export type GuestInput = {
   partner_name: string | null
   partner_phone: string | null
   lang: 'en' | 'fr' | null
+  /** Can still reply after replies close (Site & texts). */
+  late_reply: boolean
 }
 
 export function useAddGuest() {

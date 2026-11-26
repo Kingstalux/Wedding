@@ -65,6 +65,11 @@
   gap: 20px;
 }
 
+/* "Close replies after this date", under the couple's dates */
+.closeSwitch {
+  margin-top: 20px;
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;

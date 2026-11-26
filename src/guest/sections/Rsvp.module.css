@@ -147,3 +147,9 @@
   margin-top: 6px;
   color: var(--muted);
 }
+
+.closedNote {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 14px;
+}

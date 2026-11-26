@@ -103,7 +103,15 @@ export function InvitationProvider({
 
     return {
       submitRsvp: async (rsvp, wish) => {
-        const saved = await api.submitRsvp(token, rsvp, wish)
+        let saved
+        try {
+          saved = await api.submitRsvp(token, rsvp, wish)
+        } catch (err) {
+          // Replies closed while the page was open: show the closed view.
+          if (err instanceof api.GuestError && ['rsvp_expired', 'rsvp_closed'].includes(err.code))
+            update((inv) => ({ ...inv, rsvp_open: false }))
+          throw err
+        }
         update((inv) => ({
           ...inv,
           rsvp: { attending: saved.attending, days: saved.days ?? 'both' },

@@ -110,6 +110,13 @@ export const fr: Record<MessageKey, string> = {
   'rsvp.change': 'Modifier ma réponse',
   'rsvp.passKicker': 'Votre pass d’entrée',
   'rsvp.openPass': 'Ouvrir mon pass',
+  'rsvp.closedOn': 'Cher(e) {name}, les réponses à cette invitation ont été closes le {date}.',
+  'rsvp.closedNoDate': 'Cher(e) {name}, les réponses à cette invitation sont désormais closes.',
+  'rsvp.closedOnBoth': 'Chers {name}, les réponses à cette invitation ont été closes le {date}.',
+  'rsvp.closedNoDateBoth': 'Chers {name}, les réponses à cette invitation sont désormais closes.',
+  'rsvp.expired': 'Invitation expirée',
+  'rsvp.closedNote':
+    'Les réponses sont désormais closes. En cas de changement, merci de contacter les mariés.',
 
   'book.delete': 'Supprimer',
   'book.deleteConfirm': 'Supprimer votre message du livre d’or ?',
@@ -220,6 +227,7 @@ export const fr: Record<MessageKey, string> = {
   'error.invalid_token':
     'Ce lien d’invitation n’est plus valide. Merci d’en demander un nouveau aux mariés.',
   'error.rsvp_closed': 'Les réponses sont closes : la fête a commencé.',
+  'error.rsvp_expired': 'Désolé, les réponses à cette invitation sont closes.',
   'error.days_invalid': 'Merci de choisir les jours où vous serez présents.',
   'error.answer_required': 'Merci de choisir « Avec joie, oui » ou « Avec regret, non ».',
   'error.links_not_allowed':

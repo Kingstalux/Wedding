@@ -13,6 +13,8 @@ export type Settings = {
   city: string
   countdown_at: string
   rsvp_deadline: string | null
+  /** When on, replies close once the rsvp_deadline day has ended. */
+  close_replies: boolean
   hero_url: string | null
   /** Optional upright version of the landing photo for phones. */
   hero_mobile_url: string | null
@@ -126,5 +128,7 @@ export type Invitation = {
   lang: Lang | null
   pass_code: string
   rsvp: Rsvp | null
+  /** False once replies have closed for this guest: the reply is frozen. */
+  rsvp_open: boolean
   wishes: Wish[]
 }

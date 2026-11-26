@@ -229,6 +229,7 @@ export type Database = {
           invite_sent_at: string | null
           lang: string | null
           last_opened_at: string | null
+          late_reply: boolean
           name: string
           open_count: number
           partner_name: string | null
@@ -248,6 +249,7 @@ export type Database = {
           invite_sent_at?: string | null
           lang?: string | null
           last_opened_at?: string | null
+          late_reply?: boolean
           name: string
           open_count?: number
           partner_name?: string | null
@@ -267,6 +269,7 @@ export type Database = {
           invite_sent_at?: string | null
           lang?: string | null
           last_opened_at?: string | null
+          late_reply?: boolean
           name?: string
           open_count?: number
           partner_name?: string | null
@@ -389,6 +392,7 @@ export type Database = {
         Row: {
           bride: string
           city: string
+          close_replies: boolean
           countdown_at: string
           dress_en: string
           dress_fr: string
@@ -429,6 +433,7 @@ export type Database = {
         Insert: {
           bride?: string
           city?: string
+          close_replies?: boolean
           countdown_at?: string
           dress_en?: string
           dress_fr?: string
@@ -469,6 +474,7 @@ export type Database = {
         Update: {
           bride?: string
           city?: string
+          close_replies?: boolean
           countdown_at?: string
           dress_en?: string
           dress_fr?: string
@@ -576,6 +582,7 @@ export type Database = {
           lang: string | null
           last_checked_in_at: string | null
           last_opened_at: string | null
+          late_reply: boolean | null
           name: string | null
           open_count: number | null
           partner_name: string | null

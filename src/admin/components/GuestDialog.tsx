@@ -36,6 +36,7 @@ export function GuestDialog({
   const [partnerName, setPartnerName] = useState(guest?.partner_name ?? '')
   const [partnerPhone, setPartnerPhone] = useState(formatPhone(guest?.partner_phone))
   const [lang, setLang] = useState<'' | 'en' | 'fr'>((guest?.lang as 'en' | 'fr' | null) ?? '')
+  const [lateReply, setLateReply] = useState(Boolean(guest?.late_reply))
   const [error, setError] = useState<string | null>(null)
 
   const link = guest?.token ? invitationUrl(origin, guest.token) : null
@@ -62,6 +63,7 @@ export function GuestDialog({
       partner_name: cleanPartner || null,
       partner_phone: cleanPartner ? partnerNormalized.phone : null,
       lang: lang || null,
+      late_reply: lateReply,
     }
     const who = fullNames(cleanName, input.partner_name)
     try {
@@ -168,6 +170,11 @@ export function GuestDialog({
             { value: 'en', label: 'English' },
             { value: 'fr', label: 'Français' },
           ]}
+        />
+        <Switch
+          label="Allow a late reply: this guest can still reply after replies close"
+          checked={lateReply}
+          onChange={(e) => setLateReply(e.target.checked)}
         />
 
         {guest && link && (
